@@ -1,0 +1,391 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFE92A8B6181003222C8 /* AppDelegate.swift */; };
+		D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */; };
+		D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFED2A8B6181003222C8 /* LoginVC.swift */; };
+		D27CFFF12A8B6181003222C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27CFFEF2A8B6181003222C8 /* Main.storyboard */; };
+		D27CFFF32A8B6183003222C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D27CFFF22A8B6183003222C8 /* Assets.xcassets */; };
+		D27CFFF62A8B6183003222C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D27CFFF42A8B6183003222C8 /* LaunchScreen.storyboard */; };
+		D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFFD2A8B7759003222C8 /* RegisterVC.swift */; };
+		D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687412A9731A80028F409 /* PasswordTextField.swift */; };
+		D2A687452A983F6C0028F409 /* X.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A687432A983F6C0028F409 /* X.png */; };
+		D2A687462A983F6C0028F409 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A687442A983F6C0028F409 /* check.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D27CFFE62A8B6181003222C8 /* PetCareTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetCareTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D27CFFE92A8B6181003222C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		D27CFFED2A8B6181003222C8 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		D27CFFF02A8B6181003222C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D27CFFF22A8B6183003222C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D27CFFF52A8B6183003222C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D27CFFF72A8B6183003222C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D27CFFFD2A8B7759003222C8 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
+		D2A687412A9731A80028F409 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		D2A687432A983F6C0028F409 /* X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = X.png; sourceTree = "<group>"; };
+		D2A687442A983F6C0028F409 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D27CFFE32A8B6181003222C8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D27CFFDD2A8B6181003222C8 = {
+			isa = PBXGroup;
+			children = (
+				D27CFFE82A8B6181003222C8 /* PetCareTaker */,
+				D27CFFE72A8B6181003222C8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D27CFFE72A8B6181003222C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D27CFFE62A8B6181003222C8 /* PetCareTaker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D27CFFE82A8B6181003222C8 /* PetCareTaker */ = {
+			isa = PBXGroup;
+			children = (
+				D2A687472A983F700028F409 /* Model */,
+				D27CFFE92A8B6181003222C8 /* AppDelegate.swift */,
+				D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */,
+				D27CFFED2A8B6181003222C8 /* LoginVC.swift */,
+				D27CFFFD2A8B7759003222C8 /* RegisterVC.swift */,
+				D2A687412A9731A80028F409 /* PasswordTextField.swift */,
+				D27CFFEF2A8B6181003222C8 /* Main.storyboard */,
+				D27CFFF22A8B6183003222C8 /* Assets.xcassets */,
+				D27CFFF42A8B6183003222C8 /* LaunchScreen.storyboard */,
+				D27CFFF72A8B6183003222C8 /* Info.plist */,
+			);
+			path = PetCareTaker;
+			sourceTree = "<group>";
+		};
+		D2A687472A983F700028F409 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D2A687442A983F6C0028F409 /* check.png */,
+				D2A687432A983F6C0028F409 /* X.png */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D27CFFE52A8B6181003222C8 /* PetCareTaker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D27CFFFA2A8B6183003222C8 /* Build configuration list for PBXNativeTarget "PetCareTaker" */;
+			buildPhases = (
+				D27CFFE22A8B6181003222C8 /* Sources */,
+				D27CFFE32A8B6181003222C8 /* Frameworks */,
+				D27CFFE42A8B6181003222C8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PetCareTaker;
+			productName = PetCareTaker;
+			productReference = D27CFFE62A8B6181003222C8 /* PetCareTaker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D27CFFDE2A8B6181003222C8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					D27CFFE52A8B6181003222C8 = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = D27CFFE12A8B6181003222C8 /* Build configuration list for PBXProject "PetCareTaker" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D27CFFDD2A8B6181003222C8;
+			productRefGroup = D27CFFE72A8B6181003222C8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D27CFFE52A8B6181003222C8 /* PetCareTaker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D27CFFE42A8B6181003222C8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2A687452A983F6C0028F409 /* X.png in Resources */,
+				D2A687462A983F6C0028F409 /* check.png in Resources */,
+				D27CFFF62A8B6183003222C8 /* LaunchScreen.storyboard in Resources */,
+				D27CFFF32A8B6183003222C8 /* Assets.xcassets in Resources */,
+				D27CFFF12A8B6181003222C8 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D27CFFE22A8B6181003222C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
+				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
+				D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */,
+				D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */,
+				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D27CFFEF2A8B6181003222C8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D27CFFF02A8B6181003222C8 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D27CFFF42A8B6183003222C8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D27CFFF52A8B6183003222C8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D27CFFF82A8B6183003222C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D27CFFF92A8B6183003222C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D27CFFFB2A8B6183003222C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetCareTaker/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.www.PetCareTaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D27CFFFC2A8B6183003222C8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PetCareTaker/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.www.PetCareTaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D27CFFE12A8B6181003222C8 /* Build configuration list for PBXProject "PetCareTaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27CFFF82A8B6183003222C8 /* Debug */,
+				D27CFFF92A8B6183003222C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D27CFFFA2A8B6183003222C8 /* Build configuration list for PBXNativeTarget "PetCareTaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D27CFFFB2A8B6183003222C8 /* Debug */,
+				D27CFFFC2A8B6183003222C8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D27CFFDE2A8B6181003222C8 /* Project object */;
+}
