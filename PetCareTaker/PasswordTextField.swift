@@ -20,8 +20,8 @@ class PasswordTextField: UITextField {
         rightViewMode = .always
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 34, height: 34))
         button.isSelected = false
-        button.setImage(UIImage(systemName: "eye.slash.fill"), for: .selected)
-        button.setImage(UIImage(systemName: "eye.fill"), for: .normal)
+        button.setImage(UIImage(systemName: "eye.fill"), for: .selected)
+        button.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         rightView = button
         button.addTarget(self, action: #selector(eyeButtonTap(button:)), for: .touchUpInside)
@@ -29,5 +29,15 @@ class PasswordTextField: UITextField {
     
     override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
         CGRect(x: bounds.width - 10 - 34, y: 0, width: 34, height: 34)
+    }
+}
+
+extension UITextField {
+    func setupTextFieldStyle() {
+        self.borderStyle = .roundedRect
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
+        self.layer.borderColor = UIColor.gray.cgColor
+        self.backgroundColor = UIColor(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
     }
 }

@@ -7,7 +7,6 @@
 
 import UIKit
 import CryptoKit
-import MapKit
 
 
 class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -23,11 +22,10 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     
     @IBOutlet weak var checkForPassword: UILabel!
     
+    @IBOutlet weak var checkForUserName: UILabel!
+    
     @IBOutlet weak var accountImageView: UIImageView!
     @IBOutlet weak var passwordImageView: UIImageView!
-    
-    static let apiUrlString = "http://localhost:8888/PetCareTakerServer/"
-    let registerUserURL = apiUrlString + "registerUser.php"
     
     
     let taiwanCities = ["基隆市", "台北市", "新北市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "嘉義縣", "台南市", "高雄市", "屏東縣", "台東縣", "花蓮縣", "金門縣", "連江縣", "澎湖縣"]
@@ -58,28 +56,26 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     
     @IBAction func checkRegister(_ sender: Any) {
         
-        guard let phone = userPhoneNB.text,
-              let inputPassword = userPassWord.text,
+        guard let account = userPhoneNB.text,
+              let password = userPassWord.text,
               let name = userName.text else {
             return
         }
         
-        let password = userPassWord.text ?? ""
         let passwordCheckResult = checkPassword(password)
-        let account = userPhoneNB.text ?? ""
         let accountCheckResult = checkAccountCorrection(account)
         
         if accountCheckResult != .valid {
             switch accountCheckResult {
             case .valid:
                 print("電話號碼輸入成功")
+            case .empty:
+                print("電話號碼沒有輸入內容")
+                checkForPhone.text = "電話號碼不能空白"
+                accountLoginErrorUpdateUI()
             case .lackDigits:
                 print("電話號碼只能是數字")
                 checkForPhone.text = "電話號碼只能是數字"
-                accountLoginErrorUpdateUI()
-            case .empty:
-                print("電話號碼沒有輸入內容")
-                checkForPhone.text = "電話號碼欄位不能空白"
                 accountLoginErrorUpdateUI()
             case .lackAccountTextLength:
                 print("電話號碼位數不正確")
@@ -98,57 +94,74 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
             customTextFieldStyle()
         }
 
-        
-        switch passwordCheckResult {
-        case .valid:
-            print("密碼符合輸入標準")
+        if passwordCheckResult != .valid {
+            switch passwordCheckResult {
+            case .valid:
+                print("密碼符合輸入標準")
+                passwordLoginSuccessUpdateUI()
+                customTextFieldStyle()
+            case .containsCommonPassword:
+                print("密碼是共同密碼，建議更換")
+                checkForPassword.text = "密碼是共同密碼，建議更換"
+                passwordLoginErrorUpdateUI()
+            case .lacksDigits:
+                print("密碼少了數字")
+                checkForPassword.text = "密碼少了數字"
+                passwordLoginErrorUpdateUI()
+            case .lacksPunctuation:
+                print("密碼少了符號")
+                checkForPassword.text = "密碼少了符號"
+                passwordLoginErrorUpdateUI()
+            case .lackTextLength:
+                print("密碼長度需要在10至30字數之間")
+                checkForPassword.text = "密碼長度需要在16至30個數字之間"
+                passwordLoginErrorUpdateUI()
+            case .empty:
+                print("密碼不能空白")
+                checkForPassword.text = "密碼不能空白"
+                passwordLoginErrorUpdateUI()
+            }
+        }else if passwordCheckResult == .valid {
+            print("密碼輸入成功")
             passwordLoginSuccessUpdateUI()
             customTextFieldStyle()
-        case .containsCommonPassword:
-            print("密碼是共同密碼，建議更換")
-            checkForPassword.text = "密碼是共同密碼，建議更換"
-            passwordLoginErrorUpdateUI()
-        case .lacksDigits:
-            print("密碼少了數字")
-            checkForPassword.text = "密碼少了數字"
-            passwordLoginErrorUpdateUI()
-        case .lacksPunctuation:
-            print("密碼少了符號")
-            checkForPassword.text = "密碼少了符號"
-            passwordLoginErrorUpdateUI()
-        case .lackTextLength:
-            print("密碼長度需要在16至30字數之間")
-            checkForPassword.text = "密碼長度需要在16至30個數字之間"
-            passwordLoginErrorUpdateUI()
-        case .empty:
-            print("密碼欄位不能空白")
-            checkForPassword.text = "密碼欄位不能空白"
-            passwordLoginErrorUpdateUI()
-            
+        }
+        
+        // 檢查 name 是否為空
+        if name.isEmpty {
+            print("名稱不能為空")
+            checkForUserName.text = "名稱不能為空"
+            checkForUserName.textColor = .systemRed
+            userName.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
+            return
+        } else {
+            checkForUserName.text = "名稱有效"
+            checkForUserName.textColor = .systemGreen
+            userName.setupTextFieldStyle()
         }
         
         if accountCheckResult != .valid {
             accountLoginErrorUpdateUI()
         }
         
-        if passwordCheckResult == .valid {
+        if passwordCheckResult != .valid {
             passwordLoginErrorUpdateUI()
         }
         
-        if accountCheckResult == .valid && passwordCheckResult == .valid {
+        if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty {
             // 對密碼進行 SHA-256 加密
-            let encryptedPassword = sha256(inputPassword)
+            let encryptedPassword = AuthenticationManager.shared.sha256(password)
             
             // 獲取選擇的縣市名稱
             let selectedCityRow = userLivingArea.selectedRow(inComponent: 0)
             let residenceArea = taiwanCities[selectedCityRow]
             
-            let userInfo = UserInfo(phone: phone, password: encryptedPassword, name: name, residenceArea: residenceArea)
+            let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
             
             do {
                 let jsonData = try JSONEncoder().encode(userInfo)
                 
-                let url = URL(string: registerUserURL)!
+                let url = URL(string: ServerApiHelper.shared.registerUserURL)!
                 var request = URLRequest(url: url)
                 request.httpMethod = "POST"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -167,7 +180,6 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
                     if let error = error {
                         // 發生錯誤，進行錯誤處理
                         print("Error: \(error)")
-                        // ... 處理錯誤的提示
                         self.showAlert(title: "註冊失敗", message: "無法連線到伺服器")
                         return
                     }
@@ -188,7 +200,7 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
                             }
                         }
                     } else  {
-                        // 處理伺服器回應的錯誤
+
                         self.showAlert(title: "註冊失敗", message: "伺服器回應錯誤")
                     }
                 }
@@ -197,14 +209,6 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
                 print(error)
             }
         }
-    }
-    
-    // SHA-256 加密函式
-    func sha256(_ input: String) -> String {
-        let inputData = Data(input.utf8)
-        let hashed = SHA256.hash(data: inputData)
-        let hashedString = hashed.compactMap { String(format: "%02x", $0) }.joined()
-        return hashedString
     }
     
     func showAlert(title: String, message: String) {
@@ -238,9 +242,9 @@ extension RegisterVC:UITextFieldDelegate {
     func checkAccountCorrection(_ account: String) -> AccountCheck {
         let digits = "0123456789"
         
-        if account.count != 10 { return .lackAccountTextLength }
         if account.isEmpty { return .empty }
-        if !account.allSatisfy({ digits.contains($0) }) { return .lackDigits }
+        else if account.count != 10 { return .lackAccountTextLength }
+        else if !account.allSatisfy({ digits.contains($0) }) { return .lackDigits }
         else { return .valid }
     }
 
@@ -260,6 +264,7 @@ extension RegisterVC:UITextFieldDelegate {
         else  { return .valid }
     }
     
+    
     //add left side of line for OrLoginWith
     func addLine() {
         let lineView = UIView(frame: CGRect(x: 31, y: 590, width: 100, height: 1))
@@ -276,7 +281,7 @@ extension RegisterVC:UITextFieldDelegate {
     //Set up placeholder
     func customPlaceholderUI() {
         //Enter your email
-        let placeholderText = " Enter your email"
+        let placeholderText = " Enter your phoneNumber"
         userPhoneNB.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 131/255, green: 145/255, blue: 161/255, alpha: 1)])
         //Enter your password
         let secondPlaceholderText = " Enter your password"
@@ -284,11 +289,7 @@ extension RegisterVC:UITextFieldDelegate {
     }
     
     func accountLoginErrorUpdateUI () {
-        let placeholderText = " Enter your phone"
-        userPhoneNB.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor : UIColor.systemRed])
-        userPhoneNB.layer.borderWidth = 1
-        userPhoneNB.layer.borderColor = UIColor.systemRed.cgColor
-        
+
         userPhoneNB.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
         checkForPhone.textColor = .systemRed
         checkForPhone.isHidden = false
@@ -298,6 +299,7 @@ extension RegisterVC:UITextFieldDelegate {
     }
     
     func accountLoginSuccessUpdateUI () {
+        
         checkForPhone.text = "帳號是有效的"
         checkForPhone.isHidden = false
         checkForPhone.textColor = .systemGreen
@@ -308,10 +310,7 @@ extension RegisterVC:UITextFieldDelegate {
     }
     
     func passwordLoginErrorUpdateUI () {
-        let secondPlaceholderText = " Enter your password"
-        userPassWord.attributedPlaceholder = NSAttributedString(string: secondPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor : UIColor.systemRed])
-        userPassWord.layer.borderWidth = 1
-        userPassWord.layer.borderColor = UIColor.systemRed.cgColor
+
         userPassWord.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
         checkForPassword.textColor = .systemRed
         checkForPassword.isHidden = false
@@ -324,13 +323,12 @@ extension RegisterVC:UITextFieldDelegate {
         checkForPassword.text = "密碼是有效的"
         checkForPassword.isHidden = false
         checkForPassword.textColor = .systemGreen
-        checkForPassword.isHidden = true
+        checkForPhone.isHidden = true
         passwordImageView.isHidden = false
         passwordImageView.image = UIImage(systemName: "checkmark.circle.fill")
         passwordImageView.tintColor = .systemGreen
     }
     
-    // 並在`customTextFieldStyle()`裡使用擴展方法
     func customTextFieldStyle() {
         userPhoneNB.setupTextFieldStyle()
         userPassWord.setupTextFieldStyle()
@@ -339,30 +337,4 @@ extension RegisterVC:UITextFieldDelegate {
 
 
 
-extension UITextField {
-    func setupTextFieldStyle() {
-        self.borderStyle = .roundedRect
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
-        self.layer.borderColor = UIColor.gray.cgColor
-        self.backgroundColor = UIColor(red: 247/255, green: 248/255, blue: 249/255, alpha: 1)
-    }
-}
 
-enum AccountCheck {
-    case valid
-    case lackWord
-    case lackDigits
-    case lackCorrection
-    case lackAccountTextLength
-    case empty
-}
-
-enum PasswordCheck {
-    case valid
-    case containsCommonPassword
-    case lacksDigits
-    case lacksPunctuation
-    case lackTextLength
-    case empty
-}
