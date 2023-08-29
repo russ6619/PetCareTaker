@@ -19,6 +19,8 @@
 		D2A687462A983F6C0028F409 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = D2A687442A983F6C0028F409 /* check.png */; };
 		D2A687712A99A9CE0028F409 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687702A99A9CE0028F409 /* AuthenticationManager.swift */; };
 		D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687982A99F3BB0028F409 /* ServerApiHelper.swift */; };
+		D2A6879B2A9CCAC20028F409 /* TaskBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2A6879A2A9CCAC20028F409 /* TaskBoard.storyboard */; };
+		D2A687A42A9DE8680028F409 /* TaskBoardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687A32A9DE8680028F409 /* TaskBoardVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		D2A687442A983F6C0028F409 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		D2A687702A99A9CE0028F409 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		D2A687982A99F3BB0028F409 /* ServerApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerApiHelper.swift; sourceTree = "<group>"; };
+		D2A6879A2A9CCAC20028F409 /* TaskBoard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TaskBoard.storyboard; sourceTree = "<group>"; };
+		D2A687A32A9DE8680028F409 /* TaskBoardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +81,8 @@
 				D2A687702A99A9CE0028F409 /* AuthenticationManager.swift */,
 				D2A687412A9731A80028F409 /* PasswordTextField.swift */,
 				D27CFFEF2A8B6181003222C8 /* Main.storyboard */,
+				D2A6879A2A9CCAC20028F409 /* TaskBoard.storyboard */,
+				D2A687A32A9DE8680028F409 /* TaskBoardVC.swift */,
 				D27CFFF22A8B6183003222C8 /* Assets.xcassets */,
 				D27CFFF42A8B6183003222C8 /* LaunchScreen.storyboard */,
 				D27CFFF72A8B6183003222C8 /* Info.plist */,
@@ -153,6 +159,7 @@
 			files = (
 				D2A687452A983F6C0028F409 /* X.png in Resources */,
 				D2A687462A983F6C0028F409 /* check.png in Resources */,
+				D2A6879B2A9CCAC20028F409 /* TaskBoard.storyboard in Resources */,
 				D27CFFF62A8B6183003222C8 /* LaunchScreen.storyboard in Resources */,
 				D27CFFF32A8B6183003222C8 /* Assets.xcassets in Resources */,
 				D27CFFF12A8B6181003222C8 /* Main.storyboard in Resources */,
@@ -166,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2A687A42A9DE8680028F409 /* TaskBoardVC.swift in Sources */,
 				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
 				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
 				D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */,

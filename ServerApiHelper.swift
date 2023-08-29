@@ -19,4 +19,6 @@ class ServerApiHelper {
         loginUserUrl = apiUrlString + "loginUser.php"
         registerUserURL = apiUrlString + "registerUser.php"
     }
+    
+    
 }

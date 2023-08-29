@@ -19,9 +19,7 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     @IBOutlet weak var userLivingArea: UIPickerView!
     
     @IBOutlet weak var checkForPhone: UILabel!
-    
     @IBOutlet weak var checkForPassword: UILabel!
-    
     @IBOutlet weak var checkForUserName: UILabel!
     
     @IBOutlet weak var accountImageView: UIImageView!
@@ -62,69 +60,34 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
             return
         }
         
-        let passwordCheckResult = checkPassword(password)
-        let accountCheckResult = checkAccountCorrection(account)
+        let accountCheckResult = AuthenticationManager.shared.checkAccountCorrection(account)
+        let passwordCheckResult = AuthenticationManager.shared.checkPassword(password)
         
-        if accountCheckResult != .valid {
-            switch accountCheckResult {
-            case .valid:
-                print("電話號碼輸入成功")
-            case .empty:
-                print("電話號碼沒有輸入內容")
-                checkForPhone.text = "電話號碼不能空白"
-                accountLoginErrorUpdateUI()
-            case .lackDigits:
-                print("電話號碼只能是數字")
-                checkForPhone.text = "電話號碼只能是數字"
-                accountLoginErrorUpdateUI()
-            case .lackAccountTextLength:
-                print("電話號碼位數不正確")
-                checkForPhone.text = "電話號碼位數不正確"
-                accountLoginErrorUpdateUI()
-            case .lackCorrection:
-                print("電話號碼格式不正確")
-                checkForPhone.text = "電話號碼格式不正確，需輸入數字，例如：0912345678"
-                accountLoginErrorUpdateUI()
-            default:
-                break
+        let allCheckText = AuthenticationManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
+        
+        checkForPhone.text = allCheckText.accountResult
+        checkForPassword.text = allCheckText.passwordResult
+        
+        if allCheckText.accountResult == "格式有效" {
+            DispatchQueue.main.async {
+                AuthenticationManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkForPhone, accountImage: self.accountImageView)
             }
-        } else if accountCheckResult == .valid {
-            print("電話號碼輸入成功")
-            accountLoginSuccessUpdateUI()
-            customTextFieldStyle()
+        } else {
+            print("\(allCheckText.accountResult)")
+            DispatchQueue.main.async {
+                AuthenticationManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneNB, accountLabel: self.checkForPhone, accountImage: self.accountImageView)
+            }
         }
-
-        if passwordCheckResult != .valid {
-            switch passwordCheckResult {
-            case .valid:
-                print("密碼符合輸入標準")
-                passwordLoginSuccessUpdateUI()
-                customTextFieldStyle()
-            case .containsCommonPassword:
-                print("密碼是共同密碼，建議更換")
-                checkForPassword.text = "密碼是共同密碼，建議更換"
-                passwordLoginErrorUpdateUI()
-            case .lacksDigits:
-                print("密碼少了數字")
-                checkForPassword.text = "密碼少了數字"
-                passwordLoginErrorUpdateUI()
-            case .lacksPunctuation:
-                print("密碼少了符號")
-                checkForPassword.text = "密碼少了符號"
-                passwordLoginErrorUpdateUI()
-            case .lackTextLength:
-                print("密碼長度需要在10至30字數之間")
-                checkForPassword.text = "密碼長度需要在16至30個數字之間"
-                passwordLoginErrorUpdateUI()
-            case .empty:
-                print("密碼不能空白")
-                checkForPassword.text = "密碼不能空白"
-                passwordLoginErrorUpdateUI()
+        
+        if allCheckText.passwordResult == "格式有效" {
+            DispatchQueue.main.async {
+                AuthenticationManager.shared.passwordLoginSuccessUpdateUI(passwordLabel: self.checkForPassword, passwordImage: self.passwordImageView)
+                
             }
-        }else if passwordCheckResult == .valid {
-            print("密碼輸入成功")
-            passwordLoginSuccessUpdateUI()
-            customTextFieldStyle()
+        } else {
+            DispatchQueue.main.async {
+                AuthenticationManager.shared.passwordLoginErrorUpdateUI(passwordTextField: self.userPassWord, passwordLabel: self.checkForPassword, passwordImage: self.passwordImageView)
+            }
         }
         
         // 檢查 name 是否為空
@@ -138,14 +101,6 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
             checkForUserName.text = "名稱有效"
             checkForUserName.textColor = .systemGreen
             userName.setupTextFieldStyle()
-        }
-        
-        if accountCheckResult != .valid {
-            accountLoginErrorUpdateUI()
-        }
-        
-        if passwordCheckResult != .valid {
-            passwordLoginErrorUpdateUI()
         }
         
         if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty {
@@ -195,12 +150,11 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
                                 self.showAlert(title: "註冊成功", message: "您已成功註冊帳號")
                             } else {
                                 // 註冊失敗
-                                self.showAlert(title: "註冊失敗", message: "無法註冊新使用者")
+                                self.showAlert(title: "註冊失敗", message: "\(responseString)")
                                 print("Response: \(responseString)")
                             }
                         }
                     } else  {
-
                         self.showAlert(title: "註冊失敗", message: "伺服器回應錯誤")
                     }
                 }
@@ -214,7 +168,10 @@ class RegisterVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate
     func showAlert(title: String, message: String) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確定", style: .default))
+            alert.addAction(UIAlertAction(title: "確定", style: .default) { _ in
+                    // 使用者按下「確定」後，切換畫面
+                    self.navigationController?.popViewController(animated: true)
+                })
             self.present(alert, animated: true, completion: nil)
             
         }
@@ -236,105 +193,3 @@ struct UserInfo: Codable {
     }
     
 }
-
-extension RegisterVC:UITextFieldDelegate {
-    
-    func checkAccountCorrection(_ account: String) -> AccountCheck {
-        let digits = "0123456789"
-        
-        if account.isEmpty { return .empty }
-        else if account.count != 10 { return .lackAccountTextLength }
-        else if !account.allSatisfy({ digits.contains($0) }) { return .lackDigits }
-        else { return .valid }
-    }
-
-
-    
-    func checkPassword(_ password: String) -> PasswordCheck {
-        let tenCommonPasswords = ["123456", "123456789", "qwerty", "password", "12345678", "111111", "iloveyou", "1q2w3e", "123123", "password1", "000000"]
-        let digits = "0123456789"
-        let punctuation = "!@#$%^&*(),.<>;'`~[]{}\\|/?_-+= "
-        let textLength = Int(userPassWord.text?.count ?? 0)
-        
-        if tenCommonPasswords.contains(password) { return .containsCommonPassword }
-        else if textLength == 0 { return .empty }
-        else if !password.contains(where: { digits.contains($0) }) { return .lacksDigits }
-        else if !password.contains(where: { punctuation.contains($0) }) { return.lacksPunctuation }
-        else if textLength < 16 && textLength > 30 { return .lackTextLength }
-        else  { return .valid }
-    }
-    
-    
-    //add left side of line for OrLoginWith
-    func addLine() {
-        let lineView = UIView(frame: CGRect(x: 31, y: 590, width: 100, height: 1))
-        lineView.layer.borderWidth = 1.0
-        lineView.layer.borderColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1).cgColor
-        self.view.addSubview(lineView)
-        //add right side of line for OrLoginWith
-        let secondLineView = UIView(frame: CGRect(x: 261, y: 590, width: 100, height: 1))
-        secondLineView.layer.borderWidth = 1.0
-        secondLineView.layer.borderColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1).cgColor
-        self.view.addSubview(secondLineView)
-    }
-    
-    //Set up placeholder
-    func customPlaceholderUI() {
-        //Enter your email
-        let placeholderText = " Enter your phoneNumber"
-        userPhoneNB.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 131/255, green: 145/255, blue: 161/255, alpha: 1)])
-        //Enter your password
-        let secondPlaceholderText = " Enter your password"
-        userPhoneNB.attributedPlaceholder = NSAttributedString(string: secondPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 131/255, green: 145/255, blue: 161/255, alpha: 1)])
-    }
-    
-    func accountLoginErrorUpdateUI () {
-
-        userPhoneNB.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
-        checkForPhone.textColor = .systemRed
-        checkForPhone.isHidden = false
-        accountImageView.isHidden = false
-        accountImageView.image = UIImage(systemName: "x.circle.fill")
-        accountImageView.tintColor = .systemRed
-    }
-    
-    func accountLoginSuccessUpdateUI () {
-        
-        checkForPhone.text = "帳號是有效的"
-        checkForPhone.isHidden = false
-        checkForPhone.textColor = .systemGreen
-        checkForPassword.isHidden = true
-        accountImageView.isHidden = false
-        accountImageView.image =  UIImage(systemName: "checkmark.circle.fill")
-        accountImageView.tintColor = .systemGreen
-    }
-    
-    func passwordLoginErrorUpdateUI () {
-
-        userPassWord.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
-        checkForPassword.textColor = .systemRed
-        checkForPassword.isHidden = false
-        passwordImageView.isHidden = false
-        passwordImageView.image = UIImage(systemName: "x.circle.fill")
-        passwordImageView.tintColor = .systemRed
-    }
-    
-    func passwordLoginSuccessUpdateUI () {
-        checkForPassword.text = "密碼是有效的"
-        checkForPassword.isHidden = false
-        checkForPassword.textColor = .systemGreen
-        checkForPhone.isHidden = true
-        passwordImageView.isHidden = false
-        passwordImageView.image = UIImage(systemName: "checkmark.circle.fill")
-        passwordImageView.tintColor = .systemGreen
-    }
-    
-    func customTextFieldStyle() {
-        userPhoneNB.setupTextFieldStyle()
-        userPassWord.setupTextFieldStyle()
-    }
-}
-
-
-
-

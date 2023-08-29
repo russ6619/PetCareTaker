@@ -10,8 +10,12 @@ import UIKit
 class PasswordTextField: UITextField {
     
     @objc func eyeButtonTap(button: UIButton) {
-        button.isSelected.toggle()
-        isSecureTextEntry = button.isSelected
+        if isFirstResponder {
+            resignFirstResponder() // Hide the keyboard if it's currently shown
+        }
+        isSecureTextEntry = !isSecureTextEntry
+        button.isSelected = !isSecureTextEntry
+        becomeFirstResponder() // Restore the keyboard focus
     }
     
     required init?(coder: NSCoder) {
