@@ -35,39 +35,39 @@ class LoginVC: UIViewController {
               let password = userPasswordLogin.text else {
             return
         }
-        let accountCheckResult = AuthenticationManager.shared.checkAccountCorrection(phone)
-        let passwordCheckResult = AuthenticationManager.shared.checkPassword(password)
+        let accountCheckResult = AuthManager.shared.checkAccountCorrection(phone)
+        let passwordCheckResult = AuthManager.shared.checkPassword(password)
         
-        let allCheckText = AuthenticationManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
+        let allCheckText = AuthManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
         
         checkPhoneLogin.text = allCheckText.accountResult
         checkPasswordLogin.text = allCheckText.passwordResult
         
         if allCheckText.accountResult == "格式有效" {
             DispatchQueue.main.async {
-                AuthenticationManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
+                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
             }
         } else {
             print("\(allCheckText.accountResult)")
             DispatchQueue.main.async {
-                AuthenticationManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneLogin, accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
+                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneLogin, accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
             }
         }
         
         if allCheckText.passwordResult == "格式有效" {
             DispatchQueue.main.async {
-                AuthenticationManager.shared.passwordLoginSuccessUpdateUI(passwordLabel: self.checkPasswordLogin, passwordImage: self.checkPasswordLoginImage)
+                AuthManager.shared.passwordLoginSuccessUpdateUI(passwordLabel: self.checkPasswordLogin, passwordImage: self.checkPasswordLoginImage)
                 
             }
         } else {
             DispatchQueue.main.async {
-                AuthenticationManager.shared.passwordLoginErrorUpdateUI(passwordTextField: self.userPasswordLogin, passwordLabel: self.checkPasswordLogin, passwordImage: self.checkPasswordLoginImage)
+                AuthManager.shared.passwordLoginErrorUpdateUI(passwordTextField: self.userPasswordLogin, passwordLabel: self.checkPasswordLogin, passwordImage: self.checkPasswordLoginImage)
             }
         }
         if accountCheckResult == .valid && passwordCheckResult == .valid {
             
-            let passwordHash = AuthenticationManager.shared.sha256(password) // 將密碼進行SHA-256加密
-                    
+            let passwordHash = AuthManager.shared.sha256(password) // 將密碼進行SHA-256加密
+            
             let url = URL(string: ServerApiHelper.shared.loginUserUrl)!
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
@@ -85,8 +85,11 @@ class LoginVC: UIViewController {
                     DispatchQueue.main.async {
                         if result == "true" {
                             // 密碼驗證成功，執行登入後的相關操作
-                            // 例如切換到下一個畫面
-                            self.performSegue(withIdentifier: "loginSuccessSegue", sender: nil)
+                            AuthManager.shared.saveUserAccountToKeychain(account: phone)
+                            AuthManager.shared.saveUserPasswordToKeychain(password: password)
+                            // 切換到下一個畫面
+                            UserDefaults.standard.set(true, forKey: "isUserLoggedIn") // 使用者已經登入
+                            self.performSegue(withIdentifier: "loginOK", sender: nil)
                         } else {
                             // 密碼驗證失敗，顯示錯誤提示
                             let alert = UIAlertController(title: "登入失敗", message: "帳號或密碼錯誤", preferredStyle: .alert)

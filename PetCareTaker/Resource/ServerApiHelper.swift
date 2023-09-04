@@ -12,12 +12,15 @@ class ServerApiHelper {
 
     let apiUrlString: String
     let loginUserUrl: String
-    let registerUserURL: String
+    let registerUserUrl: String
+    let queryUserUrl: String
 
     private init() {
         apiUrlString = "http://localhost:8888/PetCareTakerServer/"
-        loginUserUrl = apiUrlString + "loginUser.php"
-        registerUserURL = apiUrlString + "registerUser.php"
+        loginUserUrl = apiUrlString + "User/loginUser.php"
+        registerUserUrl = apiUrlString + "User/registerUser.php"
+        queryUserUrl = apiUrlString + "User/queryUser.php"
+        
     }
     
     

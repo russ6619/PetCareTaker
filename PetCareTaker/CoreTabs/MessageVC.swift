@@ -1,20 +1,18 @@
 //
-//  TaskBoardVC.swift
+//  MessageVC.swift
 //  PetCareTaker
 //
-//  Created by 李暠勳 on 2023/8/29.
+//  Created by 李暠勳 on 2023/8/31.
 //
 
 import UIKit
 
-class TaskBoardVC: UITabBarController {
+class MessageVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        // 隱藏導航列
-        navigationController?.navigationBar.isHidden = true
     }
     
 
