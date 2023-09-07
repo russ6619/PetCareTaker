@@ -311,21 +311,8 @@
                     <view key="view" contentMode="scaleToFill" id="63M-QT-0a1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tQ2-8n-eJX">
-                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
-                                <viewLayoutGuide key="contentLayoutGuide" id="HFt-pg-mma"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="NN7-us-YAK"/>
-                            </scrollView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="qjR-0g-8a3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="tQ2-8n-eJX" firstAttribute="leading" secondItem="qjR-0g-8a3" secondAttribute="leading" id="BkE-Wl-EbN"/>
-                            <constraint firstItem="tQ2-8n-eJX" firstAttribute="bottom" secondItem="qjR-0g-8a3" secondAttribute="bottom" id="Odr-lK-Q0u"/>
-                            <constraint firstItem="tQ2-8n-eJX" firstAttribute="trailing" secondItem="qjR-0g-8a3" secondAttribute="trailing" id="Zkl-zu-yNd"/>
-                            <constraint firstItem="tQ2-8n-eJX" firstAttribute="top" secondItem="qjR-0g-8a3" secondAttribute="top" id="jXO-Es-m5S"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FDN-LS-7Zx"/>
                 </viewController>
@@ -511,6 +498,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cEY-PS-Eqe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1294" y="1206"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="lXB-ub-mRc">
+            <objects>
+                <viewController id="gpp-oD-kG8" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="A1R-Jh-P6B">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4oD-Tf-pid"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="SY8-qC-Anc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="caw-84-3oH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1193" y="-163"/>
         </scene>
         <!--設定-->
         <scene sceneID="vzK-Gz-iNO">

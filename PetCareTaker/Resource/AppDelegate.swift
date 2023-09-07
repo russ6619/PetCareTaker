@@ -10,23 +10,26 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         // 檢查使用者是否已經登入
-        print(AuthManager.shared.isUserLoggedIn)
+//        print(AuthManager.shared.isUserLoggedIn)
         if AuthManager.shared.isUserLoggedIn {
             // 使用者已經登入，從Keychain中獲取帳號和密碼
             if let storedAccount = AuthManager.shared.getUserAccountFromKeychain(),
                let storedPassword = AuthManager.shared.getUserPasswordFromKeychain() {
-                print("Acc: \(storedAccount), Pas: \(storedPassword)")
+//                print("Acc: \(storedAccount), Pas: \(storedPassword)")
                 // 執行帳號和密碼比對
                 checkLogin(account: storedAccount, password: storedPassword) { success in
                     if !success {
                         // 比對失敗，跳轉到登入畫面
                         self.redirectToLogin()
+                    } else {
+                        DispatchQueue.main.async {
+                            // 更新畫面程式
+                            self.loginSetupData()
+                        }
                     }
                 }
             } else {
@@ -70,11 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let error = error {
                 print("Error: \(error)")
                 completion(false) // 請求失敗，回傳 false
+                // 在這裡顯示連接錯誤警告
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "連線錯誤", message: "無法連接到伺服器。請檢查您的網路連接或伺服器設定。", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
+                    UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                }
                 return
             }
             if let data = data,
                let result = String(data: data, encoding: .utf8) {
-                print("result: \(result)")
+//                print("result: \(result)")
                 // 根據 result 的值來判斷帳號和密碼是否正確
                 if result == "true" {
                     completion(true) // 帳號和密碼正確，回傳 true
@@ -87,10 +96,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     
-    // 設置已登入的畫面
-    func setupLoggedInUI() {
-        // 在這裡設置已登入的畫面，可能是TabBar等
+    // 登入成功設定資料
+    func loginSetupData() {
+        // 在這裡設置已登入者的資料，個人資料等等...
+        UserDataManager.shared.fetchUserData { error in
+            if let error = error {
+                // 處理錯誤情況，例如顯示錯誤訊息
+                print("無法獲取用戶資料，錯誤：\(error.localizedDescription)")
+            } else {
+                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                print("用戶資料下載成功：\(UserDataManager.shared.userData)")
+            }
+        }
     }
+    
     // 跳轉到登入畫面
     func redirectToLogin() {
         DispatchQueue.main.async {
@@ -109,6 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
     
     
     

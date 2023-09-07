@@ -39,7 +39,7 @@ class AuthManager {
     func checkPassword(_ password: String) -> PasswordCheck {
         let tenCommonPasswords = ["123456", "123456789", "qwerty", "password", "12345678", "111111", "iloveyou", "1q2w3e", "123123", "password1", "000000"]
         let digits = "0123456789"
-        let punctuation = "!@#$%^&*(),.<>;'`~[]{}\\|/?_-+= "
+        let punctuation = "!@#$%^&*(),.<>;’`~[]{}\\|/?_-+="
         let textLength = password.count
         
         if tenCommonPasswords.contains(password) { return .containsCommonPassword }

@@ -189,6 +189,7 @@ class RegisterVC: UIViewController {
     }
 }
 
+// MARK: PickerView
 extension RegisterVC: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
@@ -214,8 +215,9 @@ extension RegisterVC: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if component == 0 {
-            pickerView.reloadComponent(1)
-            pickerView.selectRow(0, inComponent: 1, animated: true)
+            pickerView.reloadComponent(1) // 重新載入第二個組件
+            pickerView.selectRow(0, inComponent: 1, animated: true) // 選擇第二個組件的第一行
+            pickerView.isUserInteractionEnabled = false // 禁用整個PickerView的交互
         }
     }
 }

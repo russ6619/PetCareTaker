@@ -10,19 +10,26 @@ import UIKit
 class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var cities: [City] = []  // 解析後的資料陣列
-    var userData: [String: Any] = [:]
-
+    var cityMenu = UIMenu()
+    var districtMenu = UIMenu()
+    
+    var componentIsSelect = false
     
     struct Constraints {    // 圓角
         static let cornerRadious: CGFloat = 8.0
     }
     
-    private let scrollView: UIScrollView = {
+    private let personScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true // 垂直滾動條
+        scrollView.isScrollEnabled = true
         return scrollView
     }()
-
+    
+    private let paperView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -91,7 +98,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     }()
     
     private let creatPetBtn: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.setTitle( "新增寵物欄位", for: .normal)
         button.setTitleColor(.label, for: .normal)
         button.layer.cornerRadius = Constraints.cornerRadious
@@ -109,52 +116,98 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         return label
     }()
     
-    private let livingAreaPicker: UIPickerView = {
-        let picker = UIPickerView()
-//        picker.layer.borderWidth = 1.0 // 外框線寬度
-//        picker.layer.borderColor = UIColor.black.cgColor // 外框線顏色
-        return picker
+    private let livingAreaMenuBtn: UIButton = {
+        let button = UIButton()
+        button.showsMenuAsPrimaryAction = true
+        button.changesSelectionAsPrimaryAction = true
+        button.setTitleColor(.label, for: .normal)
+        button.menu = UIMenu(children: [
+            UIAction(title: "統一7-ELEVEn獅隊", state: .on, handler: { action in
+                print("統一7-ELEVEn獅隊")
+            }),
+            UIAction(title: "中信兄弟隊", handler: { action in
+                print("中信兄弟隊")
+            }),
+            UIAction(title: "樂天桃猿隊", handler: { action in
+                print("樂天桃猿隊")
+            }),
+            UIAction(title: "富邦悍將隊", handler: { action in
+                print("富邦悍將隊")
+            }),
+            UIAction(title: "味全龍隊", handler: { action in
+                print("味全龍隊")
+            })
+        ])
+        return button
     }()
     
-    private let introduction: UITextView = {
+//    private let livingAreaPicker: UIPickerView = {
+//        let picker = UIPickerView()
+//        return picker
+//    }()
+    
+    private let introductionTextView: UITextView = {
         let text = UITextView()
         text.textColor = .label
         text.text = "請輸入自我介紹"
         text.font = UIFont.systemFont(ofSize: 16)
         text.layer.borderWidth = 1.0
         text.layer.borderColor = UIColor.black.cgColor
+        text.addBottomBorder(borderColor: UIColor.systemGray.cgColor, borderWidth: text.width - 30)
+        text.addCharCalculator(max: 300)
         return text
     }()
-
+    
+    
+    // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        livingAreaPicker.delegate = self
-        livingAreaPicker.dataSource = self
+        
         userNameFiled.delegate = self
+        
+        
         
         if let data = NSDataAsset(name: "taiwanDistricts")?.data {
             do {
                 cities = try JSONDecoder().decode([City].self, from: data)
-                livingAreaPicker.reloadAllComponents()
             } catch {
                 print("JSON decoding error: \(error)")
             }
         }
+        
         view.backgroundColor = .systemBackground
         
         addSubviewToScrollView()
         
-        let initialRowComponent0 = cities.count / 2 // 中間的城市
-        let initialRowComponent1 = cities[initialRowComponent0].districts.count / 2 // 中間的行政區
-        livingAreaPicker.selectRow(initialRowComponent0, inComponent: 0, animated: false)
-        livingAreaPicker.selectRow(initialRowComponent1, inComponent: 1, animated: false)
+        guard let name = UserDataManager.shared.userData["Name"] as? String,
+              let introduction = UserDataManager.shared.userData["Introduction"] as? String,
+              let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
+              let gender = UserDataManager.shared.userData["Gender"] as? String else { return }
+        
+        userNameFiled.text = name
+        introductionTextView.text = introduction
+        
+        // 找到選擇的城市和區域在城市列表中的索引
+        if let cityIndex = cities.firstIndex(where: { $0.name == residenceArea }),
+           let district = cities[cityIndex].districts.first,
+           let districtIndex = cities[cityIndex].districts.firstIndex(where: { $0.name == district.name }) {
+            print("cityIndex: \(cityIndex), districtIndex: \(districtIndex)")
+            // 設定 UIButton 的選擇
+//            livingAreaPicker.selectRow(cityIndex, inComponent: 0, animated: false)
+//            livingAreaPicker.selectRow(districtIndex, inComponent: 1, animated: false)
+        }
+        
+        if gender == "Male,男" {
+            genderSelectButton.selectedSegmentIndex = 0
+        } else if gender == "Female,女" {
+            genderSelectButton.selectedSegmentIndex = 1
+        }
+        
         
         creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
         
-        fetchUserData()
-        print(userData)
         
     }
     
@@ -162,22 +215,23 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        scrollView.frame = view.bounds // 設置 scrollView 的框架為整個視圖
-        scrollView.contentSize = CGSize(width: view.width, height: introduction.bottom + 20) // 設置內容大小
+        personScrollView.frame = view.bounds
+        personScrollView.contentSize = CGSize(width: view.width, height: introductionTextView.bottom + 20) // 設置內容大小
         
         titleLabel.frame = CGRect(
-            x: view.xCenter - titleLabel.width / 2.0,
+            x: 0,
             y: 10,
             width: 162,
             height: 48)
-
+        titleLabel.center.x = view.xCenter
+        
         // 設定 petImage 位置，在 petTitleLabel 下面靠左
         personalImage.frame = CGRect(
             x: 45,
             y: titleLabel.bottom + 30.0,
             width: 150,
             height: 150)
-
+        
         // 設定 petNameLabel 位置，在 petImage 右邊，在 title 下方
         userNameLabel.frame = CGRect(
             x: 0,
@@ -185,7 +239,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             width: 60,
             height: 40)
         userNameLabel.center.x = personalImage.right + (view.width - personalImage.right) / 2
-
+        
         // 設定 petNameFiled 位置，在 petNameLabel 下面，中心點與 petNameLabel 對齊
         userNameFiled.frame = CGRect(
             x: 0,
@@ -193,7 +247,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             width: view.width - personalImage.right - 60,
             height: 40)
         userNameFiled.center.x = userNameLabel.center.x
-
+        
         // 設定 genderLabel 位置，在 petNameFiled 下方，與 petNameLabel 左右對齊
         genderLabel.frame = CGRect(
             x: 0,
@@ -201,82 +255,72 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             width: 60,
             height: 40)
         genderLabel.center.x = userNameLabel.center.x
-
+        
         // 設定 genderSelectButton 位置，在 genderLabel 下方，中心點與上方 genderLabel 中心點 x 一樣
         genderSelectButton.frame = CGRect(
             x: 0,
             y: genderLabel.bottom + 5,
-            width: userNameFiled.width,
+            width: view.width - personalImage.right - 40,
             height: 40)
         genderSelectButton.center.x = genderLabel.center.x
-
-
+        
+        
         // 設定 petTableCell 位置，在 genderSelectButton 下方，水平置中
         petTableCell.frame = CGRect(
             x: view.xCenter - petTableCell.width / 2,
             y: genderSelectButton.bottom + 20,
             width: petTableCell.width,
             height: petTableCell.height)
-
+        
         // 設定 creatPetBtn 位置，在 petTableCell 下方，水平置中
         creatPetBtn.frame = CGRect(
-            x: view.xCenter - creatPetBtn.width / 2.0,
+            x: 0,
             y: petTableCell.bottom + 10,
             width: 200,
             height: 36)
-
+        creatPetBtn.center.x = view.xCenter
+        
         // 設定 petType 位置，在 creatPetBtn 下方，水平置中
         livingArea.frame = CGRect(
-            x: view.xCenter - livingArea.width / 2,
+            x: 0,
             y: creatPetBtn.bottom + 10,
             width: 100,
             height: 36)
-
+        livingArea.center.x = view.xCenter
+        
         // 設定 petTypePicker 位置，在 petType 下方，水平置中
-        livingAreaPicker.frame = CGRect(
-            x: view.xCenter - livingAreaPicker.width / 2,
+        livingAreaMenuBtn.frame = CGRect(
+            x: 0,
             y: livingArea.bottom,
-            width: livingAreaPicker.width,
-            height: livingAreaPicker.height)
-
-        // 設定 introduction 位置，在 petTypePicker 下方，水平置中
-        introduction.frame = CGRect(
-            x: view.xCenter - introduction.width / 2,
-            y: livingAreaPicker.bottom + 5,
+            width: 200,
+            height: 50)
+        livingAreaMenuBtn.center.x = view.xCenter
+        
+        // 設定 introductionTextView 位置，在 petTypePicker 下方，水平置中
+        introductionTextView.frame = CGRect(
+            x: 0,
+            y: livingAreaMenuBtn.bottom + 5,
             width: view.width - 100,
             height: 600)
-
+        introductionTextView.center.x = view.xCenter
+        
     }
-
     
-    
-    private func addSubview() {
-        view.addSubview(titleLabel)
-        view.addSubview(personalImage)
-        view.addSubview(userNameLabel)
-        view.addSubview(userNameFiled)
-        view.addSubview(genderLabel)
-        view.addSubview(genderSelectButton)
-        view.addSubview(petTableCell)
-        view.addSubview(creatPetBtn)
-        view.addSubview(livingArea)
-        view.addSubview(livingAreaPicker)
-        view.addSubview(introduction)
-    }
     
     private func addSubviewToScrollView() {
-        scrollView.addSubview(titleLabel)
-        scrollView.addSubview(personalImage)
-        scrollView.addSubview(userNameLabel)
-        scrollView.addSubview(userNameFiled)
-        scrollView.addSubview(genderLabel)
-        scrollView.addSubview(genderSelectButton)
-        scrollView.addSubview(petTableCell)
-        scrollView.addSubview(creatPetBtn)
-        scrollView.addSubview(livingArea)
-        scrollView.addSubview(livingAreaPicker)
-        scrollView.addSubview(introduction)
-        view.addSubview(scrollView)
+        
+        personScrollView.addSubview(titleLabel)
+        personScrollView.addSubview(personalImage)
+        personScrollView.addSubview(userNameLabel)
+        personScrollView.addSubview(userNameFiled)
+        personScrollView.addSubview(genderLabel)
+        personScrollView.addSubview(genderSelectButton)
+        personScrollView.addSubview(petTableCell)
+        personScrollView.addSubview(creatPetBtn)
+        personScrollView.addSubview(livingArea)
+        personScrollView.addSubview(livingAreaMenuBtn)
+        personScrollView.addSubview(introductionTextView)
+        view.addSubview(personScrollView)
     }
     
     @objc private func didTapCreatPetBtn() {
@@ -290,72 +334,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         navigationController?.pushViewController(petVC, animated: true)
     }
     
-    func fetchUserData() {
-        // 使用 queryUserUrl 從PHP後端獲取用戶數據
-        guard let userAccount = AuthManager.shared.getUserAccountFromKeychain(),
-              let url = URL(string: ServerApiHelper.shared.queryUserUrl + "?Phone=" + userAccount) else {
-            return
-        }
-
-        // 創建URL請求
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        // 發起網絡請求
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                print("網絡請求錯誤: \(error)")
-                return
-            }
-
-            // 解析從PHP後端返回的數據
-            if let data = data {
-                do {
-                    if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        // 將用戶資料存儲到 userData 中
-                        self.userData = userData
-                    }
-                } catch {
-                    print("JSON解析錯誤: \(error)")
-                }
-            }
-        }.resume()
-    }
-
+    
+        
 }
 
 
-// MARK: UIPickerView
-extension PersonalVC: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if component == 0 {
-            return cities.count
-        } else {
-            let cityRow = pickerView.selectedRow(inComponent: 0)
-            return cities[cityRow].districts.count
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if component == 0 {
-            return cities[row].name
-        } else {
-            let cityRow = pickerView.selectedRow(inComponent: 0)
-            return cities[cityRow].districts[row].name
-        }
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if component == 0 {
-            pickerView.reloadComponent(1)
-            pickerView.selectRow(0, inComponent: 1, animated: true)
-        }
-    }
-    
-    
-}

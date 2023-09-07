@@ -98,8 +98,10 @@ class FirstPetTabVC: UIViewController {
         text.text = "請輸入寵物介紹"
         text.font = UIFont.systemFont(ofSize: 16)
         text.layer.borderWidth = 1.0
-        text.layer.borderColor = UIColor.black.cgColor
+        text.layer.borderColor = UIColor.systemGray.cgColor
         text.translatesAutoresizingMaskIntoConstraints = false
+        text.addBottomBorder(borderColor: UIColor.systemBackground.cgColor, borderWidth: text.width - 40)
+        text.addCharCalculator(max: 300)
         return text
     }()
     
@@ -166,7 +168,7 @@ class FirstPetTabVC: UIViewController {
             // 添加其他適當的寬度和高度約束
         ])
 
-        // 設定 introduction 的約束
+        // 設定 introductionTextView 的約束
         NSLayoutConstraint.activate([
             introduction.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             introduction.topAnchor.constraint(equalTo: petTypePicker.bottomAnchor, constant: 10),
@@ -174,6 +176,7 @@ class FirstPetTabVC: UIViewController {
             introduction.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50), // 右邊距離 view.trailing 50 個點
             introduction.heightAnchor.constraint(equalToConstant: 600) // 固定高度為 600
         ])
+        
     }
 
     

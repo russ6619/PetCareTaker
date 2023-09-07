@@ -22,6 +22,4 @@ class ServerApiHelper {
         queryUserUrl = apiUrlString + "User/queryUser.php"
         
     }
-    
-    
 }
