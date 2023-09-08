@@ -157,11 +157,7 @@ class RegisterVC: UIViewController {
             // 對密碼進行 SHA-256 加密
             let encryptedPassword = AuthManager.shared.sha256(password)
             
-            // 假設您的 livingAreaMenuBtn 已經有了選取的項目
-//            if let selectedCity = livingAreaMenuBtn.menu?.children.first as? UIAction,
-//               let selectedDistrict = livingAreaMenuBtn.menu?.children[1] as? UIAction {
-//                let residenceArea = "\(selectedCity.title) - \(selectedDistrict.title)"
-                // 現在，residenceArea 包含所選城市和行政區的名稱
+            
                 let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 

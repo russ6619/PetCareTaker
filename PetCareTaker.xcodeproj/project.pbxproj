@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
+		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
 		D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFE92A8B6181003222C8 /* AppDelegate.swift */; };
 		D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */; };
 		D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFED2A8B6181003222C8 /* LoginVC.swift */; };
@@ -20,7 +21,7 @@
 		D28F2F4C2AA07E2F007E16E4 /* TaskBoardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F4B2AA07E2F007E16E4 /* TaskBoardVC.swift */; };
 		D28F2F4E2AA07EDA007E16E4 /* AcceptedTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */; };
 		D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */; };
-		D28F2F542AA1828D007E16E4 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F532AA1828D007E16E4 /* Extension.swift */; };
+		D28F2F542AA1828D007E16E4 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */; };
 		D2A65F3C2AA426ED00E45AE8 /* PetTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */; };
 		D2A65F3E2AA42DDF00E45AE8 /* FirstPetTabVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A65F3D2AA42DDF00E45AE8 /* FirstPetTabVC.swift */; };
 		D2A65F412AA5708000E45AE8 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = D2A65F402AA5708000E45AE8 /* KeychainAccess */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
+		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		D27CFFE62A8B6181003222C8 /* PetCareTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetCareTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27CFFE92A8B6181003222C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,7 +49,7 @@
 		D28F2F4B2AA07E2F007E16E4 /* TaskBoardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardVC.swift; sourceTree = "<group>"; };
 		D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedTaskVC.swift; sourceTree = "<group>"; };
 		D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
-		D28F2F532AA1828D007E16E4 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabViewController.swift; sourceTree = "<group>"; };
 		D2A65F3D2AA42DDF00E45AE8 /* FirstPetTabVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPetTabVC.swift; sourceTree = "<group>"; };
 		D2A65F422AA60DE700E45AE8 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
@@ -121,9 +123,10 @@
 				D2A687412A9731A80028F409 /* PasswordTextField.swift */,
 				D27CFFE92A8B6181003222C8 /* AppDelegate.swift */,
 				D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */,
-				D28F2F532AA1828D007E16E4 /* Extension.swift */,
+				D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */,
 				D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */,
 				D2A65F422AA60DE700E45AE8 /* UserDataManager.swift */,
+				D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -223,7 +226,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D28F2F542AA1828D007E16E4 /* Extension.swift in Sources */,
+				D28F2F542AA1828D007E16E4 /* UIViewExtension.swift in Sources */,
 				D2A687A42A9DE8680028F409 /* ControllerVC.swift in Sources */,
 				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
 				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
@@ -237,6 +240,7 @@
 				D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */,
 				D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */,
 				D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */,
+				D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */,
 				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,
 				D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */,
 				D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */,

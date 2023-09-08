@@ -32,7 +32,7 @@ extension UITextView {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         var currentCharNum = String(formatter.string(from: NSNumber(value: self.text.count ))!)
-        var maxNum = String(formatter.string(from: NSNumber(value: max))!)
+        let maxNum = String(formatter.string(from: NSNumber(value: max))!)
         textLabel.text = "\(currentCharNum)/\(maxNum)"
         textLabel.textColor = .tertiaryLabel
         textLabel.font = .systemFont(ofSize: 13)

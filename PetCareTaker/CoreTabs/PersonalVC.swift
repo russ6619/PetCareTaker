@@ -23,6 +23,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true // 垂直滾動條
         scrollView.isScrollEnabled = true
+        scrollView.backgroundColor = UIColor.systemBackground
         return scrollView
     }()
     
@@ -128,6 +129,13 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    private let introductionLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .label
+        label.text = "自我介紹"
+        label.font = UIFont.systemFont(ofSize: 28)
+        return label
+    }()
     
     private let introductionTextView: UITextView = {
         let text = UITextView()
@@ -140,6 +148,14 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         text.addCharCalculator(max: 300)
         return text
     }()
+    
+    // MARK: ViewDidAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        addSubviewToScrollView()
+        
+    }
     
     
     // MARK: ViewDidLoad
@@ -181,13 +197,13 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         view.backgroundColor = .systemBackground
         
-        addSubviewToScrollView()
+        
         
         guard let name = UserDataManager.shared.userData["Name"] as? String,
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
               let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
               let gender = UserDataManager.shared.userData["Gender"] as? String else { return }
-        print(name, introduction, residenceArea, gender)
+//        print(name, introduction, residenceArea, gender)
         userNameFiled.text = name
         introductionTextView.text = introduction
         livingAreaMenuBtn.setTitle(residenceArea, for: .normal)
@@ -202,7 +218,11 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
         
+        // 創建一個 Save 按鈕
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonTapped))
         
+        // 設置 Save 按鈕為右側的 bar button item
+        self.navigationItem.rightBarButtonItem = saveButton
                 
     }
     
@@ -290,11 +310,18 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             width: 150,
             height: 50)
         
-        
-        // 設定 introductionTextView 位置，在 petTypePicker 下方，水平置中
-        introductionTextView.frame = CGRect(
+        // 設定 introductionLabel 位置，在 petTypePicker 下方，水平置中
+        introductionLabel.frame = CGRect(
             x: 0,
             y: livingAreaMenuBtn.bottom + 5,
+            width: 130,
+            height: 40)
+        introductionLabel.center.x = view.xCenter
+        
+        // 設定 introductionTextView 位置，在 introductionLabel 下方，水平置中
+        introductionTextView.frame = CGRect(
+            x: 0,
+            y: introductionLabel.bottom + 10,
             width: view.width - 100,
             height: 600)
         introductionTextView.center.x = view.xCenter
@@ -314,6 +341,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         personScrollView.addSubview(creatPetBtn)
         personScrollView.addSubview(livingArea)
         personScrollView.addSubview(livingAreaMenuBtn)
+        personScrollView.addSubview(introductionLabel)
         personScrollView.addSubview(introductionTextView)
         view.addSubview(personScrollView)
     }
@@ -329,8 +357,48 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         navigationController?.pushViewController(petVC, animated: true)
     }
     
-    
+    // Save 按鈕的動作
+    @objc func saveButtonTapped() {
+        // 在這裡處理 Save 按鈕被點擊的邏輯
+        UserDataManager.shared.userData["Name"] = userNameFiled.text
+        UserDataManager.shared.userData["Introduction"] = introductionTextView.text
+        UserDataManager.shared.userData["ResidenceArea"] = livingAreaMenuBtn.titleLabel?.text
         
+        var gender = "private"
+        switch genderSelectButton.selectedSegmentIndex {
+        case 0:
+            gender = "Male,男"
+        case 1:
+            gender = "Female,女"
+        default:
+            gender = "private"
+        }
+        UserDataManager.shared.userData["Gender"] = gender
+        
+        
+        UserDataManager.shared.updateUserProfile{ error in
+            // 處理更新完成後的邏輯
+            if let error = error {
+                // 處理錯誤情況
+                print("更新用戶資料失敗：\(error)")
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "錯誤", message: "個人資料更新失敗", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            } else {
+                // 更新成功
+                DispatchQueue.main.async {
+                    print("個人資料更新成功")
+                    let alert = UIAlertController(title: "成功", message: "個人資料更新成功", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    
 }
 
 
