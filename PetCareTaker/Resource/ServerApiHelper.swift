@@ -10,7 +10,7 @@ import Foundation
 class ServerApiHelper {
     static let shared = ServerApiHelper() 
 
-    let apiUrlString: String
+    var apiUrlString: String
     let loginUserUrl: String
     let registerUserUrl: String
     let queryUserUrl: String

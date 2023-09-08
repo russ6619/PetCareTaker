@@ -10,8 +10,8 @@ import UIKit
 class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var cities: [City] = []  // 解析後的資料陣列
-    var cityMenu = UIMenu()
-    var districtMenu = UIMenu()
+    
+    var cityMenuItems: [UIMenuElement] = []
     
     var componentIsSelect = false
     
@@ -122,29 +122,12 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         button.changesSelectionAsPrimaryAction = true
         button.setTitleColor(.label, for: .normal)
         button.menu = UIMenu(children: [
-            UIAction(title: "統一7-ELEVEn獅隊", state: .on, handler: { action in
-                print("統一7-ELEVEn獅隊")
-            }),
-            UIAction(title: "中信兄弟隊", handler: { action in
-                print("中信兄弟隊")
-            }),
-            UIAction(title: "樂天桃猿隊", handler: { action in
-                print("樂天桃猿隊")
-            }),
-            UIAction(title: "富邦悍將隊", handler: { action in
-                print("富邦悍將隊")
-            }),
-            UIAction(title: "味全龍隊", handler: { action in
-                print("味全龍隊")
-            })
+            UIAction(title: "臺北市", handler: { action in
+            print("臺北市")})
         ])
         return button
     }()
     
-//    private let livingAreaPicker: UIPickerView = {
-//        let picker = UIPickerView()
-//        return picker
-//    }()
     
     private let introductionTextView: UITextView = {
         let text = UITextView()
@@ -164,10 +147,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        
         userNameFiled.delegate = self
-        
-        
         
         if let data = NSDataAsset(name: "taiwanDistricts")?.data {
             do {
@@ -177,6 +157,28 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             }
         }
         
+        // 遍歷城市列表
+        for city in cities {
+            // 創建城市的子菜單
+            var districtMenuItems: [UIMenuElement] = []
+            
+            // 遍歷城市的區域
+            for district in city.districts {
+                // 創建區域的UIAction並添加到區域子菜單
+                let districtAction = UIAction(title: city.name + "-" + district.name, handler: { action in
+                    print("\(city.name) - \(district.name)")
+                })
+                districtMenuItems.append(districtAction)
+            }
+            // 創建城市的UIMenu，將區域子菜單作為子項添加
+            let cityMenu = UIMenu(title: city.name, children: districtMenuItems)
+            cityMenuItems.append(cityMenu)
+        }
+        // 創建最終的UIMenu，將城市菜單作為子項添加
+        let finalMenu = UIMenu(children: cityMenuItems)
+        // 將最終的UIMenu設置為livingAreaMenuBtn的menu
+        livingAreaMenuBtn.menu = finalMenu
+        
         view.backgroundColor = .systemBackground
         
         addSubviewToScrollView()
@@ -185,19 +187,11 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
               let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
               let gender = UserDataManager.shared.userData["Gender"] as? String else { return }
-        
+        print(name, introduction, residenceArea, gender)
         userNameFiled.text = name
         introductionTextView.text = introduction
+        livingAreaMenuBtn.setTitle(residenceArea, for: .normal)
         
-        // 找到選擇的城市和區域在城市列表中的索引
-        if let cityIndex = cities.firstIndex(where: { $0.name == residenceArea }),
-           let district = cities[cityIndex].districts.first,
-           let districtIndex = cities[cityIndex].districts.firstIndex(where: { $0.name == district.name }) {
-            print("cityIndex: \(cityIndex), districtIndex: \(districtIndex)")
-            // 設定 UIButton 的選擇
-//            livingAreaPicker.selectRow(cityIndex, inComponent: 0, animated: false)
-//            livingAreaPicker.selectRow(districtIndex, inComponent: 1, animated: false)
-        }
         
         if gender == "Male,男" {
             genderSelectButton.selectedSegmentIndex = 0
@@ -209,6 +203,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
         
         
+                
     }
     
     
@@ -288,13 +283,13 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 36)
         livingArea.center.x = view.xCenter
         
-        // 設定 petTypePicker 位置，在 petType 下方，水平置中
+        // 設定 livingAreaMenuBtn 位置，在 petType 下方，水平置中
         livingAreaMenuBtn.frame = CGRect(
-            x: 0,
+            x: view.xCenter - 75,
             y: livingArea.bottom,
-            width: 200,
+            width: 150,
             height: 50)
-        livingAreaMenuBtn.center.x = view.xCenter
+        
         
         // 設定 introductionTextView 位置，在 petTypePicker 下方，水平置中
         introductionTextView.frame = CGRect(

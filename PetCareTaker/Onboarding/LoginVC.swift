@@ -89,6 +89,15 @@ class LoginVC: UIViewController {
                             AuthManager.shared.saveUserPasswordToKeychain(password: password)
                             // 切換到下一個畫面
                             UserDefaults.standard.set(true, forKey: "isUserLoggedIn") // 使用者已經登入
+                            UserDataManager.shared.fetchUserData{ error in
+                                if let error = error {
+                                    // 處理錯誤情況，例如顯示錯誤訊息
+                                    print("無法獲取用戶資料，錯誤：\(error.localizedDescription)")
+                                } else {
+                                    // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                                    print("用戶資料下載成功：\(UserDataManager.shared.userData)")
+                                }
+                            }
                             self.performSegue(withIdentifier: "loginOK", sender: nil)
                         } else {
                             // 密碼驗證失敗，顯示錯誤提示
