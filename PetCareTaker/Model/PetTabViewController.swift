@@ -31,7 +31,7 @@ class PetTabViewController: UIViewController {
             x: 0,
             y: 140,
             width: UIScreen.main.bounds.width,
-            height: UIScreen.main.bounds.height - 50)
+            height: UIScreen.main.bounds.height )
         scrollView.backgroundColor = .systemBackground
         return scrollView
     }()

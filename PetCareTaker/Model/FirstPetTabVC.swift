@@ -22,11 +22,12 @@ class FirstPetTabVC: UIViewController {
         return label
         }()
     
-    private let petImage: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "pawprint.circle.fill"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private let petImage: UIImageView = {
+        let image = UIImageView()
+        image.image = UIImage(systemName: "pawprint.circle.fill")
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.isUserInteractionEnabled = true
+        return image
     }()
     
     private let petNameLabel: UILabel = {
@@ -82,16 +83,12 @@ class FirstPetTabVC: UIViewController {
         return label
     }()
     
-    private let petTypeBtn: UIButton = {
-        let button = UIButton()
-        button.showsMenuAsPrimaryAction = true
-        button.changesSelectionAsPrimaryAction = true
-        button.setTitleColor(.label, for: .normal)
-        button.menu = UIMenu(children: [
-            UIAction(title: "貓", handler: { action in
-            print("貓")})
-        ])
-        return button
+    private let petTypePicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.layer.borderWidth = 1.0 // 外框線寬度
+        picker.layer.borderColor = UIColor.black.cgColor // 外框線顏色
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
     }()
     
     private let introduction: UITextView = {
@@ -168,17 +165,17 @@ class FirstPetTabVC: UIViewController {
             petType.heightAnchor.constraint(equalToConstant: 40)
         ])
 
-        // 設定 petTypeBtn 的約束
+        // 設定 petTypePicker 的約束
         NSLayoutConstraint.activate([
-            petTypeBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            petTypeBtn.topAnchor.constraint(equalTo: petType.bottomAnchor),
+            petTypePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            petTypePicker.topAnchor.constraint(equalTo: petType.bottomAnchor),
             // 添加其他適當的寬度和高度約束
         ])
 
         // 設定 introductionTextView 的約束
         NSLayoutConstraint.activate([
             introduction.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            introduction.topAnchor.constraint(equalTo: petType.bottomAnchor, constant: 100),
+            introduction.topAnchor.constraint(equalTo: petTypePicker.bottomAnchor, constant: 10),
             introduction.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50), // 左邊距離 view.leading 50 個點
             introduction.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50), // 右邊距離 view.trailing 50 個點
             introduction.heightAnchor.constraint(equalToConstant: 600) // 固定高度為 600
@@ -195,7 +192,7 @@ class FirstPetTabVC: UIViewController {
         view.addSubview(genderLabel)
         view.addSubview(genderSelectButton)
         view.addSubview(petType)
-        view.addSubview(petTypeBtn)
+        view.addSubview(petTypePicker)
         view.addSubview(introduction)
     }
     
@@ -211,10 +208,9 @@ class FirstPetTabVC: UIViewController {
 
         addSubview()
         setupConstraints()
-        
-        // 添加點擊事件
-        petImage.addTarget(self, action: #selector(imagePickerBtnPressed), for: .touchUpInside)
-        
+        // 添加image點擊手勢
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePickerBtnPressed))
+        petImage.addGestureRecognizer(tapGesture)
         
     }
     
@@ -238,7 +234,7 @@ extension FirstPetTabVC: UIImagePickerControllerDelegate, UINavigationController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             // 在這裡處理選擇的圖像，例如顯示在 personalImage 上
-            petImage.setImage(selectedImage, for: .normal)
+            petImage.image = selectedImage
         }
         
         // 關閉圖像選擇器
