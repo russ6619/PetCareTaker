@@ -36,6 +36,11 @@ class PetTabViewController: UIViewController {
         return scrollView
     }()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -42,9 +42,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     
     private let personalImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(systemName: "person.circle")
-        image.layer.borderWidth = 1.0 // 外框線寬度
-        image.layer.borderColor = UIColor.black.cgColor // 外框線顏色
+        image.image = UIImage(systemName: "camera.circle.fill")
+        image.isUserInteractionEnabled = true
         return image
     }()
     
@@ -217,12 +216,16 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         
         creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
+        // 添加Image點擊手勢
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePressedToPicker))
+        personalImage.addGestureRecognizer(tapGesture)
         
         // 創建一個 Save 按鈕
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonTapped))
         
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
+        
                 
     }
     
@@ -240,14 +243,16 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 48)
         titleLabel.center.x = view.xCenter
         
-        // 設定 petImage 位置，在 petTitleLabel 下面靠左
+        // 設定 personalImage 位置，在 titleLabel 下面靠左
         personalImage.frame = CGRect(
             x: 45,
             y: titleLabel.bottom + 30.0,
             width: 150,
             height: 150)
-        
-        // 設定 petNameLabel 位置，在 petImage 右邊，在 title 下方
+        personalImage.contentMode = .scaleAspectFill // 設置圖片內容模式
+        personalImage.clipsToBounds = true // 裁剪圖片以適應圓形邊界
+        personalImage.layer.cornerRadius = personalImage.frame.size.width / 2 // 設置圓角半徑為寬度的一半
+        // 設定 userNameLabel 位置，在 personalImage 右邊，在 title 下方
         userNameLabel.frame = CGRect(
             x: 0,
             y: titleLabel.bottom + 10,
@@ -255,7 +260,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 40)
         userNameLabel.center.x = personalImage.right + (view.width - personalImage.right) / 2
         
-        // 設定 petNameFiled 位置，在 petNameLabel 下面，中心點與 petNameLabel 對齊
+        // 設定 userNameFiled 位置，在 userNameLabel 下面，中心點與 userNameLabel 對齊
         userNameFiled.frame = CGRect(
             x: 0,
             y: userNameLabel.bottom + 5,
@@ -263,7 +268,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 40)
         userNameFiled.center.x = userNameLabel.center.x
         
-        // 設定 genderLabel 位置，在 petNameFiled 下方，與 petNameLabel 左右對齊
+        // 設定 genderLabel 位置，在 userNameFiled 下方，與 userNameLabel 左右對齊
         genderLabel.frame = CGRect(
             x: 0,
             y: userNameFiled.bottom + 10,
@@ -295,7 +300,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 36)
         creatPetBtn.center.x = view.xCenter
         
-        // 設定 petType 位置，在 creatPetBtn 下方，水平置中
+        // 設定 livingArea 位置，在 creatPetBtn 下方，水平置中
         livingArea.frame = CGRect(
             x: 0,
             y: creatPetBtn.bottom + 10,
@@ -303,14 +308,14 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             height: 36)
         livingArea.center.x = view.xCenter
         
-        // 設定 livingAreaMenuBtn 位置，在 petType 下方，水平置中
+        // 設定 livingAreaMenuBtn 位置，在 livingArea 下方，水平置中
         livingAreaMenuBtn.frame = CGRect(
             x: view.xCenter - 75,
             y: livingArea.bottom,
             width: 150,
             height: 50)
         
-        // 設定 introductionLabel 位置，在 petTypePicker 下方，水平置中
+        // 設定 introductionLabel 位置，在 petTypeBtn 下方，水平置中
         introductionLabel.frame = CGRect(
             x: 0,
             y: livingAreaMenuBtn.bottom + 5,
@@ -349,10 +354,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     @objc private func didTapCreatPetBtn() {
         // 創建 PetVC 實例
         let petVC = PetTabViewController()
-        
         // 設置以全畫面顯示
         petVC.modalPresentationStyle = .fullScreen
-        
         // 使用 navigationController 進行跳轉（如果您的 PersonalVC 嵌入在 UINavigationController 中）
         navigationController?.pushViewController(petVC, animated: true)
     }
@@ -398,7 +401,35 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @objc private func imagePressedToPicker() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self // 設置代理為 PersonalVC
+        imagePicker.sourceType = .photoLibrary // 或者 .camera，視需要選擇相冊或相機
+        // 開啟圖像選擇器
+        present(imagePicker, animated: true, completion: nil)
+    }
+
+    
     
 }
 
 
+extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    // 當用戶選擇了圖像後調用的方法
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let selectedImage = info[.originalImage] as? UIImage {
+            // 在這裡處理選擇的圖像，例如顯示在 personalImage 上
+            personalImage.image = selectedImage
+        }
+        
+        // 關閉圖像選擇器
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    // 當用戶取消選擇圖像時調用的方法
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // 關閉圖像選擇器
+        picker.dismiss(animated: true, completion: nil)
+    }
+}

@@ -89,7 +89,7 @@ class RegisterVC: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        // 設定 livingAreaMenuBtn 位置，在 petType 下方，水平置中
+        // 設定 livingAreaMenuBtn 位置，在 petTypeLabel 下方，水平置中
         livingAreaMenuBtn.frame = CGRect(
             x: view.xCenter - 75,
             y: livingAreaLabel.bottom,
