@@ -157,7 +157,7 @@ class FirstPetTabVC: UIViewController {
             genderSelectButton.heightAnchor.constraint(equalToConstant: 40)
         ])
 
-        // 設定 petType 的約束
+        // 設定 petTypeLabel 的約束
         NSLayoutConstraint.activate([
             petType.topAnchor.constraint(equalTo: petImage.bottomAnchor, constant: 10),
             petType.centerXAnchor.constraint(equalTo: petTitleLabel.centerXAnchor, constant: 0),
@@ -165,7 +165,7 @@ class FirstPetTabVC: UIViewController {
             petType.heightAnchor.constraint(equalToConstant: 40)
         ])
 
-        // 設定 petTypePicker 的約束
+        // 設定 petTypeMenu 的約束
         NSLayoutConstraint.activate([
             petTypePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             petTypePicker.topAnchor.constraint(equalTo: petType.bottomAnchor),

@@ -1,130 +1,85 @@
-//
-//  PetTabViewController.swift
-//  PetCareTaker
-//
-//  Created by 李暠勳 on 2023/9/3.
-//
-
 import UIKit
 
 class PetTabViewController: UIViewController {
     
-    // ScrollView作為Tab Layout的容器
-    private let tabScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.showsHorizontalScrollIndicator = true
-        // 設定 tabScrollView 的位置和大小
-        scrollView.frame = CGRect(
-            x: 0,
-            y: 100,
-            width: UIScreen.main.bounds.width,
-            height: 40)
-        scrollView.backgroundColor = UIColor.systemYellow
-        return scrollView
+    
+    
+    private let petTable: UITableView = {
+        let table = UITableView()
+        table.backgroundColor = .systemBackground
+        return table
     }()
     
-    private let viewScrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.showsVerticalScrollIndicator = true
-        // 設定 viewScrollView 的位置和大小
-        scrollView.frame = CGRect(
-            x: 0,
-            y: 140,
-            width: UIScreen.main.bounds.width,
-            height: UIScreen.main.bounds.height )
-        scrollView.backgroundColor = .systemBackground
-        return scrollView
-    }()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
+    // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 添加 tabScrollView 和 viewScrollView 到主視圖
-        view.addSubview(tabScrollView)
-        view.addSubview(viewScrollView)
+        // 創建並設置 tableView
+        petTable.dataSource = self
+        petTable.frame = view.bounds // 確保 tableView 填滿整個視圖
+        petTable.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        // 設置寵物名稱，此為示例，您需要根據您的數據源動態生成
-        let petNames = ["皮皮", "寵物2", "新增寵物"]
-        var totalWidth: CGFloat = 0
+        // 註冊 PetTableViewCell 類別用於表視圖
+        petTable.register(PetTableViewCell.self, forCellReuseIdentifier: "PetCell")
         
-        // 創建和設置Tab按鈕
-        for petName in petNames {
-            let button = UIButton()
-            button.setTitle(petName, for: .normal)
-            button.setTitleColor(.black, for: .normal)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            button.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
-            button.layer.borderWidth = 1.0 // 外框線寬度
-            button.layer.borderColor = UIColor.black.cgColor // 外框線顏色
-            button.sizeToFit()
-            let xPosition = totalWidth
-            button.frame = CGRect(
-                x: xPosition,
-                y: 0,
-                width: button.frame.width + 10,
-                height: tabScrollView.frame.height)
-            
-            tabScrollView.addSubview(button)
-            
-            totalWidth += button.frame.width
-        }
+        // 添加 tableView 到視圖中
+        view.addSubview(petTable)
         
-        tabScrollView.contentSize = CGSize(width: totalWidth, height: tabScrollView.frame.height)
+        // 其他初始化設置...
         
-        // 創建並添加 firstTabVC 的視圖到 viewScrollView
-        let firstTabVC = FirstPetTabVC()
-        firstTabVC.view.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: view.frame.width,
-            height: 2000) // 設定高度為足夠大，以便可以垂直滾動
-        viewScrollView.addSubview(firstTabVC.view)
-        // 更新 viewScrollView 的 contentSize，以便支援垂直滾動
-        viewScrollView.contentSize = CGSize(
-            width: viewScrollView.frame.width,
-            height: firstTabVC.view.frame.height)
-        
+    }
 
-        // 添加 FirstPetTabVC 的視圖到 viewScrollView
-        viewScrollView.addSubview(firstTabVC.view)
-
-    }
-    
-    
-    
-    
-    @objc private func tabButtonTapped(_ sender: UIButton) {
-        // 在這裡處理Tab按鈕被點擊的事件，例如顯示相應寵物的資訊
-    }
-    // 當使用者新增寵物時，動態添加一個新的Tab按鈕
-    func addPetTabButton(petName: String) {
-        let button = UIButton()
-        button.setTitle(petName, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
-        button.sizeToFit()
-        
-        // 計算位置
-        let xPosition = tabScrollView.contentSize.width
-        button.frame = CGRect(
-            x: xPosition,
-            y: 0,
-            width: button.frame.width,
-            height: tabScrollView.frame.height)
-        
-        // 添加到ScrollView
-        tabScrollView.addSubview(button)
-        
-        // 更新ScrollView的contentSize
-        tabScrollView.contentSize = CGSize(
-            width: xPosition + button.frame.width,
-            height: tabScrollView.frame.height)
-    }
-    
 }
+
+// MARK: tableview
+extension PetTabViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // 返回寵物數據的總數
+        return UserDataManager.shared.petsData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PetCell", for: indexPath) as! PetTableViewCell
+        
+        // 獲取特定位置的寵物數據
+        let pet = UserDataManager.shared.petsData[indexPath.row]
+        
+        // 使用 configure 方法設置單元格的內容
+        cell.configure(with: pet)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let pet = UserDataManager.shared.petsData[indexPath.row] // 假設您有一個pets數組來存儲寵物數據
+        let petDetailedText = "\(pet.neutered), \(pet.vaccinated)" // pet的詳細信息文本
+        let petDetailedLabelHeight = heightForText(petDetailedText, font: UIFont.boldSystemFont(ofSize: 16), width: tableView.frame.width - 120) // 計算文本的高度
+        return 120 + petDetailedLabelHeight // 120是其他元素的高度，根據您的佈局調整
+    }
+
+
+    func heightForText(_ text: String, font: UIFont, width: CGFloat) -> CGFloat {
+        let size = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        let attributes = [NSAttributedString.Key.font: font]
+        let boundingRect = text.boundingRect(with: size, options: options, attributes: attributes, context: nil)
+        return ceil(boundingRect.height)
+    }
+
+
+}
+
+
+
+
+struct Constraints {    // 圓角
+    static let cornerRadious: CGFloat = 8.0
+}
+
+

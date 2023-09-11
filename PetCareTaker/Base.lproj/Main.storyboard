@@ -422,6 +422,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="yuS-pO-K6B"/>
+                    <connections>
+                        <outlet property="TaskTableView" destination="Vld-aG-CmD" id="94B-Lb-Zjq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JKa-gt-ufd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

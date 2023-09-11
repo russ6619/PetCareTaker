@@ -226,6 +226,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
         
+        
+        
                 
     }
     

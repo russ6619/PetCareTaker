@@ -14,12 +14,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         // 檢查使用者是否已經登入
-//        print(AuthManager.shared.isUserLoggedIn)
+        //        print(AuthManager.shared.isUserLoggedIn)
         if AuthManager.shared.isUserLoggedIn {
             // 使用者已經登入，從Keychain中獲取帳號和密碼
             if let storedAccount = AuthManager.shared.getUserAccountFromKeychain(),
                let storedPassword = AuthManager.shared.getUserPasswordFromKeychain() {
-//                print("Acc: \(storedAccount), Pas: \(storedPassword)")
+                //                print("Acc: \(storedAccount), Pas: \(storedPassword)")
                 // 執行帳號和密碼比對
                 checkLogin(account: storedAccount, password: storedPassword) { success in
                     if !success {
@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             if let data = data,
                let result = String(data: data, encoding: .utf8) {
-//                print("result: \(result)")
+                //                print("result: \(result)")
                 // 根據 result 的值來判斷帳號和密碼是否正確
                 if result == "true" {
                     completion(true) // 帳號和密碼正確，回傳 true
@@ -94,8 +94,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         task.resume()
     }
-
     
+    
+    // 登入成功設定資料
     // 登入成功設定資料
     func loginSetupData() {
         // 在這裡設置已登入者的資料，個人資料等等...
@@ -106,9 +107,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } else {
                 // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
                 print("用戶資料下載成功：\(UserDataManager.shared.userData)")
+                
+                // 如果成功下載用戶資料，獲取用戶的 userID
+                guard let userID: String = UserDataManager.shared.userData["UserID"] as? String else { return }
+                
+                // 使用 userID 調用 fetchUserPetData 來下載用戶的寵物資料
+                UserDataManager.shared.fetchUserPetData(userID: userID) { error in
+                    if let error = error {
+                        // 處理錯誤情況，例如顯示錯誤訊息
+                        print("無法獲取用戶寵物資料，錯誤：\(error.localizedDescription)")
+                    } else {
+                        // 寵物資料下載成功，可以在這裡處理用戶寵物資料，例如設定 userPetData
+                        print("用戶寵物資料下載成功：\(UserDataManager.shared.petsData)")
+                    }
+                }
             }
         }
     }
+    
     
     // 跳轉到登入畫面
     func redirectToLogin() {

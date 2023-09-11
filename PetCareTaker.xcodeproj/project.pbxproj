@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
 		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
+		D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */; };
 		D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFE92A8B6181003222C8 /* AppDelegate.swift */; };
 		D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */; };
 		D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFED2A8B6181003222C8 /* LoginVC.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
 		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
+		D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		D27CFFE62A8B6181003222C8 /* PetCareTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetCareTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27CFFE92A8B6181003222C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			children = (
 				D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */,
 				D2A65F3D2AA42DDF00E45AE8 /* FirstPetTabVC.swift */,
+				D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				D2A65F3E2AA42DDF00E45AE8 /* FirstPetTabVC.swift in Sources */,
 				D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */,
 				D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */,
+				D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */,
 				D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */,
 				D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */,
 				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,

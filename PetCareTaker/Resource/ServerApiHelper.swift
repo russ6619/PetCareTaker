@@ -10,11 +10,17 @@ import Foundation
 class ServerApiHelper {
     static let shared = ServerApiHelper() 
 
-    var apiUrlString: String
+    let apiUrlString: String
+    
     let loginUserUrl: String
     let registerUserUrl: String
     let queryUserUrl: String
     let updateUserUrl: String
+    
+    let createPetUrl: String
+    let deletePetUrl: String
+    let queryPetUrl: String
+    let updatePetUrl: String
 
     private init() {
         apiUrlString = "http://localhost:8888/PetCareTakerServer/"
@@ -22,6 +28,11 @@ class ServerApiHelper {
         registerUserUrl = apiUrlString + "User/registerUser.php"
         queryUserUrl = apiUrlString + "User/queryUser.php"
         updateUserUrl = apiUrlString + "User/updateUser.php"
+        
+        createPetUrl = apiUrlString + "UserPet/createPet.php"
+        deletePetUrl = apiUrlString + "UserPet/deletePet.php"
+        queryPetUrl = apiUrlString + "UserPet/queryPet.php"
+        updatePetUrl = apiUrlString + "UserPet/updatePet.php"
     }
 }
 
