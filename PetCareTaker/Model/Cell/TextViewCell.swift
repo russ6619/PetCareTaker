@@ -9,9 +9,11 @@ import UIKit
 
 class TextViewCell: UITableViewCell, UITextViewDelegate {
     
+    var textViewHeightConstraint: NSLayoutConstraint?
+    
     let textView: PlaceholderTextView = {
         let textView = PlaceholderTextView()
-        textView.font = .systemFont(ofSize: 14)
+        textView.font = .systemFont(ofSize: 16)
         textView.isScrollEnabled = false // 關閉滾動
         return textView
     }()
@@ -26,16 +28,19 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
         
         // 設置 UIButtonMenu 的約束，根據您的界面設計來調整
         textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
         NSLayoutConstraint.activate([
             // 示例約束：將 buttonMenu 放在單元格的左側並置中
             textView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 10),
+            textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
+            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         
         // 添加底部邊框
-        textView.addBottomBorder(borderColor: UIColor.lightGray.cgColor, borderWidth: 0.5)
+        textView.addBottomBorder(borderColor: UIColor.lightGray.cgColor, borderWidth: 40)
         
         // 添加字符計數器
         textView.addCharCalculator(max: 500) // 字符上限

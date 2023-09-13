@@ -40,8 +40,9 @@ class PetInformationEditVC: UIViewController {
     }()
     
     func configureImageSelectionCell(_ cell: ImageSelectionCell) {
-            cell.delegate = self
-        }
+        cell.delegate = self
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,8 +72,19 @@ class PetInformationEditVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        // 創建一個輕觸手勢辨識器
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tapGesture.delegate = self
+        // 添加手勢辨識器到視圖中
+        self.view.addGestureRecognizer(tapGesture)
+        
     }
     
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        // 隱藏鍵盤，終止輸入
+        view.endEditing(true)
+    }
     
 }
 
@@ -100,42 +112,38 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 // petImageViewCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "petImageViewCell", for: indexPath) as! petImageViewCell
-                // 配置 petImageViewCell 的相關操作
                 cell.petImage.image = petimage.image
                 
                 return cell
             } else if indexPath.row == 1 {
                 // ImageSelectionCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ImageSelectionCell", for: indexPath) as! ImageSelectionCell
-                // 配置 ImageSelectionCell 的相關操作
                 cell.delegate = self
                 return cell
             }
         case 1:     // 寵物名稱
             // PetInfoTableViewCell
             let cell = tableView.dequeueReusableCell(withIdentifier: "PetInfoCell", for: indexPath) as! PetInfoTableViewCell
-            // 配置 PetInfoTableViewCell 的相關操作
             return cell
         case 2:     // 寵物狀況描述
             // TextViewCell
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextViewCell", for: indexPath) as! TextViewCell
-            // 配置 TextViewCell 的相關操作
+            cell.textView.delegate = self
+            cell.textViewHeightConstraint?.isActive = true
             return cell
         case 3:     // 基本資料
-            // ButtonMenuCell，具體根據 row 的不同配置不同的內容
             let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
             if indexPath.row == 0 {
                 // 種類
                 if let data = NSDataAsset(name: "petType")?.data {
                     do {
                         let petTypes = try JSONDecoder().decode(PetTypes.self, from: data)
-                        // 將 JSON 數據轉換為相應的結構（例如，PetTypes）
-                        // 其中 PetTypes 是你自定義的結構，用於表示 JSON 數據的結構
+                        // 將 JSON 數據轉換為相應的結構（PetTypes）
                         var petTypeMenuItems: [UIMenuElement] = []
-
+                        
                         for (petCategory, petBreeds) in petTypes.petType {
                             var breedMenuItems: [UIMenuElement] = []
-
+                            
                             for breed in petBreeds {
                                 let breedAction = UIAction(title: breed, handler: { action in
                                     print("\(petCategory) - \(breed)")
@@ -147,7 +155,6 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                             petTypeMenuItems.append(categoryMenu)
                         }
                         let petTypeMenu = UIMenu(children: petTypeMenuItems)
-                        // 將 petTypeMenu 設置為相關的按鈕或視圖的 menu
                         cell.buttonMenu.menu = petTypeMenu
                     } catch {
                         print("JSON decoding error: \(error)")
@@ -184,7 +191,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 let currentYear = Calendar.current.component(.year, from: Date())
                 let yearsRange = (currentYear - 100)...currentYear
                 var yearMenuItems: [UIMenuElement] = []
-
+                
                 for year in yearsRange.reversed() {
                     let yearAction = UIAction(title: "\(year)", handler: { action in
                         print("選擇了年份 \(year)")
@@ -219,9 +226,9 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 let genderMenu = UIMenu(title: "性別", children: genderMenuItems)
                 cell.buttonMenu.menu = genderMenu
             }
-
+            
             return cell
-
+            
         case 4:     // 詳細資料
             // ButtonMenuCell，具體根據 row 的不同配置不同的內容
             let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
@@ -237,10 +244,16 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             // petImageViewCell 的計算高度
-            let imageSize = petimage.image?.size ?? CGSize(width: 10, height: 10) // 如果没有圖，使用默認大小
+            let imageSize = petimage.image?.size ?? CGSize(width: 0, height: 0) // 如果没有圖，使用默認大小
             let imageAspectRatio = imageSize.width / imageSize.height
             let cellWidth = tableView.bounds.width
-            let cellHeight = imageSize.height
+            let cellHeight: CGFloat
+            if imageSize.height != 0 {
+                cellHeight = imageSize.height + 100
+            } else {
+                cellHeight = 0
+            }
+            print("cellH: \(cellHeight), cellW: \(cellWidth), imageH: \(imageSize.height), imageH: \(imageSize.height), imageAsp: \(imageAspectRatio)")
             return cellHeight
         }
         
@@ -279,29 +292,76 @@ extension PetInformationEditVC: ImageSelectionCellDelegate {
     }
     
     func updatePetImage(_ image: UIImage) {
-        // 將選擇的圖像設置給 petInfo 或 petImageViewCell 中的 petImage
-        petimage.image = image
-
+        // 壓縮圖片大小
+        let compressedImage = compressImage(image, targetSize: CGSize(width: 150, height: 150)) // 設定目標大小
+        
+        // 將圖片切割成圓形
+        let circularImage = makeCircularImage(compressedImage)
+        
+        // 將處理後的圖片設置給 petInfo 或 petImageViewCell 中的 petImage
+        petimage.image = circularImage
+        
         // 找到 petImageViewCell 的 indexPath
-        if let indexPath = tableView.indexPath(for: petImageViewCell()) { // 使用 petImageViewCell() 的實例
+        if let indexPath = tableView.indexPath(for: petImageViewCell()) {
             // 刷新該行
             tableView.reloadRows(at: [indexPath], with: .automatic)
             tableView.beginUpdates()
             tableView.endUpdates()
-
         }
         
         tableView.reloadData()
     }
+    
+    // 壓縮圖片大小
+    func compressImage(_ image: UIImage, targetSize: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(targetSize)
+        image.draw(in: CGRect(origin: .zero, size: targetSize))
+        let compressedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return compressedImage ?? image
+    }
+    
+    // 將圖片切割成圓形
+    func makeCircularImage(_ image: UIImage) -> UIImage {
+        let imageView = UIImageView(image: image)
+        imageView.layer.cornerRadius = min(image.size.width, image.size.height) / 2
+        imageView.layer.masksToBounds = true
+        
+        UIGraphicsBeginImageContextWithOptions(image.size, false, 0.0)
+        imageView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let circularImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return circularImage ?? image
+    }
+    
 }
 
 extension PetInformationEditVC: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        textView.frame = CGRect(origin: textView.frame.origin,
-                                size: CGSize(width: textView.width,
-                                             height: textView.intrinsicContentSize.height))
+        // 計算 textView 的內容高度
+        let fixedWidth = textView.frame.size.width
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        // 更新 textViewHeightConstraint 的 constant 屬性
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 2)) as? TextViewCell {
+            cell.textViewHeightConstraint?.constant = newSize.height
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
 }
+
+extension PetInformationEditVC: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // 如果點擊的是一個可編輯的文本視圖，則不處理手勢，讓文本視圖可以繼續編輯
+        if let touchedView = touch.view, touchedView is UITextView {
+            return false
+        }
+        return true
+    }
+}
+
 
 
 enum PetInfoSection: Int, CaseIterable {

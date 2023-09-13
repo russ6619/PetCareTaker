@@ -2,6 +2,8 @@ import UIKit
 
 class PlaceholderTextView: UITextView, UITextViewDelegate {
     
+    var isEditing: Bool = false
+    
     // 儲存佔位文字
     var placeholder: String = "請輸入您的寵物狀況或是注意事項" {
         didSet {
@@ -50,14 +52,22 @@ class PlaceholderTextView: UITextView, UITextViewDelegate {
         // 檢查文字是否為空，如果不是空的，則隱藏站位文字
         if !text.isEmpty {
             hidePlaceholder()
+        } else {
+            showPlaceholder() // 如果文字為空，則顯示站位文字
         }
+    }
+    
+    private func showPlaceholder() {
+        text = "" // 清空文字內容
+        textColor = placeholderColor // 將文字顏色設置為站位文字的顏色
+        isEditing = false // 用戶已經停止編輯
     }
     
     // Helper 方法，隱藏站位文字
     private func hidePlaceholder() {
-        placeholder = ""
-        placeholderColor = .clear // 將佔位文字顏色設置為透明
-        setNeedsDisplay()
+        text = "" // 清空文字內容
+        textColor = .label // 將文字顏色設置回正常顏色
+        isEditing = true // 用戶正在編輯
     }
-
+    
 }
