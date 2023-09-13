@@ -164,3 +164,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
+struct Constraints {    // 圓角
+    static let cornerRadious: CGFloat = 8.0
+}
+
+struct City: Codable {
+    let name: String
+    let districts: [District]
+}
+
+struct District: Codable {
+    let zip: String
+    let name: String
+}
+
+struct PetTypes: Codable {
+    let petType: [String: [String]]
+}

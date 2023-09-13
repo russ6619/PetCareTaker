@@ -56,7 +56,15 @@ class PetTableViewCell: UITableViewCell {
         // 例如，使用 Auto Layout:
         petImageView.translatesAutoresizingMaskIntoConstraints = false
         petNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        petBasicLabel.translatesAutoresizingMaskIntoConstraints = false
+        petPersonalityLabel.translatesAutoresizingMaskIntoConstraints = false
         petDetailedLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        petNameLabel.numberOfLines = 0
+        petBasicLabel.numberOfLines = 0
+        petPersonalityLabel.numberOfLines = 0
+        petDetailedLabel.numberOfLines = 0
+
         
         NSLayoutConstraint.activate([
             // 設置 petImageView 的約束
@@ -80,6 +88,7 @@ class PetTableViewCell: UITableViewCell {
             // 設置 petDetailedLabel 的約束
             petDetailedLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 10),
             petDetailedLabel.topAnchor.constraint(equalTo: petPersonalityLabel.bottomAnchor, constant: 5),
+            petDetailedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
     }
     
@@ -89,7 +98,6 @@ class PetTableViewCell: UITableViewCell {
 
     func configure(with pet: Pet) {
         // 在這裡設置視圖的內容
-        
         var neutered = "已結紮"
         var vaccinated = "有規律施打疫苗"
         
@@ -101,7 +109,8 @@ class PetTableViewCell: UITableViewCell {
             vaccinated = "沒有規律施打疫苗"
         }
         
-        petImageView.image = UIImage(named: pet.photo)
+//        petImageView.image = UIImage(named: pet.photo)
+        petImageView.image = UIImage(systemName: "pawprint.circle.fill")
         petNameLabel.text = pet.name
         petBasicLabel.text = "\(pet.type), \(pet.breed), \(calculateAge(from: pet.birthDate)), \(pet.gender),  \(pet.size)"
         petPersonalityLabel.text = "\(pet.personality), \(pet.habits)"

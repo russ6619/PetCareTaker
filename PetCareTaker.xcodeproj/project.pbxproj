@@ -10,6 +10,13 @@
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
 		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
 		D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */; };
+		D2752C302AAF19D300147E20 /* PetInformationEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C2F2AAF19D200147E20 /* PetInformationEditVC.swift */; };
+		D2752C322AAF2E3A00147E20 /* PetInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C312AAF2E3A00147E20 /* PetInfoTableViewCell.swift */; };
+		D2752C5B2AB08D5F00147E20 /* ImageSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C5A2AB08D5F00147E20 /* ImageSelectionCell.swift */; };
+		D2752C5D2AB08D7500147E20 /* ButtonMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C5C2AB08D7500147E20 /* ButtonMenuCell.swift */; };
+		D2752C5F2AB08FD300147E20 /* petImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C5E2AB08FD300147E20 /* petImageViewCell.swift */; };
+		D2752C632AB092D200147E20 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C622AB092D200147E20 /* TextViewCell.swift */; };
+		D2752C662AB1A37500147E20 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C652AB1A37500147E20 /* PlaceholderTextView.swift */; };
 		D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFE92A8B6181003222C8 /* AppDelegate.swift */; };
 		D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */; };
 		D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFED2A8B6181003222C8 /* LoginVC.swift */; };
@@ -37,6 +44,13 @@
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
 		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
+		D2752C2F2AAF19D200147E20 /* PetInformationEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInformationEditVC.swift; sourceTree = "<group>"; };
+		D2752C312AAF2E3A00147E20 /* PetInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInfoTableViewCell.swift; sourceTree = "<group>"; };
+		D2752C5A2AB08D5F00147E20 /* ImageSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSelectionCell.swift; sourceTree = "<group>"; };
+		D2752C5C2AB08D7500147E20 /* ButtonMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonMenuCell.swift; sourceTree = "<group>"; };
+		D2752C5E2AB08FD300147E20 /* petImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = petImageViewCell.swift; sourceTree = "<group>"; };
+		D2752C622AB092D200147E20 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
+		D2752C652AB1A37500147E20 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		D27CFFE62A8B6181003222C8 /* PetCareTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetCareTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27CFFE92A8B6181003222C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +87,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D2752C592AB08CB500147E20 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				D2752C312AAF2E3A00147E20 /* PetInfoTableViewCell.swift */,
+				D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */,
+				D2752C5A2AB08D5F00147E20 /* ImageSelectionCell.swift */,
+				D2752C5E2AB08FD300147E20 /* petImageViewCell.swift */,
+				D2752C5C2AB08D7500147E20 /* ButtonMenuCell.swift */,
+				D2752C622AB092D200147E20 /* TextViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		D2752C642AB1A34C00147E20 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D2A687412A9731A80028F409 /* PasswordTextField.swift */,
+				D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */,
+				D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */,
+				D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */,
+				D2752C652AB1A37500147E20 /* PlaceholderTextView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		D27CFFDD2A8B6181003222C8 = {
 			isa = PBXGroup;
 			children = (
@@ -120,15 +159,12 @@
 		D28F2F472AA07DA2007E16E4 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				D2752C642AB1A34C00147E20 /* UI */,
 				D2A687702A99A9CE0028F409 /* AuthManager.swift */,
 				D2A687982A99F3BB0028F409 /* ServerApiHelper.swift */,
-				D2A687412A9731A80028F409 /* PasswordTextField.swift */,
 				D27CFFE92A8B6181003222C8 /* AppDelegate.swift */,
 				D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */,
-				D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */,
-				D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */,
 				D2A65F422AA60DE700E45AE8 /* UserDataManager.swift */,
-				D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -145,9 +181,10 @@
 		D2A687472A983F700028F409 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D2752C592AB08CB500147E20 /* Cell */,
 				D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */,
 				D2A65F3D2AA42DDF00E45AE8 /* FirstPetTabVC.swift */,
-				D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */,
+				D2752C2F2AAF19D200147E20 /* PetInformationEditVC.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -232,6 +269,7 @@
 				D28F2F542AA1828D007E16E4 /* UIViewExtension.swift in Sources */,
 				D2A687A42A9DE8680028F409 /* ControllerVC.swift in Sources */,
 				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
+				D2752C662AB1A37500147E20 /* PlaceholderTextView.swift in Sources */,
 				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
 				D28F2F452AA07D4D007E16E4 /* PersonalVC.swift in Sources */,
 				D28F2F4E2AA07EDA007E16E4 /* AcceptedTaskVC.swift in Sources */,
@@ -242,10 +280,16 @@
 				D2A65F3E2AA42DDF00E45AE8 /* FirstPetTabVC.swift in Sources */,
 				D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */,
 				D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */,
+				D2752C322AAF2E3A00147E20 /* PetInfoTableViewCell.swift in Sources */,
+				D2752C302AAF19D300147E20 /* PetInformationEditVC.swift in Sources */,
 				D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */,
+				D2752C5F2AB08FD300147E20 /* petImageViewCell.swift in Sources */,
+				D2752C632AB092D200147E20 /* TextViewCell.swift in Sources */,
+				D2752C5D2AB08D7500147E20 /* ButtonMenuCell.swift in Sources */,
 				D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */,
 				D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */,
 				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,
+				D2752C5B2AB08D5F00147E20 /* ImageSelectionCell.swift in Sources */,
 				D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */,
 				D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */,
 				D2A65F432AA60DE700E45AE8 /* UserDataManager.swift in Sources */,

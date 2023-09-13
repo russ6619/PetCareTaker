@@ -125,13 +125,13 @@
             filePath = "PetCareTaker/Onboarding/RegisterVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "checkRegister(_:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "4299EDD8-2F71-4D21-9FF1-56B5A6E434BC - ad5c5858f9d7302f"
+                  uuid = "4299EDD8-2F71-4D21-9FF1-56B5A6E434BC - ad5c5858f9d73fab"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -141,12 +141,12 @@
                   urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Onboarding/RegisterVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "188"
-                  endingLineNumber = "188"
+                  startingLineNumber = "184"
+                  endingLineNumber = "184"
                   offsetFromSymbolStart = "7376">
                </Location>
                <Location
-                  uuid = "4299EDD8-2F71-4D21-9FF1-56B5A6E434BC - 6a569966e89b0536"
+                  uuid = "4299EDD8-2F71-4D21-9FF1-56B5A6E434BC - 6a569966e89b0ab2"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -156,24 +156,9 @@
                   urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Onboarding/RegisterVC.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "189"
-                  endingLineNumber = "189"
+                  startingLineNumber = "185"
+                  endingLineNumber = "185"
                   offsetFromSymbolStart = "244">
-               </Location>
-               <Location
-                  uuid = "4299EDD8-2F71-4D21-9FF1-56B5A6E434BC - 6a569966e89b0574"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #5 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
-                  moduleName = "PetCareTaker"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Onboarding/RegisterVC.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "187"
-                  endingLineNumber = "187"
-                  offsetFromSymbolStart = "372">
                </Location>
             </Locations>
          </BreakpointContent>

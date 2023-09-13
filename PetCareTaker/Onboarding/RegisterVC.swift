@@ -10,7 +10,6 @@ import CryptoKit
 
 
 class RegisterVC: UIViewController {
-    @IBOutlet weak var testText: UITextField!
     
     @IBOutlet weak var userPhoneNB: UITextField!
     @IBOutlet weak var userPassWord: PasswordTextField!
@@ -98,9 +97,6 @@ class RegisterVC: UIViewController {
         
     }
     
-    
-    @IBAction func petInformation(_ sender: Any) {
-    }
     
     @IBAction func checkRegister(_ sender: Any) {
         
@@ -243,12 +239,4 @@ struct UserInfo: Codable {
     }
 }
 
-struct City: Codable {
-    let name: String
-    let districts: [District]
-}
 
-struct District: Codable {
-    let zip: String
-    let name: String
-}

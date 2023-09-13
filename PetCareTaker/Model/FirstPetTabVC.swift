@@ -9,9 +9,9 @@ import UIKit
 
 class FirstPetTabVC: UIViewController {
     
-    struct Constraints {    // 圓角
-        static let cornerRadious: CGFloat = 8.0
-    }
+//    struct Constraints {    // 圓角
+//        static let cornerRadious: CGFloat = 8.0
+//    }
     
     private let petTitleLabel: UILabel = {
         let label = UILabel()

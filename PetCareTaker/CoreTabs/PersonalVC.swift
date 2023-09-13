@@ -15,9 +15,9 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var componentIsSelect = false
     
-    struct Constraints {    // 圓角
-        static let cornerRadious: CGFloat = 8.0
-    }
+//    struct Constraints {    // 圓角
+//        static let cornerRadious: CGFloat = 8.0
+//    }
     
     private let personScrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -100,10 +100,10 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     private let creatPetBtn: UIButton = {
         let button = UIButton()
         button.setTitle( "新增寵物欄位", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        button.layer.cornerRadius = Constraints.cornerRadious
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.blue.cgColor
+        button.setTitleColor(.link, for: .normal)
+//        button.layer.cornerRadius = Constraints.cornerRadious
+//        button.layer.borderWidth = 1.0
+//        button.layer.borderColor = UIColor.blue.cgColor
         button.contentVerticalAlignment = .center
         return button
     }()

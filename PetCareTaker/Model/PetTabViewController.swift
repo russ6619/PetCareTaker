@@ -7,6 +7,7 @@ class PetTabViewController: UIViewController {
     private let petTable: UITableView = {
         let table = UITableView()
         table.backgroundColor = .systemBackground
+        table.rowHeight = UITableView.automaticDimension
         return table
     }()
     
@@ -21,6 +22,7 @@ class PetTabViewController: UIViewController {
         
         // 創建並設置 tableView
         petTable.dataSource = self
+        petTable.delegate = self
         petTable.frame = view.bounds // 確保 tableView 填滿整個視圖
         petTable.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -37,7 +39,7 @@ class PetTabViewController: UIViewController {
 }
 
 // MARK: tableview
-extension PetTabViewController: UITableViewDataSource {
+extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // 返回寵物數據的總數
@@ -57,29 +59,24 @@ extension PetTabViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let pet = UserDataManager.shared.petsData[indexPath.row] // 假設您有一個pets數組來存儲寵物數據
-        let petDetailedText = "\(pet.neutered), \(pet.vaccinated)" // pet的詳細信息文本
-        let petDetailedLabelHeight = heightForText(petDetailedText, font: UIFont.boldSystemFont(ofSize: 16), width: tableView.frame.width - 120) // 計算文本的高度
-        return 120 + petDetailedLabelHeight // 120是其他元素的高度，根據您的佈局調整
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 當用戶點擊單元格時，執行以下代碼
+        let petInformationEditVC = PetInformationEditVC() // 創建PetInformationEditVC實例
+        let selectedPet = UserDataManager.shared.petsData[indexPath.row]
+        petInformationEditVC.selectedPet = selectedPet // 設置選定的寵物信息
+
+        // 在這裡將 PetInformationEditVC 壓入導航堆疊
+        navigationController?.pushViewController(petInformationEditVC, animated: true)
     }
 
-
-    func heightForText(_ text: String, font: UIFont, width: CGFloat) -> CGFloat {
-        let size = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-        let attributes = [NSAttributedString.Key.font: font]
-        let boundingRect = text.boundingRect(with: size, options: options, attributes: attributes, context: nil)
-        return ceil(boundingRect.height)
-    }
-
-
+    
+    
 }
 
 
 
-
-struct Constraints {    // 圓角
-    static let cornerRadious: CGFloat = 8.0
-}
 
 
