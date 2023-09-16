@@ -112,8 +112,8 @@ class PetTableViewCell: UITableViewCell {
 //        petImageView.image = UIImage(named: pet.photo)
         petImageView.image = UIImage(systemName: "pawprint.circle.fill")
         petNameLabel.text = pet.name
-        petBasicLabel.text = "\(pet.type), \(pet.breed), \(calculateAge(from: pet.birthDate)), \(pet.gender),  \(pet.size)"
-        petPersonalityLabel.text = "\(pet.personality), \(pet.habits)"
+        petBasicLabel.text = "\(pet.type), \(calculateAge(from: pet.birthDate)), \(pet.gender),  \(pet.size)"
+        petPersonalityLabel.text = "\(pet.personality)"
         petDetailedLabel.text = "\(neutered), \(vaccinated)"
     }
 

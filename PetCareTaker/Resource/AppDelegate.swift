@@ -97,7 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     // 登入成功設定資料
-    // 登入成功設定資料
     func loginSetupData() {
         // 在這裡設置已登入者的資料，個人資料等等...
         UserDataManager.shared.fetchUserData { error in
@@ -164,20 +163,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
-struct Constraints {    // 圓角
-    static let cornerRadious: CGFloat = 8.0
-}
 
-struct City: Codable {
-    let name: String
-    let districts: [District]
-}
-
-struct District: Codable {
-    let zip: String
-    let name: String
-}
-
-struct PetTypes: Codable {
-    let petType: [String: [String]]
-}

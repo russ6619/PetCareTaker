@@ -129,16 +129,15 @@ class UserDataManager {
                                let name = petData["Name"] as? String,
                                let gender = petData["Gender"] as? String,
                                let type = petData["Type"] as? String,
-                               let breed = petData["Breed"] as? String,
                                let birthDate = petData["BirthDate"] as? String,
                                let size = petData["Size"] as? String,
                                let neutered = petData["Neutered"] as? String,
                                let vaccinated = petData["Vaccinated"] as? String,
                                let personality = petData["Personality"] as? String,
-                               let habits = petData["Habits"] as? String,
-                               let photo = petData["Photo"] as? String {
+                               let photo = petData["Photo"] as? String,
+                               let precautions = petData["Precautions"] as? String {
                                 
-                                let pet = Pet(petID: petID, name: name, gender: gender, type: type, breed: breed, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, habits: habits, photo: photo)
+                                let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions) // 移除 habits 欄位
                                 pets.append(pet)
                             }
                         }
@@ -160,18 +159,3 @@ class UserDataManager {
     
 }
 
-// 寵物結構
-struct Pet {
-    let petID: String
-    let name: String
-    let gender: String
-    let type: String
-    let breed: String
-    let birthDate: String
-    let size: String
-    let neutered: String
-    let vaccinated: String
-    let personality: String
-    let habits: String
-    let photo: String
-}

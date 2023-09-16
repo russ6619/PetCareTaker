@@ -490,22 +490,6 @@
             </objects>
             <point key="canvasLocation" x="1294" y="1206"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="lXB-ub-mRc">
-            <objects>
-                <viewController id="gpp-oD-kG8" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="A1R-Jh-P6B">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="4oD-Tf-pid"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="SY8-qC-Anc"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="caw-84-3oH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1193" y="-163"/>
-        </scene>
         <!--設定-->
         <scene sceneID="vzK-Gz-iNO">
             <objects>

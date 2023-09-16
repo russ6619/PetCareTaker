@@ -26,8 +26,8 @@ class petImageViewCell: UITableViewCell {
         
         
         NSLayoutConstraint.activate([
-            petImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor), // 修改這裡
-            petImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor), // 修改這裡
+            petImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            petImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor), 
             petImage.widthAnchor.constraint(equalToConstant: 200), // 設定圖像寬度
             petImage.heightAnchor.constraint(equalToConstant: 200) // 設定圖像高度
         ])

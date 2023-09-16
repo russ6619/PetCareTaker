@@ -15,10 +15,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var componentIsSelect = false
     
-//    struct Constraints {    // 圓角
-//        static let cornerRadious: CGFloat = 8.0
-//    }
-    
     private let personScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true // 垂直滾動條

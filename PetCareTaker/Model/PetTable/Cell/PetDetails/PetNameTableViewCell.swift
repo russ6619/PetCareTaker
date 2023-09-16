@@ -1,5 +1,5 @@
 //
-//  PetInfoTableViewCell.swift
+//  PetNameTableViewCell.swift
 //  PetCareTaker
 //
 //  Created by 李暠勳 on 2023/9/11.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PetInfoTableViewCell: UITableViewCell {
+class PetNameTableViewCell: UITableViewCell {
 
     
     

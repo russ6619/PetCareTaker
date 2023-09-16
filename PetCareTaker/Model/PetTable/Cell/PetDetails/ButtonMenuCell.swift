@@ -30,9 +30,8 @@ class ButtonMenuCell: UITableViewCell {
         // 設置 UIButtonMenu 的約束，根據您的界面設計來調整
         buttonMenu.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            buttonMenu.widthAnchor.constraint(equalTo: contentView.widthAnchor),
             buttonMenu.topAnchor.constraint(equalTo: contentView.topAnchor),
-            buttonMenu.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            buttonMenu.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             buttonMenu.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
@@ -40,5 +39,6 @@ class ButtonMenuCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
 }
 

@@ -12,14 +12,18 @@ protocol ImageSelectionCellDelegate: AnyObject {
     func updatePetImage(_ image: UIImage)
 }
 
-class PetInformationEditVC: UIViewController {
+class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
+    
+    var editingCell: ButtonMenuCell?
     
     var petTypes: PetTypes?
     var petimage: PetImage = PetImage() // 實例化 PetImage
+    var selectedOptions: [String] = []
+
     
     var petInfo: PetInfo = PetInfo()
     // 定義selectedPet屬性以保存選定的寵物數據
-    var selectedPet: Pet?
+    var selectedPet: Pet!
     
     // 在此處定義您的表單項目
     let sectionTitles: [String] = ["","寵物名稱", "寵物介紹", "基本資料", "詳細資料"]
@@ -27,7 +31,7 @@ class PetInformationEditVC: UIViewController {
         ["大頭照","選擇大頭照"],
         ["寵物名稱"],
         ["寵物介紹"],
-        ["種類", "尺寸", "出生日期", "性別"],
+        ["種類", "尺寸", "出生年份","出生月份", "性別"],
         ["是否結紮", "是否規律施打疫苗", "個性"]
     ]
     
@@ -43,7 +47,7 @@ class PetInformationEditVC: UIViewController {
         cell.delegate = self
     }
     
-    
+    // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,7 +59,7 @@ class PetInformationEditVC: UIViewController {
         tableView.delegate = self
         
         // 註冊自定義的 UITableViewCell 類別
-        tableView.register(PetInfoTableViewCell.self, forCellReuseIdentifier: "PetInfoCell")
+        tableView.register(PetNameTableViewCell.self, forCellReuseIdentifier: "PetInfoCell")
         tableView.register(ImageSelectionCell.self, forCellReuseIdentifier: "ImageSelectionCell")
         tableView.register(petImageViewCell.self, forCellReuseIdentifier: "petImageViewCell")
         tableView.register(TextViewCell.self, forCellReuseIdentifier: "TextViewCell")
@@ -73,18 +77,44 @@ class PetInformationEditVC: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
-        // 創建一個輕觸手勢辨識器
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tapGesture.delegate = self
-        // 添加手勢辨識器到視圖中
-        self.view.addGestureRecognizer(tapGesture)
+        
+        // 創建一個輕觸手勢辨識器，用於關閉鍵盤
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGestureRecognizer.cancelsTouchesInView = false // 允許觸摸事件傳遞到子視圖
+        view.addGestureRecognizer(tapGestureRecognizer)
         
     }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        // 隱藏鍵盤，終止輸入
+    @objc func handleTap() {
+        // 在這裡觸發解除 firstResponder，關閉鍵盤
         view.endEditing(true)
     }
+    
+    // 創建 PetPersonalityTableVC 實例時設置代理
+    func showPersonalityOptions() {
+        let personalityOptionsVC = petPersonalityTableVC()
+        personalityOptionsVC.delegate = self
+        personalityOptionsVC.selectedOptions = selectedOptions // 傳遞 selectedOptions 給 petPersonalityTableVC
+        navigationController?.pushViewController(personalityOptionsVC, animated: true)
+    }
+    
+    // 實現 PetPersonalitySelectionDelegate 協議的方法，用於接收選擇的項目
+    func didSelectPersonalityOptions(_ selectedOptions: [String]) {
+        // 在這裡處理選擇的項目，您可以將它們存儲到 selectedOptions 或進行其他操作
+        self.selectedOptions = selectedOptions // 更新 selectedOptions
+        print("選擇的項目：\(selectedOptions)")
+    }
+
+    func updatePetPersonality(with selectedOptions: [String]) {
+        // 在這裡處理選擇的個性項目，您可以將它們存儲到 petInfo 或進行其他操作
+        print("選擇的個性項目：\(selectedOptions)")
+        
+        // 更新相關的數據，例如 petInfo.personality
+        
+        // 重新載入表格視圖的相關部分，這將刷新您的表格視圖以顯示更新後的內容
+        tableView.reloadData()
+    }
+
     
 }
 
@@ -105,6 +135,16 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
         return formItems[section].count
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //        print("Section: \(indexPath.section), row: \(indexPath.row)")
+        if indexPath.section == 4 && indexPath.row == 2 {
+            // 點擊了 "個性(複選)" 選項
+            let petPersonalityTableVC = petPersonalityTableVC() // 創建 "petPersonalityTableVC" 實例
+            navigationController?.pushViewController(petPersonalityTableVC, animated: true) // 使用導航控制器進行跳轉，帶有左至右的動畫
+        }
+    }
+    
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
@@ -122,12 +162,17 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 return cell
             }
         case 1:     // 寵物名稱
-            // PetInfoTableViewCell
-            let cell = tableView.dequeueReusableCell(withIdentifier: "PetInfoCell", for: indexPath) as! PetInfoTableViewCell
+            // PetNameTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PetInfoCell", for: indexPath) as! PetNameTableViewCell
+            cell.textField.text = selectedPet.name
+            cell.textField.delegate = self
             return cell
         case 2:     // 寵物狀況描述
             // TextViewCell
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextViewCell", for: indexPath) as! TextViewCell
+            cell.textView.placeholder = "請輸入您的寵物狀況或是注意事項"
+            cell.textView.text = selectedPet.precautions
+            cell.textView.placeholderColor = .gray
             cell.textView.delegate = self
             cell.textViewHeightConstraint?.isActive = true
             return cell
@@ -135,31 +180,21 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
             if indexPath.row == 0 {
                 // 種類
-                if let data = NSDataAsset(name: "petType")?.data {
-                    do {
-                        let petTypes = try JSONDecoder().decode(PetTypes.self, from: data)
-                        // 將 JSON 數據轉換為相應的結構（PetTypes）
-                        var petTypeMenuItems: [UIMenuElement] = []
-                        
-                        for (petCategory, petBreeds) in petTypes.petType {
-                            var breedMenuItems: [UIMenuElement] = []
-                            
-                            for breed in petBreeds {
-                                let breedAction = UIAction(title: breed, handler: { action in
-                                    print("\(petCategory) - \(breed)")
-                                    // 在這裡處理所選寵物種類和品種的操作
-                                })
-                                breedMenuItems.append(breedAction)
-                            }
-                            let categoryMenu = UIMenu(title: petCategory, children: breedMenuItems)
-                            petTypeMenuItems.append(categoryMenu)
-                        }
-                        let petTypeMenu = UIMenu(children: petTypeMenuItems)
-                        cell.buttonMenu.menu = petTypeMenu
-                    } catch {
-                        print("JSON decoding error: \(error)")
-                    }
+                var petTypeMenuItems: [UIMenuElement] = []
+
+                let allowedPetCategories = ["貓", "狗", "鳥", "兔", "鼠"]
+
+                for petCategory in allowedPetCategories {
+                    let breedAction = UIAction(title: petCategory, handler: { action in
+                        // 在這裡處理所選寵物種類的操作
+                        self.selectedPet.type = petCategory
+                        print(petCategory)
+                    })
+                    petTypeMenuItems.append(breedAction)
                 }
+
+                let petTypeMenu = UIMenu(title: selectedPet.type, children: petTypeMenuItems)
+                cell.buttonMenu.menu = petTypeMenu
             } else if indexPath.row == 1 {
                 // 尺寸
                 let sizeMenuItems: [UIMenuElement] = [
@@ -194,7 +229,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 
                 for year in yearsRange.reversed() {
                     let yearAction = UIAction(title: "\(year)", handler: { action in
-                        print("選擇了年份 \(year)")
+                        print("\(year)")
                         // 在這裡處理所選年份的操作
                     })
                     yearMenuItems.append(yearAction)
@@ -205,7 +240,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 // 月份選擇
                 let monthMenuItems: [UIMenuElement] = (1...12).map { month in
                     UIAction(title: "\(month)月", handler: { action in
-                        print("選擇了月份 \(month)月")
+                        print("\(month)月")
                         // 在這裡處理所選月份的操作
                     })
                 }
@@ -214,12 +249,12 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 4 {
                 // 性別選擇
                 let genderMenuItems: [UIMenuElement] = [
-                    UIAction(title: "Male,男", handler: { action in
-                        print("選擇了性別 Male,男")
+                    UIAction(title: "Male,公", handler: { action in
+                        print("Male,公")
                         // 在這裡處理所選性別的操作
                     }),
-                    UIAction(title: "Female,女", handler: { action in
-                        print("選擇了性別 Female,女")
+                    UIAction(title: "Female,母", handler: { action in
+                        print("Female,母")
                         // 在這裡處理所選性別的操作
                     })
                 ]
@@ -230,10 +265,70 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             return cell
             
         case 4:     // 詳細資料
-            // ButtonMenuCell，具體根據 row 的不同配置不同的內容
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
-            // 根據 row 配置 ButtonMenuCell 的相關操作
-            return cell
+            // 根據行數設置不同的選項
+            var menuItems: [UIMenuElement] = []
+            switch indexPath.row {
+            case 0:
+                // 選項「是否結紮」
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
+                let neuteredMenuItems: [UIMenuElement] = [
+                    UIAction(title: "已結紮", handler: { action in
+                        print("已結紮")
+                        // 在這裡處理已結紮的操作
+                    }),
+                    UIAction(title: "未結紮", handler: { action in
+                        print("未結紮")
+                        // 在這裡處理未結紮的操作
+                    })
+                ]
+                menuItems = neuteredMenuItems
+                let menu = UIMenu(title: "", children: menuItems)
+                cell.buttonMenu.menu = menu
+                
+                return cell
+            case 1:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
+                // 選項「是否規律施打疫苗」
+                let vaccinatedMenuItems: [UIMenuElement] = [
+                    UIAction(title: "有規律施打疫苗", handler: { action in
+                        print("有規律施打疫苗")
+                        // 在這裡處理有規律施打疫苗的操作
+                    }),
+                    UIAction(title: "沒有規律施打疫苗", handler: { action in
+                        print("沒有規律施打疫苗")
+                        // 在這裡處理沒有規律施打疫苗的操作
+                    })
+                ]
+                menuItems = vaccinatedMenuItems
+                let menu = UIMenu(title: "", children: menuItems)
+                cell.buttonMenu.menu = menu
+                
+                return cell
+            case 2: // 寵物個性
+                let cell = UITableViewCell()
+                cell.textLabel?.text = "個性(複選)" // 設置標題
+                print("\(selectedOptions)")
+                cell.isUserInteractionEnabled = true
+                cell.accessoryType = .disclosureIndicator
+
+                // 自定義的 UILabel，顯示在右側
+                let customLabel = UILabel()
+                customLabel.text = "請選擇寵物個性" // 在這裡設置自定義文本
+                customLabel.textColor = UIColor.gray // 設置文本顏色
+                customLabel.translatesAutoresizingMaskIntoConstraints = false
+                cell.contentView.addSubview(customLabel)
+
+                // 使用約束將 customLabel 放在 cell 的右側
+                NSLayoutConstraint.activate([
+                    customLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -8),
+                    customLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+                ])
+
+                return cell
+            default:
+                break
+            }
+            
         default:
             // 其他情況的處理
             return UITableViewCell()
@@ -241,19 +336,19 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
         return UITableViewCell()
     }
     
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             // petImageViewCell 的計算高度
             let imageSize = petimage.image?.size ?? CGSize(width: 0, height: 0) // 如果没有圖，使用默認大小
-            let imageAspectRatio = imageSize.width / imageSize.height
-            let cellWidth = tableView.bounds.width
+//            let imageAspectRatio = imageSize.width / imageSize.height
+//            let cellWidth = tableView.bounds.width
             let cellHeight: CGFloat
             if imageSize.height != 0 {
                 cellHeight = imageSize.height + 100
             } else {
                 cellHeight = 0
             }
-            print("cellH: \(cellHeight), cellW: \(cellWidth), imageH: \(imageSize.height), imageH: \(imageSize.height), imageAsp: \(imageAspectRatio)")
             return cellHeight
         }
         
@@ -337,6 +432,7 @@ extension PetInformationEditVC: ImageSelectionCellDelegate {
     
 }
 
+// MARK: UITextViewDelegate
 extension PetInformationEditVC: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         // 計算 textView 的內容高度
@@ -360,43 +456,6 @@ extension PetInformationEditVC: UIGestureRecognizerDelegate {
         }
         return true
     }
-}
-
-
-
-enum PetInfoSection: Int, CaseIterable {
-    case image
-    case name
-    case description
-    case basicInfo
-    case detailedInfo
-    
-    var title: String {
-        switch self {
-        case .image:
-            return ""
-        case .name:
-            return "寵物名稱"
-        case .description:
-            return "寵物介紹"
-        case .basicInfo:
-            return "基本資料"
-        case .detailedInfo:
-            return "詳細資料"
-        }
-    }
-}
-
-struct PetInfo {
-    var name: String = ""
-    var description: String = ""
-    var type: String = ""
-    var size: String = ""
-    var birthDate: String = ""
-    var gender: String = ""
-    var neutered: Bool = false
-    var vaccinated: Bool = false
-    var personality: String = ""
 }
 
 struct PetImage {

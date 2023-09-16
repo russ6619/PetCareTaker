@@ -225,18 +225,4 @@ class RegisterVC: UIViewController {
     }
 }
 
-struct UserInfo: Codable {
-    var phone: String
-    var password: String
-    var name: String
-    var residenceArea: String
-    
-    enum CodingKeys: String, CodingKey {
-        case phone = "Phone"
-        case password = "Password"
-        case name = "Name"
-        case residenceArea = "ResidenceArea"
-    }
-}
-
 

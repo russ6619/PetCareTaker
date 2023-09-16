@@ -7,10 +7,7 @@
 
 import UIKit
 
-struct SettingCellModel {
-    let title: String
-    let handler: (() -> Void)
-}
+
 
 /// View Controller to show user settings
 final class SettingVC: UIViewController {

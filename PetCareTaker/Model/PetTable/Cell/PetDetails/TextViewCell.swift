@@ -11,8 +11,8 @@ class TextViewCell: UITableViewCell, UITextViewDelegate {
     
     var textViewHeightConstraint: NSLayoutConstraint?
     
-    let textView: PlaceholderTextView = {
-        let textView = PlaceholderTextView()
+    let textView: WSPlaceholderTextView = {
+        let textView = WSPlaceholderTextView()
         textView.font = .systemFont(ofSize: 16)
         textView.isScrollEnabled = false // 關閉滾動
         return textView
