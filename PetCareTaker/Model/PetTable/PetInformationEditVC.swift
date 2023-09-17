@@ -188,13 +188,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                     let breedAction = UIAction(title: petCategory, handler: { action in
                         // 在這裡處理所選寵物種類的操作
                         self.selectedPet.type = petCategory
-                        print(petCategory)
                     })
+                    breedAction.state = .off
                     petTypeMenuItems.append(breedAction)
                 }
-
-                let petTypeMenu = UIMenu(title: selectedPet.type, children: petTypeMenuItems)
+                let petTypeMenu = UIMenu(title: "種類", options: .singleSelection, children: petTypeMenuItems)
                 cell.buttonMenu.menu = petTypeMenu
+                cell.buttonMenu.setTitle(selectedPet.type, for: .normal)
             } else if indexPath.row == 1 {
                 // 尺寸
                 let sizeMenuItems: [UIMenuElement] = [
@@ -221,6 +221,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 ]
                 let sizeMenu = UIMenu(title: "尺寸", children: sizeMenuItems)
                 cell.buttonMenu.menu = sizeMenu
+                cell.buttonMenu.setTitle(selectedPet.size, for: .normal)
             } else if indexPath.row == 2 {
                 // 年份選擇
                 let currentYear = Calendar.current.component(.year, from: Date())
@@ -236,6 +237,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 let yearMenu = UIMenu(title: "出生年份", children: yearMenuItems)
                 cell.buttonMenu.menu = yearMenu
+                // 解析 selectedPet.birthDate，假設它的格式是"yyyy-MM"
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM"
+                if let birthDate = dateFormatter.date(from: selectedPet.birthDate) {
+                    let birthYear = Calendar.current.component(.year, from: birthDate)
+                    cell.buttonMenu.setTitle("\(birthYear)", for: .normal)
+                }
             } else if indexPath.row == 3 {
                 // 月份選擇
                 let monthMenuItems: [UIMenuElement] = (1...12).map { month in
@@ -246,6 +254,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 let monthMenu = UIMenu(title: "出生月份", children: monthMenuItems)
                 cell.buttonMenu.menu = monthMenu
+                // 解析 selectedPet.birthDate，假設它的格式是"yyyy-MM"
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM"
+                if let birthDate = dateFormatter.date(from: selectedPet.birthDate) {
+                    let birthYear = Calendar.current.component(.month, from: birthDate)
+                    cell.buttonMenu.setTitle("\(birthYear)", for: .normal)
+                }
             } else if indexPath.row == 4 {
                 // 性別選擇
                 let genderMenuItems: [UIMenuElement] = [
@@ -260,6 +275,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 ]
                 let genderMenu = UIMenu(title: "性別", children: genderMenuItems)
                 cell.buttonMenu.menu = genderMenu
+                cell.buttonMenu.setTitle(selectedPet.gender, for: .normal)
             }
             
             return cell
@@ -285,6 +301,11 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
                 
+                if selectedPet.neutered == "0" {
+                    cell.buttonMenu.setTitle("未結紮", for: .normal)
+                } else {
+                    cell.buttonMenu.setTitle("已結紮", for: .normal)
+                }
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
@@ -302,7 +323,11 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 menuItems = vaccinatedMenuItems
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
-                
+                if selectedPet.neutered == "0" {
+                    cell.buttonMenu.setTitle("沒有規律施打疫苗", for: .normal)
+                } else {
+                    cell.buttonMenu.setTitle("有規律施打疫苗", for: .normal)
+                }
                 return cell
             case 2: // 寵物個性
                 let cell = UITableViewCell()
@@ -313,17 +338,25 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
 
                 // 自定義的 UILabel，顯示在右側
                 let customLabel = UILabel()
-                customLabel.text = "請選擇寵物個性" // 在這裡設置自定義文本
+                if selectedPet.personality.isEmpty {
+                    customLabel.text = "請選擇寵物個性"
+                } else {
+                    customLabel.text = selectedPet.personality
+                }
+                
                 customLabel.textColor = UIColor.gray // 設置文本顏色
+                customLabel.numberOfLines = 0
                 customLabel.translatesAutoresizingMaskIntoConstraints = false
                 cell.contentView.addSubview(customLabel)
 
                 // 使用約束將 customLabel 放在 cell 的右側
                 NSLayoutConstraint.activate([
                     customLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -8),
-                    customLabel.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor),
+                    customLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 150),
+                    customLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                    customLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
                 ])
-
+                
                 return cell
             default:
                 break
@@ -340,9 +373,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             // petImageViewCell 的計算高度
-            let imageSize = petimage.image?.size ?? CGSize(width: 0, height: 0) // 如果没有圖，使用默認大小
-//            let imageAspectRatio = imageSize.width / imageSize.height
-//            let cellWidth = tableView.bounds.width
+            let imageSize = petimage.image?.size ?? CGSize(width: 0, height: 0) // 如果沒有圖，使用默認大小
             let cellHeight: CGFloat
             if imageSize.height != 0 {
                 cellHeight = imageSize.height + 100

@@ -101,8 +101,8 @@ class PetTableViewCell: UITableViewCell {
         var neutered = "已結紮"
         var vaccinated = "有規律施打疫苗"
         
-        if pet.neutered != "0" {
-            neutered = "尚未結紮"
+        if pet.neutered == "0" {
+            neutered = "未結紮"
         }
         
         if pet.vaccinated != "1" {
