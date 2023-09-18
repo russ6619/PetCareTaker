@@ -193,6 +193,25 @@ class AuthManager {
             completion(false)
         }
     }
+    
+    // 跳轉到登入畫面
+    func redirectToLogin() {
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")
+            
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                    window.rootViewController = loginVC
+                } else {
+                    // 如果沒有窗口，創建一個新的窗口
+                    let newWindow = UIWindow(windowScene: windowScene)
+                    newWindow.rootViewController = loginVC
+                    newWindow.makeKeyAndVisible()
+                }
+            }
+        }
+    }
 
 }
 

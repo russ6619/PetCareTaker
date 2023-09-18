@@ -66,7 +66,7 @@ struct District: Codable {
 }
 
 // 寵物結構
-struct Pet {
+struct Pet: Codable {
     let petID: String
     var name: String
     var gender: String

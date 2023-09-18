@@ -157,5 +157,53 @@ class UserDataManager {
     }
     
     
+    func updatePetData(userID: String, selectedPet: Pet, completion: @escaping (Error?) -> Void) {
+        // 將要傳送的寵物數據轉換為 JSON 格式
+        do {
+            let jsonData = try JSONEncoder().encode(selectedPet)
+            
+            // 建立 URL
+            guard let url = URL(string: ServerApiHelper.shared.updatePetUrl) else {
+                completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"]))
+                return
+            }
+            
+            // 建立 URL 請求
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            // 發起網絡請求
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                
+                // 檢查伺服器回應
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        // 成功更新數據，現在下載新寵物資料
+                        self.fetchUserPetData(userID: userID) { (fetchError) in
+                            if let fetchError = fetchError {
+                                completion(fetchError) // 處理下載寵物資料的錯誤
+                            } else {
+                                completion(nil) // 成功更新並下載新寵物資料
+                            }
+                        }
+                    } else {
+                        completion(NSError(domain: "UserDataManager", code: httpResponse.statusCode, userInfo: ["message": "伺服器回應錯誤"]))
+                    }
+                }
+            }.resume()
+        } catch {
+            completion(error)
+            print("JSON轉換錯誤: \(error)")
+        }
+    }
+
+
+    
 }
 

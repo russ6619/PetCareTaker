@@ -83,23 +83,20 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    private let petTableCell: UITableViewCell = {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "petcell")
-        cell.imageView?.image = UIImage(systemName: "pawprint.fill")
-        cell.textLabel?.text = "編輯寵物資訊"
-        cell.selectionStyle = .default
-        cell.layer.borderWidth = 1.0 // 外框線寬度
-        cell.layer.borderColor = UIColor.black.cgColor // 外框線顏色
-        return cell
-    }()
+//    private let petTableCell: UITableViewCell = {
+//        let cell = UITableViewCell(style: .default, reuseIdentifier: "petcell")
+//        cell.imageView?.image = UIImage(systemName: "pawprint.fill")
+//        cell.textLabel?.text = "編輯寵物資訊"
+//        cell.selectionStyle = .default
+//        cell.layer.borderWidth = 1.0 // 外框線寬度
+//        cell.layer.borderColor = UIColor.black.cgColor // 外框線顏色
+//        return cell
+//    }()
     
     private let creatPetBtn: UIButton = {
         let button = UIButton()
-        button.setTitle( "新增寵物欄位", for: .normal)
+        button.setTitle( "編輯寵物資訊", for: .normal)
         button.setTitleColor(.link, for: .normal)
-//        button.layer.cornerRadius = Constraints.cornerRadious
-//        button.layer.borderWidth = 1.0
-//        button.layer.borderColor = UIColor.blue.cgColor
         button.contentVerticalAlignment = .center
         return button
     }()
@@ -138,7 +135,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         text.text = "請輸入自我介紹"
         text.font = UIFont.systemFont(ofSize: 16)
         text.layer.borderWidth = 1.0
-        text.layer.borderColor = UIColor.black.cgColor
+        text.layer.borderColor = UIColor.label.cgColor
         text.addBottomBorder(borderColor: UIColor.systemGray.cgColor, borderWidth: text.width - 30)
         text.addCharCalculator(max: 300)
         return text
@@ -192,8 +189,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         view.backgroundColor = .systemBackground
         
-        
-        
         guard let name = UserDataManager.shared.userData["Name"] as? String,
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
               let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
@@ -221,13 +216,15 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
-        
-        
-        
-                
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+    }
+
     
+    // MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -284,16 +281,16 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         
         // 設定 petTableCell 位置，在 genderSelectButton 下方，水平置中
-        petTableCell.frame = CGRect(
-            x: view.xCenter - petTableCell.width / 2,
-            y: genderSelectButton.bottom + 20,
-            width: petTableCell.width,
-            height: petTableCell.height)
+//        petTableCell.frame = CGRect(
+//            x: view.xCenter - petTableCell.width / 2,
+//            y: genderSelectButton.bottom + 20,
+//            width: petTableCell.width,
+//            height: petTableCell.height)
         
         // 設定 creatPetBtn 位置，在 petTableCell 下方，水平置中
         creatPetBtn.frame = CGRect(
             x: 0,
-            y: petTableCell.bottom + 10,
+            y: genderSelectButton.bottom + 20,
             width: 200,
             height: 36)
         creatPetBtn.center.x = view.xCenter
@@ -340,7 +337,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         personScrollView.addSubview(userNameFiled)
         personScrollView.addSubview(genderLabel)
         personScrollView.addSubview(genderSelectButton)
-        personScrollView.addSubview(petTableCell)
+//        personScrollView.addSubview(petTableCell)
         personScrollView.addSubview(creatPetBtn)
         personScrollView.addSubview(livingArea)
         personScrollView.addSubview(livingAreaMenuBtn)
@@ -361,7 +358,15 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     // Save 按鈕的動作
     @objc func saveButtonTapped() {
         // 在這裡處理 Save 按鈕被點擊的邏輯
-        UserDataManager.shared.userData["Name"] = userNameFiled.text
+        guard let username = userNameFiled.text, !username.isEmpty else {
+            // 彈出警告
+            let alert = UIAlertController(title: "錯誤", message: "名稱不能為空", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確定", style: .default))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        UserDataManager.shared.userData["Name"] = username
         UserDataManager.shared.userData["Introduction"] = introductionTextView.text
         UserDataManager.shared.userData["ResidenceArea"] = livingAreaMenuBtn.titleLabel?.text
         

@@ -14,6 +14,8 @@ class PetTabViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        petTable.reloadData()
     }
     
     // MARK: ViewDidLoad
@@ -32,7 +34,6 @@ class PetTabViewController: UIViewController {
         // 添加 tableView 到視圖中
         view.addSubview(petTable)
         
-        // 其他初始化設置...
         
     }
 
@@ -71,12 +72,4 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
         // 在這裡將 PetInformationEditVC 壓入導航堆疊
         navigationController?.pushViewController(petInformationEditVC, animated: true)
     }
-
-    
-    
 }
-
-
-
-
-

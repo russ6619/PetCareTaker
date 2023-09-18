@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 checkLogin(account: storedAccount, password: storedPassword) { success in
                     if !success {
                         // 比對失敗，跳轉到登入畫面
-                        self.redirectToLogin()
+                        AuthManager.shared.redirectToLogin()
                     } else {
                         DispatchQueue.main.async {
                             // 更新畫面程式
@@ -34,26 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             } else {
                 // Keychain中沒有存儲帳號和密碼，跳轉到登入畫面
-                redirectToLogin()
+                AuthManager.shared.redirectToLogin()
                 print("Keychain中沒有存儲帳號和密碼，跳轉到登入畫面")
             }
         } else {
             // 使用者尚未登入，執行切換到登入畫面的操作
-            DispatchQueue.main.async {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-                
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                    if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                        window.rootViewController = loginVC
-                    } else {
-                        // 如果沒有窗口，創建一個新的窗口
-                        let newWindow = UIWindow(windowScene: windowScene)
-                        newWindow.rootViewController = loginVC
-                        newWindow.makeKeyAndVisible()
-                    }
-                }
-            }
+            AuthManager.shared.redirectToLogin()
         }
         return true
     }
@@ -125,24 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    // 跳轉到登入畫面
-    func redirectToLogin() {
-        DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                    window.rootViewController = loginVC
-                } else {
-                    // 如果沒有窗口，創建一個新的窗口
-                    let newWindow = UIWindow(windowScene: windowScene)
-                    newWindow.rootViewController = loginVC
-                    newWindow.makeKeyAndVisible()
-                }
-            }
-        }
-    }
+    
     
     
     

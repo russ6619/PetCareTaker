@@ -15,10 +15,11 @@ protocol ImageSelectionCellDelegate: AnyObject {
 class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     
     var editingCell: ButtonMenuCell?
+    let userID: String = UserDataManager.shared.userData["UserID"] as! String
     
     var petTypes: PetTypes?
     var petimage: PetImage = PetImage() // 實例化 PetImage
-    var selectedOptions: [String] = []
+    var didSelectedOptions: [String] = []
 
     
     var petInfo: PetInfo = PetInfo()
@@ -83,6 +84,12 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         tapGestureRecognizer.cancelsTouchesInView = false // 允許觸摸事件傳遞到子視圖
         view.addGestureRecognizer(tapGestureRecognizer)
         
+        
+        // 創建一個 Save 按鈕
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonTapped))
+        
+        // 設置 Save 按鈕為右側的 bar button item
+        self.navigationItem.rightBarButtonItem = saveButton
     }
     
     @objc func handleTap() {
@@ -90,29 +97,129 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         view.endEditing(true)
     }
     
+    // Save 按鈕的動作
+    @objc func saveButtonTapped() {
+        // 獲取寵物名稱
+        if let nameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? PetNameTableViewCell {
+            if let petName = nameCell.textField.text {
+                selectedPet.name = petName
+            }
+        }
+
+        // 獲取寵物介紹
+        if let descriptionCell = tableView.cellForRow(at: IndexPath(row: 0, section: 2)) as? TextViewCell {
+            if let petDescription = descriptionCell.textView.text {
+                selectedPet.precautions = petDescription
+            }
+        }
+
+        // 獲取寵物種類
+        if let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? ButtonMenuCell {
+            if let petType = typeCell.buttonMenu.title(for: .normal) {
+                selectedPet.type = petType
+            }
+        }
+
+        // 獲取寵物尺寸
+        if let sizeCell = tableView.cellForRow(at: IndexPath(row: 1, section: 3)) as? ButtonMenuCell {
+            if let petSize = sizeCell.buttonMenu.title(for: .normal) {
+                selectedPet.size = petSize
+            }
+        }
+
+        // 獲取出生年份
+        if let birthYearCell = tableView.cellForRow(at: IndexPath(row: 2, section: 3)) as? ButtonMenuCell {
+            if let birthYear = birthYearCell.buttonMenu.title(for: .normal) {
+                // 獲取出生月份
+                if let birthMonthCell = tableView.cellForRow(at: IndexPath(row: 3, section: 3)) as? ButtonMenuCell {
+                    if let birthMonth = birthMonthCell.buttonMenu.title(for: .normal), !birthMonth.isEmpty {
+                        // 如果出生月份不為空，則將出生年份和出生月份組合在一起
+                        selectedPet.birthDate = birthYear + "-" + birthMonth
+                    } else {
+                        // 如果出生月份為空，則只存儲出生年份
+                        selectedPet.birthDate = birthYear
+                    }
+                }
+            }
+        }
+
+
+        // 獲取性別
+        if let genderCell = tableView.cellForRow(at: IndexPath(row: 4, section: 3)) as? ButtonMenuCell {
+            if let gender = genderCell.buttonMenu.title(for: .normal) {
+                selectedPet.gender = gender
+            }
+        }
+
+        // 獲取是否結紮
+        if let neuteredCell = tableView.cellForRow(at: IndexPath(row: 0, section: 4)) as? ButtonMenuCell {
+            if let neutered = neuteredCell.buttonMenu.title(for: .normal) {
+                selectedPet.neutered = neutered
+            }
+        }
+
+        // 獲取是否規律施打疫苗
+        if let vaccinatedCell = tableView.cellForRow(at: IndexPath(row: 1, section: 4)) as? ButtonMenuCell {
+            if let vaccinated = vaccinatedCell.buttonMenu.title(for: .normal) {
+                selectedPet.vaccinated = vaccinated
+            }
+        }
+
+        
+        UserDataManager.shared.updatePetData(userID: userID, selectedPet: selectedPet, completion: { error in
+            // 處理更新完成後的邏輯
+            if let error = error {
+                // 處理錯誤情況
+                print("更新寵物資料失敗：\(error)")
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            } else {
+                // 更新成功
+                DispatchQueue.main.async {
+                    print("寵物資料更新成功")
+                    let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    )}
+    
     // 創建 PetPersonalityTableVC 實例時設置代理
     func showPersonalityOptions() {
+        // 初始化 selectedOptions，可以是空的或其他適當的初始值
+        didSelectedOptions = [] // 這裡示範初始化為空的
+        
+        // 將 selectedPet.personality 以逗號和空格分割成陣列，並去除前後的空格
+        let personalityItems = selectedPet.personality.split(separator: ",").map { String($0.trimmingCharacters(in: .whitespaces)) }
+        
+        // 添加到 selectedOptions 中
+        didSelectedOptions.append(contentsOf: personalityItems)
+        
         let personalityOptionsVC = petPersonalityTableVC()
         personalityOptionsVC.delegate = self
-        personalityOptionsVC.selectedOptions = selectedOptions // 傳遞 selectedOptions 給 petPersonalityTableVC
+        personalityOptionsVC.selectedOptions = didSelectedOptions
         navigationController?.pushViewController(personalityOptionsVC, animated: true)
     }
+
+    
+
     
     // 實現 PetPersonalitySelectionDelegate 協議的方法，用於接收選擇的項目
     func didSelectPersonalityOptions(_ selectedOptions: [String]) {
-        // 在這裡處理選擇的項目，您可以將它們存儲到 selectedOptions 或進行其他操作
-        self.selectedOptions = selectedOptions // 更新 selectedOptions
-        print("選擇的項目：\(selectedOptions)")
+        // 在這裡處理選擇的項目，您可以將它們存儲到 didSelectedOptions 或進行其他操作
+        selectedPet.personality = selectedOptions.joined(separator: ",")
+        
+        tableView.reloadRows(at: [IndexPath(row: 2, section: 4)], with: .automatic)
     }
 
     func updatePetPersonality(with selectedOptions: [String]) {
-        // 在這裡處理選擇的個性項目，您可以將它們存儲到 petInfo 或進行其他操作
-        print("選擇的個性項目：\(selectedOptions)")
-        
-        // 更新相關的數據，例如 petInfo.personality
         
         // 重新載入表格視圖的相關部分，這將刷新您的表格視圖以顯示更新後的內容
-        tableView.reloadData()
+        tableView.reloadRows(at: [IndexPath(row: 2, section: 4)], with: .automatic)
     }
 
     
@@ -136,11 +243,8 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        print("Section: \(indexPath.section), row: \(indexPath.row)")
         if indexPath.section == 4 && indexPath.row == 2 {
-            // 點擊了 "個性(複選)" 選項
-            let petPersonalityTableVC = petPersonalityTableVC() // 創建 "petPersonalityTableVC" 實例
-            navigationController?.pushViewController(petPersonalityTableVC, animated: true) // 使用導航控制器進行跳轉，帶有左至右的動畫
+            showPersonalityOptions()
         }
     }
     
@@ -300,12 +404,8 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 menuItems = neuteredMenuItems
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
+                cell.buttonMenu.setTitle(selectedPet.neutered, for: .normal)
                 
-                if selectedPet.neutered == "0" {
-                    cell.buttonMenu.setTitle("未結紮", for: .normal)
-                } else {
-                    cell.buttonMenu.setTitle("已結紮", for: .normal)
-                }
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
@@ -323,16 +423,12 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 menuItems = vaccinatedMenuItems
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
-                if selectedPet.neutered == "0" {
-                    cell.buttonMenu.setTitle("沒有規律施打疫苗", for: .normal)
-                } else {
-                    cell.buttonMenu.setTitle("有規律施打疫苗", for: .normal)
-                }
+                cell.buttonMenu.setTitle(selectedPet.vaccinated, for: .normal)
+                
                 return cell
             case 2: // 寵物個性
                 let cell = UITableViewCell()
                 cell.textLabel?.text = "個性(複選)" // 設置標題
-                print("\(selectedOptions)")
                 cell.isUserInteractionEnabled = true
                 cell.accessoryType = .disclosureIndicator
 

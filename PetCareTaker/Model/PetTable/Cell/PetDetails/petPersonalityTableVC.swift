@@ -17,9 +17,13 @@ class petPersonalityTableVC: UITableViewController {
     var selectedOptions: [String] = [] // 用於存儲選擇的項目
     weak var delegate: PetPersonalitySelectionDelegate?
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // 註冊 "personalityCell" 這個 cell 類型
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "personalityCell")
         
@@ -44,7 +48,7 @@ class petPersonalityTableVC: UITableViewController {
         if let editVC = navigationController?.viewControllers.first(where: { $0 is PetInformationEditVC }) as? PetInformationEditVC {
             editVC.updatePetPersonality(with: selectedOptions)
         }
-        
+        delegate?.didSelectPersonalityOptions(selectedOptions)
         navigationController?.popViewController(animated: true)
     }
     
@@ -87,7 +91,6 @@ class petPersonalityTableVC: UITableViewController {
         
         // 重新加載點選的行，以刷新勾選狀態
         tableView.reloadRows(at: [indexPath], with: .automatic)
-        print("\(selectedOptions)")
     }
     
     // 返回前一個畫面時將選擇的項目通知給代理

@@ -85,6 +85,11 @@ class RegisterVC: UIViewController {
         
     }
     
+    // 全部鍵盤都關掉dimiss,比較簡單跟常用
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
