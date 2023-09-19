@@ -12,10 +12,15 @@ class PetTabViewController: UIViewController {
     }()
     
     
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         petTable.reloadData()
+        
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        navigationItem.rightBarButtonItem = addButton
+        
     }
     
     // MARK: ViewDidLoad
@@ -34,9 +39,23 @@ class PetTabViewController: UIViewController {
         // 添加 tableView 到視圖中
         view.addSubview(petTable)
         
+    }
+    @objc func addButtonTapped() {
+        // 創建一個新的空白寵物資料
+        let newPet = Pet(petID: "", name: "", gender: "", type: "", birthDate: "", size: "", neutered: "", vaccinated: "", personality: "", photo: "", precautions: "")
         
+        // 將新的寵物資料添加到 petsData 中
+        UserDataManager.shared.petsData.append(newPet)
+        
+        // 跳轉到 PetInformationEditVC，並將選定的寵物設置為新建立的寵物
+        let petInformationEditVC = PetInformationEditVC()
+        petInformationEditVC.selectedPet = newPet
+        navigationController?.pushViewController(petInformationEditVC, animated: true)
     }
 
+
+    
+    
 }
 
 // MARK: tableview
@@ -46,7 +65,7 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
         // 返回寵物數據的總數
         return UserDataManager.shared.petsData.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PetCell", for: indexPath) as! PetTableViewCell
         
@@ -68,8 +87,73 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
         let petInformationEditVC = PetInformationEditVC() // 創建PetInformationEditVC實例
         let selectedPet = UserDataManager.shared.petsData[indexPath.row]
         petInformationEditVC.selectedPet = selectedPet // 設置選定的寵物信息
-
-        // 在這裡將 PetInformationEditVC 壓入導航堆疊
+        
         navigationController?.pushViewController(petInformationEditVC, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let selectedPet = UserDataManager.shared.petsData[indexPath.row]
+            let alertController = UIAlertController(title: "確認刪除", message: "您確定要刪除這個寵物嗎？", preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
+            let deleteAction = UIAlertAction(title: "刪除", style: .destructive) { (action) in
+                // 在這裡執行刪除操作
+                let petID_to_delete = Int(selectedPet.petID)!
+                
+                guard let deletePetURL = URL(string: "\(ServerApiHelper.shared.deletePetUrl)?PetID=\(petID_to_delete)") else {
+                    return
+                }
+                
+                var request = URLRequest(url: deletePetURL)
+                request.httpMethod = "DELETE"
+                
+                // 發送請求
+                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                    if let error = error {
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+                    if let data = data {
+                        do {
+                            if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                               let success = jsonResponse["success"] as? Bool,
+                               let message = jsonResponse["message"] as? String,
+                               let debugInfo = jsonResponse["debugInfo"] as? [String: Any] {
+                                if success {
+                                    // 刪除成功，從 petsData 中刪除對應的寵物資訊
+                                    if let debugPetID = debugInfo["要刪除的 PetID"] as? Int {
+                                        print("要刪除的 PetID: \(debugPetID)")
+                                    }
+                                    let indexToDelete = UserDataManager.shared.petsData.firstIndex { $0.petID == selectedPet.petID }
+                                    if let indexToDelete = indexToDelete {
+                                        UserDataManager.shared.petsData.remove(at: indexToDelete)
+                                    }
+                                    
+                                    // 刷新 UI（例如，重新載入 tableView）
+                                    DispatchQueue.main.async {
+                                        // 在主執行緒中更新 UI
+                                        tableView.reloadData()
+                                    }
+                                } else {
+                                    // 刪除失敗，可能顯示錯誤訊息給使用者
+                                    print("刪除失敗：\(message)")
+                                }
+                            }
+                        } catch let error {
+                            print("JSON parsing error: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                task.resume()
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(deleteAction)
+            
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    
 }

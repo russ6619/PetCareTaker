@@ -22,39 +22,45 @@ class UserDataManager {
     
     // 下載個人資料
     func fetchUserData(completion: @escaping (Error?) -> Void) {
-        // 使用 queryUserUrl 從 PHP 後端獲取用戶數據
-        guard let userAccount = AuthManager.shared.getUserAccountFromKeychain(),
-              let url = URL(string: ServerApiHelper.shared.queryUserUrl + "?Phone=" + userAccount) else {
-            completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法獲取用戶帳號或建立 URL"]))
-            return
-        }
         
-        // 創建 URL 請求
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        // 發起網絡請求
-        URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                completion(error)
+        DispatchQueue.main.async {
+            // 更新畫面程式
+            
+            
+            // 使用 queryUserUrl 從 PHP 後端獲取用戶數據
+            guard let userAccount = AuthManager.shared.getUserAccountFromKeychain(),
+                  let url = URL(string: ServerApiHelper.shared.queryUserUrl + "?Phone=" + userAccount) else {
+                completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法獲取用戶帳號或建立 URL"]))
                 return
             }
             
-            // 解析從 PHP 後端返回的數據
-            if let data = data {
-                do {
-                    if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                        // 將用戶資料存儲到 UserDataManager 中
-                        self.userData = userData
-                        //                        print(self.userData)
-                        completion(nil) // 成功下載並設定資料
-                    }
-                } catch {
+            // 創建 URL 請求
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            
+            // 發起網絡請求
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
                     completion(error)
-                    print("JSON解析錯誤: \(error)")
+                    return
                 }
-            }
-        }.resume()
+                
+                // 解析從 PHP 後端返回的數據
+                if let data = data {
+                    do {
+                        if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                            // 將用戶資料存儲到 UserDataManager 中
+                            self.userData = userData
+                            //                        print(self.userData)
+                            completion(nil) // 成功下載並設定資料
+                        }
+                    } catch {
+                        completion(error)
+                        print("JSON解析錯誤: \(error)")
+                    }
+                }
+            }.resume()
+        }
     }
     
     
@@ -111,7 +117,7 @@ class UserDataManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        // 發起網絡請求
+        // 發起網絡請
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 completion(error)
@@ -137,7 +143,7 @@ class UserDataManager {
                                let photo = petData["Photo"] as? String,
                                let precautions = petData["Precautions"] as? String {
                                 
-                                let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions) // 移除 habits 欄位
+                                let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions) 
                                 pets.append(pet)
                             }
                         }
@@ -202,8 +208,8 @@ class UserDataManager {
             print("JSON轉換錯誤: \(error)")
         }
     }
-
-
+    
+    
     
 }
 

@@ -20,7 +20,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     var petTypes: PetTypes?
     var petimage: PetImage = PetImage() // 實例化 PetImage
     var didSelectedOptions: [String] = []
-
+    
     
     var petInfo: PetInfo = PetInfo()
     // 定義selectedPet屬性以保存選定的寵物數據
@@ -51,7 +51,6 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // 設置 UIViewController 的 view
         view.backgroundColor = .white
         
@@ -97,7 +96,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         view.endEditing(true)
     }
     
-    // Save 按鈕的動作
+    // MARK: SAVE BTN
     @objc func saveButtonTapped() {
         // 獲取寵物名稱
         if let nameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? PetNameTableViewCell {
@@ -105,28 +104,28 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 selectedPet.name = petName
             }
         }
-
+        
         // 獲取寵物介紹
         if let descriptionCell = tableView.cellForRow(at: IndexPath(row: 0, section: 2)) as? TextViewCell {
             if let petDescription = descriptionCell.textView.text {
                 selectedPet.precautions = petDescription
             }
         }
-
+        
         // 獲取寵物種類
         if let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? ButtonMenuCell {
             if let petType = typeCell.buttonMenu.title(for: .normal) {
                 selectedPet.type = petType
             }
         }
-
+        
         // 獲取寵物尺寸
         if let sizeCell = tableView.cellForRow(at: IndexPath(row: 1, section: 3)) as? ButtonMenuCell {
             if let petSize = sizeCell.buttonMenu.title(for: .normal) {
                 selectedPet.size = petSize
             }
         }
-
+        
         // 獲取出生年份
         if let birthYearCell = tableView.cellForRow(at: IndexPath(row: 2, section: 3)) as? ButtonMenuCell {
             if let birthYear = birthYearCell.buttonMenu.title(for: .normal) {
@@ -142,51 +141,131 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 }
             }
         }
-
-
+        
+        
         // 獲取性別
         if let genderCell = tableView.cellForRow(at: IndexPath(row: 4, section: 3)) as? ButtonMenuCell {
             if let gender = genderCell.buttonMenu.title(for: .normal) {
                 selectedPet.gender = gender
             }
         }
-
+        
         // 獲取是否結紮
         if let neuteredCell = tableView.cellForRow(at: IndexPath(row: 0, section: 4)) as? ButtonMenuCell {
             if let neutered = neuteredCell.buttonMenu.title(for: .normal) {
                 selectedPet.neutered = neutered
             }
         }
-
+        
         // 獲取是否規律施打疫苗
         if let vaccinatedCell = tableView.cellForRow(at: IndexPath(row: 1, section: 4)) as? ButtonMenuCell {
             if let vaccinated = vaccinatedCell.buttonMenu.title(for: .normal) {
                 selectedPet.vaccinated = vaccinated
             }
         }
-
         
-        UserDataManager.shared.updatePetData(userID: userID, selectedPet: selectedPet, completion: { error in
-            // 處理更新完成後的邏輯
-            if let error = error {
-                // 處理錯誤情況
-                print("更新寵物資料失敗：\(error)")
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+        // 判斷 selectedPet.petID 是否為空
+        if selectedPet.petID.isEmpty {
+            // 將 selectedPet 轉換為 JSON
+            // 創建一個包含 userID 和 selectedPet 的實例
+            let petData = PetAndUserData(
+                userID: userID,
+                petID: selectedPet.petID, 
+                name: selectedPet.name,
+                gender: selectedPet.gender,
+                type: selectedPet.type,
+                birthDate: selectedPet.birthDate,
+                size: selectedPet.size,
+                neutered: selectedPet.neutered,
+                vaccinated: selectedPet.vaccinated,
+                personality: selectedPet.personality,
+                photo: selectedPet.photo,
+                precautions: selectedPet.precautions
+            )
+
+            print(petData)
+            // 使用 JSONEncoder 將結構轉換為 JSON 數據
+            if let jsonData = try? JSONEncoder().encode(petData) {
+                // 創建 URLRequest
+                guard let createPetUrl = URL(string: ServerApiHelper.shared.createPetUrl) else {
+                    return
                 }
-            } else {
-                // 更新成功
-                DispatchQueue.main.async {
-                    print("寵物資料更新成功")
-                    let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+                var request = URLRequest(url: createPetUrl)
+                request.httpMethod = "POST"
+                
+                // 設定 HTTP 請求的主體數據
+                request.httpBody = jsonData
+                
+                // 設定 HTTP 請求的標頭
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+                // 創建 URLSession 並發送請求
+                let session = URLSession.shared
+                let task = session.dataTask(with: request) { data, response, error in
+                    // 處理伺服器回應，檢查是否成功建立寵物資料
+                    if let error = error {
+                        // 處理錯誤情況
+                        print("建立寵物資料失敗：\(error)")
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "錯誤", message: "建立寵物資料失敗", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "確定", style: .default))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    } else if let data = data {
+                        // 處理成功建立寵物資料的情況
+                        // 解析伺服器回傳的 JSON 數據，如果有需要的話
+                        do {
+                            // 在這裡解析伺服器回傳的 JSON 數據
+                            // 可以更新本地寵物資料的 petID
+                            let createdPet = try JSONDecoder().decode(Pet.self, from: data)
+                            print("建立寵物資料成功")
+                        } catch {
+                            print("解析伺服器回傳的 JSON 失敗：\(error)")
+                        }
+                        
+                        // 更新成功後的處理
+                        DispatchQueue.main.async {
+                            print("寵物資料建立成功")
+                            UserDataManager.shared.fetchUserPetData(userID: self.userID) { error in
+                                if let error = error {
+                                    // 處理錯誤情況，例如顯示錯誤訊息
+                                    print("無法獲取用戶寵物資料，錯誤：\(error.localizedDescription)")
+                                } else {
+                                    // 寵物資料下載成功，可以在這裡處理用戶寵物資料，例如設定 userPetData
+                                    print("重新下載寵物資料成功：\(UserDataManager.shared.petsData)")
+                                }
+                            }
+                            let alert = UIAlertController(title: "成功", message: "寵物資料建立成功", preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "確定", style: .default))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }
                 }
+                task.resume()
             }
+        } else {
+            UserDataManager.shared.updatePetData(userID: userID, selectedPet: selectedPet, completion: { error in
+                // 處理更新完成後的邏輯
+                if let error = error {
+                    // 處理錯誤情況
+                    print("更新寵物資料失敗：\(error)")
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                } else {
+                    // 更新成功
+                    DispatchQueue.main.async {
+                        print("寵物資料更新成功")
+                        let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }
+            })
         }
-    )}
+    }
     
     // 創建 PetPersonalityTableVC 實例時設置代理
     func showPersonalityOptions() {
@@ -204,9 +283,9 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         personalityOptionsVC.selectedOptions = didSelectedOptions
         navigationController?.pushViewController(personalityOptionsVC, animated: true)
     }
-
     
-
+    
+    
     
     // 實現 PetPersonalitySelectionDelegate 協議的方法，用於接收選擇的項目
     func didSelectPersonalityOptions(_ selectedOptions: [String]) {
@@ -215,13 +294,13 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         
         tableView.reloadRows(at: [IndexPath(row: 2, section: 4)], with: .automatic)
     }
-
+    
     func updatePetPersonality(with selectedOptions: [String]) {
         
         // 重新載入表格視圖的相關部分，這將刷新您的表格視圖以顯示更新後的內容
         tableView.reloadRows(at: [IndexPath(row: 2, section: 4)], with: .automatic)
     }
-
+    
     
 }
 
@@ -285,9 +364,9 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 // 種類
                 var petTypeMenuItems: [UIMenuElement] = []
-
+                
                 let allowedPetCategories = ["貓", "狗", "鳥", "兔", "鼠"]
-
+                
                 for petCategory in allowedPetCategories {
                     let breedAction = UIAction(title: petCategory, handler: { action in
                         // 在這裡處理所選寵物種類的操作
@@ -298,7 +377,9 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 let petTypeMenu = UIMenu(title: "種類", options: .singleSelection, children: petTypeMenuItems)
                 cell.buttonMenu.menu = petTypeMenu
-                cell.buttonMenu.setTitle(selectedPet.type, for: .normal)
+                if !selectedPet.type.isEmpty {
+                    cell.buttonMenu.setTitle(selectedPet.type, for: .normal)
+                }
             } else if indexPath.row == 1 {
                 // 尺寸
                 let sizeMenuItems: [UIMenuElement] = [
@@ -325,7 +406,10 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 ]
                 let sizeMenu = UIMenu(title: "尺寸", children: sizeMenuItems)
                 cell.buttonMenu.menu = sizeMenu
-                cell.buttonMenu.setTitle(selectedPet.size, for: .normal)
+                if !selectedPet.size.isEmpty {
+                    cell.buttonMenu.setTitle(selectedPet.size, for: .normal)
+                    
+                }
             } else if indexPath.row == 2 {
                 // 年份選擇
                 let currentYear = Calendar.current.component(.year, from: Date())
@@ -379,7 +463,10 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 ]
                 let genderMenu = UIMenu(title: "性別", children: genderMenuItems)
                 cell.buttonMenu.menu = genderMenu
-                cell.buttonMenu.setTitle(selectedPet.gender, for: .normal)
+                if !selectedPet.gender.isEmpty {
+                    cell.buttonMenu.setTitle(selectedPet.gender, for: .normal)
+                    
+                }
             }
             
             return cell
@@ -404,8 +491,10 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 menuItems = neuteredMenuItems
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
-                cell.buttonMenu.setTitle(selectedPet.neutered, for: .normal)
-                
+                if !selectedPet.neutered.isEmpty {
+                    cell.buttonMenu.setTitle(selectedPet.neutered, for: .normal)
+                    
+                }
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
@@ -423,15 +512,16 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 menuItems = vaccinatedMenuItems
                 let menu = UIMenu(title: "", children: menuItems)
                 cell.buttonMenu.menu = menu
-                cell.buttonMenu.setTitle(selectedPet.vaccinated, for: .normal)
-                
+                if !selectedPet.vaccinated.isEmpty {
+                    cell.buttonMenu.setTitle(selectedPet.vaccinated, for: .normal)
+                }
                 return cell
             case 2: // 寵物個性
                 let cell = UITableViewCell()
                 cell.textLabel?.text = "個性(複選)" // 設置標題
                 cell.isUserInteractionEnabled = true
                 cell.accessoryType = .disclosureIndicator
-
+                
                 // 自定義的 UILabel，顯示在右側
                 let customLabel = UILabel()
                 if selectedPet.personality.isEmpty {
@@ -439,12 +529,12 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 } else {
                     customLabel.text = selectedPet.personality
                 }
-                
+                customLabel.textAlignment = .right
                 customLabel.textColor = UIColor.gray // 設置文本顏色
                 customLabel.numberOfLines = 0
                 customLabel.translatesAutoresizingMaskIntoConstraints = false
                 cell.contentView.addSubview(customLabel)
-
+                
                 // 使用約束將 customLabel 放在 cell 的右側
                 NSLayoutConstraint.activate([
                     customLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -8),

@@ -1,15 +1,14 @@
 //
-//  TaskBoardVC.swift
+//  StartVC.swift
 //  PetCareTaker
 //
-//  Created by 李暠勳 on 2023/8/31.
+//  Created by 李暠勳 on 2023/9/19.
 //
 
 import UIKit
 
-class TaskBoardVC: UIViewController {
+class StartVC: UIViewController {
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

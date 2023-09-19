@@ -80,6 +80,21 @@ struct Pet: Codable {
     var precautions: String
 }
 
+struct PetAndUserData: Encodable {
+    let userID: String
+    let petID: String
+    var name: String
+    var gender: String
+    var type: String
+    var birthDate: String
+    var size: String
+    var neutered: String
+    var vaccinated: String
+    var personality: String
+    var photo: String
+    var precautions: String
+}
+
 struct UserInfo: Codable {
     var phone: String
     var password: String

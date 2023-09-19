@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
 		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
+		D272ECC02AB873270082C9AA /* TaskBoardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */; };
+		D272ECC22AB937450082C9AA /* StartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D272ECC12AB937450082C9AA /* StartVC.swift */; };
 		D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */; };
 		D2752C302AAF19D300147E20 /* PetInformationEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C2F2AAF19D200147E20 /* PetInformationEditVC.swift */; };
 		D2752C322AAF2E3A00147E20 /* PetNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C312AAF2E3A00147E20 /* PetNameTableViewCell.swift */; };
@@ -44,6 +46,8 @@
 /* Begin PBXFileReference section */
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
 		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
+		D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardTableVC.swift; sourceTree = "<group>"; };
+		D272ECC12AB937450082C9AA /* StartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartVC.swift; sourceTree = "<group>"; };
 		D2752C2D2AAEB19D00147E20 /* PetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTableViewCell.swift; sourceTree = "<group>"; };
 		D2752C2F2AAF19D200147E20 /* PetInformationEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInformationEditVC.swift; sourceTree = "<group>"; };
 		D2752C312AAF2E3A00147E20 /* PetNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetNameTableViewCell.swift; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				D28F2F4B2AA07E2F007E16E4 /* TaskBoardVC.swift */,
 				D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */,
 				D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */,
+				D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */,
+				D272ECC12AB937450082C9AA /* StartVC.swift */,
 			);
 			path = CoreTabs;
 			sourceTree = "<group>";
@@ -293,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D272ECC22AB937450082C9AA /* StartVC.swift in Sources */,
 				D28F2F542AA1828D007E16E4 /* UIViewExtension.swift in Sources */,
 				D2A687A42A9DE8680028F409 /* ControllerVC.swift in Sources */,
 				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
@@ -318,6 +325,7 @@
 				D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */,
 				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,
 				D2752C5B2AB08D5F00147E20 /* ImageSelectionCell.swift in Sources */,
+				D272ECC02AB873270082C9AA /* TaskBoardTableVC.swift in Sources */,
 				D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */,
 				D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */,
 				D2A65F432AA60DE700E45AE8 /* UserDataManager.swift in Sources */,

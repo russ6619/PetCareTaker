@@ -14,32 +14,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         // 檢查使用者是否已經登入
-        //        print(AuthManager.shared.isUserLoggedIn)
-        if AuthManager.shared.isUserLoggedIn {
-            // 使用者已經登入，從Keychain中獲取帳號和密碼
-            if let storedAccount = AuthManager.shared.getUserAccountFromKeychain(),
-               let storedPassword = AuthManager.shared.getUserPasswordFromKeychain() {
-                //                print("Acc: \(storedAccount), Pas: \(storedPassword)")
-                // 執行帳號和密碼比對
-                checkLogin(account: storedAccount, password: storedPassword) { success in
-                    if !success {
-                        // 比對失敗，跳轉到登入畫面
-                        AuthManager.shared.redirectToLogin()
-                    } else {
-                        DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if AuthManager.shared.isUserLoggedIn {
+                // 使用者已經登入，從Keychain中獲取帳號和密碼
+                if let storedAccount = AuthManager.shared.getUserAccountFromKeychain(),
+                   let storedPassword = AuthManager.shared.getUserPasswordFromKeychain() {
+                    print("Acc: \(storedAccount), Pas: \(storedPassword)")
+                    // 執行帳號和密碼比對
+                    self.checkLogin(account: storedAccount, password: storedPassword) { success in
+                        if !success {
+                            // 比對失敗，跳轉到登入畫面
+                            AuthManager.shared.redirectToLogin()
+                        } else {
+                            
                             // 更新畫面程式
                             self.loginSetupData()
                         }
                     }
+                    
+                    
+                } else {
+                    // Keychain中沒有存儲帳號和密碼，跳轉到登入畫面
+                    AuthManager.shared.redirectToLogin()
+                    print("Keychain中沒有存儲帳號和密碼，跳轉到登入畫面")
                 }
-            } else {
-                // Keychain中沒有存儲帳號和密碼，跳轉到登入畫面
+                
+            }else {
+                // 使用者尚未登入，執行切換到登入畫面的操作
                 AuthManager.shared.redirectToLogin()
-                print("Keychain中沒有存儲帳號和密碼，跳轉到登入畫面")
             }
-        } else {
-            // 使用者尚未登入，執行切換到登入畫面的操作
-            AuthManager.shared.redirectToLogin()
         }
         return true
     }
