@@ -80,6 +80,18 @@ struct Pet: Codable {
     var precautions: String
 }
 
+struct Tasks: Codable {
+    let TaskID: String
+    let PublisherID: String
+    let TaskName: String
+    let TaskInfo: String
+    let StartDate: String
+    let EndDate: String
+    let TaskReward: String
+    let TaskDeadline: String
+    let TaskStatus: String
+}
+
 struct PetAndUserData: Encodable {
     let userID: String
     let petID: String

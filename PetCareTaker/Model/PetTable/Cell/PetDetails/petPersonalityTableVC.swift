@@ -47,8 +47,10 @@ class petPersonalityTableVC: UITableViewController {
         // 調用 PetInformationEditVC 中的更新方法
         if let editVC = navigationController?.viewControllers.first(where: { $0 is PetInformationEditVC }) as? PetInformationEditVC {
             editVC.updatePetPersonality(with: selectedOptions)
+            
         }
         delegate?.didSelectPersonalityOptions(selectedOptions)
+        
         navigationController?.popViewController(animated: true)
     }
     

@@ -12,7 +12,7 @@ class UserDataManager {
     
     var userData = [String: Any]()
     
-    var tasksData = [String: Any]()
+    var tasksData = [Tasks]()
     
     var petsData = [Pet]() // 存儲寵物對象的數組
     
@@ -20,6 +20,7 @@ class UserDataManager {
         // 初始化，如果需要的話
     }
     
+    // MARK: User
     // 下載個人資料
     func fetchUserData(completion: @escaping (Error?) -> Void) {
         
@@ -56,7 +57,7 @@ class UserDataManager {
                         }
                     } catch {
                         completion(error)
-                        print("JSON解析錯誤: \(error)")
+                        print("FetchUserData JSON解析錯誤: \(error)")
                     }
                 }
             }.resume()
@@ -105,6 +106,7 @@ class UserDataManager {
         }
     }
     
+    // MARK: UserPets
     // 下載用戶寵物資料
     func fetchUserPetData(userID: String, completion: @escaping (Error?) -> Void) {
         // 使用 queryPetUrl 從 PHP 後端獲取用戶寵物數據，並包含 userID 參數
@@ -150,13 +152,15 @@ class UserDataManager {
                         
                         // 將寵物數據存儲在 UserDataManager 中
                         self.petsData = pets
+                        self.petsData = self.petsData.filter { $0.petID != "" }
+
                         completion(nil) // 成功下載並設定寵物資料
                     } else {
                         print("JSON 解析錯誤: 數據格式不正確")
                         print("data: \(data)")
                     }
                 } catch let error {
-                    print("JSON 解析錯誤: \(error)")
+                    print("FetchUserPetData JSON 解析錯誤: \(error)")
                 }
             }
         }.resume()
@@ -195,6 +199,7 @@ class UserDataManager {
                             if let fetchError = fetchError {
                                 completion(fetchError) // 處理下載寵物資料的錯誤
                             } else {
+                                self.petsData = self.petsData.filter { $0.petID != "" }
                                 completion(nil) // 成功更新並下載新寵物資料
                             }
                         }
@@ -205,10 +210,44 @@ class UserDataManager {
             }.resume()
         } catch {
             completion(error)
-            print("JSON轉換錯誤: \(error)")
+            print("UpdatePetData JSON轉換錯誤: \(error)")
         }
     }
     
+    // MARK: Tasks
+    func fetchTaskData(completion: @escaping (Error?) -> Void) {
+        // 使用 queryTasksUrl 從 PHP 後端獲取任務數據
+        guard let url = URL(string: ServerApiHelper.shared.queryTasksUrl) else {
+            completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"]))
+            return
+        }
+        
+        // 創建 URL 請求
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // 發起網絡請求
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            // 解析從 PHP 後端返回的數據
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    self.tasksData = try decoder.decode([Tasks].self, from: data)
+                    completion(nil) // 成功下載並設定任務資料
+                } catch let error {
+                    completion(error)
+                    print("Tasks JSON 解析錯誤: \(error)")
+                }
+            }
+        }.resume()
+    }
+
+
     
     
 }

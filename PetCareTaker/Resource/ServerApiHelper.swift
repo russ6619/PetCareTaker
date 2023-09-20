@@ -12,27 +12,47 @@ class ServerApiHelper {
 
     let apiUrlString: String
     
+    let updatePhotoUrl: String
+    
+    // User
     let loginUserUrl: String
     let registerUserUrl: String
     let queryUserUrl: String
     let updateUserUrl: String
-    
+    // UserPets
     let createPetUrl: String
     let deletePetUrl: String
     let queryPetUrl: String
     let updatePetUrl: String
+    // Tasks
+    let createTasksUrl: String
+    let deleteTasksUrl: String
+    let queryTasksUrl: String
+    let updateTasksUrl: String
+    
 
     private init() {
         apiUrlString = "http://localhost:8888/PetCareTakerServer/"
+        
+        updatePhotoUrl = apiUrlString + "updatePhoto.php"
+        
+        // User
         loginUserUrl = apiUrlString + "User/loginUser.php"
         registerUserUrl = apiUrlString + "User/registerUser.php"
         queryUserUrl = apiUrlString + "User/queryUser.php"
         updateUserUrl = apiUrlString + "User/updateUser.php"
         
+        // UserPets
         createPetUrl = apiUrlString + "UserPet/createPet.php"
         deletePetUrl = apiUrlString + "UserPet/deletePet.php"
         queryPetUrl = apiUrlString + "UserPet/queryPet.php"
         updatePetUrl = apiUrlString + "UserPet/updatePet.php"
+        
+        // Tasks
+        createTasksUrl = apiUrlString + "Tasks/createTasks.php"
+        deleteTasksUrl = apiUrlString + "Tasks/deleteTasks.php"
+        queryTasksUrl = apiUrlString + "Tasks/queryTasks.php"
+        updateTasksUrl = apiUrlString + "Tasks/updateTasks.php"
     }
 }
 

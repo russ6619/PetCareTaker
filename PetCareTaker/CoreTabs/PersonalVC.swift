@@ -15,6 +15,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var componentIsSelect = false
     
+    var serverImagePath: String?
+    
     private let personScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true // 垂直滾動條
@@ -216,7 +218,15 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
+        
+        // 創建一個輕觸手勢辨識器，用於關閉鍵盤
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGestureRecognizer.cancelsTouchesInView = false // 允許觸摸事件傳遞到子視圖
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
+        
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -229,7 +239,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         super.viewDidLayoutSubviews()
         
         personScrollView.frame = view.bounds
-        personScrollView.contentSize = CGSize(width: view.width, height: introductionTextView.bottom + 20) // 設置內容大小
+        personScrollView.contentSize = CGSize(width: view.width, height: introductionTextView.bottom + 100) // 設置內容大小
         
         titleLabel.frame = CGRect(
             x: 0,
@@ -323,7 +333,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             x: 0,
             y: introductionLabel.bottom + 10,
             width: view.width - 100,
-            height: 600)
+            height: 450)
         introductionTextView.center.x = view.xCenter
         
     }
@@ -344,6 +354,11 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         personScrollView.addSubview(introductionLabel)
         personScrollView.addSubview(introductionTextView)
         view.addSubview(personScrollView)
+    }
+    
+    @objc func handleTap() {
+        // 在這裡觸發解除 firstResponder，關閉鍵盤
+        view.endEditing(true)
     }
     
     @objc private func didTapCreatPetBtn() {
@@ -420,10 +435,14 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
 extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // 當用戶選擇了圖像後調用的方法
+    // 當用戶選擇了圖像後調用的方法
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
-            // 在這裡處理選擇的圖像，例如顯示在 personalImage 上
-            personalImage.image = selectedImage
+            // 將選擇的圖像轉換為 Data
+            if let imageData = selectedImage.jpegData(compressionQuality: 0.5) { // 使用 JPEG 格式，並設定壓縮品質（可根據需求調整）
+                // 上傳 imageData 到後端伺服器
+                uploadImageDataToServer(imageData)
+            }
         }
         
         // 關閉圖像選擇器
@@ -435,4 +454,73 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         // 關閉圖像選擇器
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    // 上傳圖像資料到後端伺服器
+    func uploadImageDataToServer(_ imageData: Data) {
+        // 在這裡實現將 imageData 上傳到後端伺服器的邏輯
+        
+        // 創建 URL，設定伺服器的上傳端點
+        guard let url = URL(string: ServerApiHelper.shared.updatePhotoUrl) else {
+            // 處理 URL 建立失敗的情況
+            return
+        }
+        
+        // 創建 HTTP 請求
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST" // 使用 POST 請求方式
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type") // 設定請求標頭
+        
+        // 設定要上傳的圖像資料
+        request.httpBody = imageData
+        
+        // 發起網絡請求
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                // 處理錯誤情況
+                print("上傳圖像資料失敗：\(error)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 200 {
+                    // 成功上傳圖像資料
+                    if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                        do {
+                            // 解析伺服器返回的 JSON 數據，其中包含圖像路徑
+                            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                               let imagePath = json["imagePath"] as? String {
+                                // 存儲伺服器返回的圖像路徑
+                                self.serverImagePath = imagePath
+                                print("伺服器返回的圖像路徑：\(imagePath)")
+                                // 存儲伺服器返回的圖像路徑到 userData
+                                if let imagePath = self.serverImagePath {
+                                    UserDataManager.shared.userData["ImagePath"] = imagePath
+                                }
+
+                                // 在這裡處理成功後的邏輯
+                            } else {
+                                // 無法解析伺服器返回的數據
+                                print("無法解析伺服器返回的數據")
+                                
+                                // 在這裡處理上傳失敗後的邏輯
+                            }
+                        } catch {
+                            // 處理 JSON 解析錯誤
+                            print("JSON 解析錯誤：\(error)")
+                            
+                            // 在這裡處理上傳失敗後的邏輯
+                        }
+                    } else {
+                        // 上傳失敗或伺服器回應狀態碼不是 200
+                        print("上傳圖像資料失敗，伺服器回應狀態碼：\(httpResponse.statusCode)")
+                        
+                        // 在這裡處理上傳失敗後的邏輯
+                    }
+                }
+            }
+        }.resume()
+    }
 }
+
+
+

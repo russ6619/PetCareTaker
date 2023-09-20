@@ -101,7 +101,19 @@ class LoginVC: UIViewController {
                                     print("用戶資料下載成功：\(UserDataManager.shared.userData)")
                                 }
                             }
-                            self.performSegue(withIdentifier: "loginOK", sender: nil)
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                if let window = windowScene.windows.first {
+                                    guard let StartVC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as? StartVC else {
+                                        return
+                                    }
+                                    let mainController = StartVC
+                                    // Set the main view controller as the root view controller of the window
+                                    window.rootViewController = mainController
+                                    // Make the window key and visible
+                                    window.makeKeyAndVisible()
+                                }
+                            }
+                            
                         } else {
                             // 密碼驗證失敗，顯示錯誤提示
                             let alert = UIAlertController(title: "登入失敗", message: "帳號或密碼錯誤", preferredStyle: .alert)

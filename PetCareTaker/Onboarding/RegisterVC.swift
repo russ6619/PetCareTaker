@@ -78,10 +78,11 @@ class RegisterVC: UIViewController {
         }
         
         // 創建最終的UIMenu，將城市菜單作為子項添加
-        let finalMenu = UIMenu(children: cityMenuItems)
+        let finalMenu = UIMenu(title: "居住地", children: cityMenuItems)
         
         // 將最終的UIMenu設置為livingAreaMenuBtn的menu
         livingAreaMenuBtn.menu = finalMenu
+        livingAreaMenuBtn.setTitle("請選擇居住地", for: .normal)
         
     }
     
@@ -143,7 +144,6 @@ class RegisterVC: UIViewController {
         
         // 檢查 name 是否為空
         if name.isEmpty {
-            print("名稱不能為空")
             checkForUserName.text = "名稱不能為空"
             checkForUserName.textColor = .systemRed
             userName.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
@@ -154,15 +154,17 @@ class RegisterVC: UIViewController {
             userName.setupTextFieldStyle()
         }
         
-        if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty {
+        if residenceArea.isEmpty {
+            showAlert(title: "請選擇居住地", message: "居住地不能為空")
+        }
+        
+        if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty && !residenceArea.isEmpty {
             // 對密碼進行 SHA-256 加密
             let encryptedPassword = AuthManager.shared.sha256(password)
             
             
                 let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
-                
-                //                    let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 do {
                     let jsonData = try JSONEncoder().encode(userInfo)
@@ -198,6 +200,61 @@ class RegisterVC: UIViewController {
                             if let responseString = String(data: data, encoding: .utf8) {
                                 if responseString == "成功添加新使用者" {
                                     // 註冊成功
+                                        let passwordHash = AuthManager.shared.sha256(password) // 將密碼進行SHA-256加密
+                                        
+                                        let url = URL(string: ServerApiHelper.shared.loginUserUrl)!
+                                        var request = URLRequest(url: url)
+                                        request.httpMethod = "POST"
+                                        
+                                        let params = "Phone=\(account)&Password=\(passwordHash)"
+                                        request.httpBody = params.data(using: .utf8)
+                                        
+                                        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                                            if let error = error {
+                                                print("Error: \(error)")
+                                                return
+                                            }
+                                            if let data = data,
+                                               let result = String(data: data, encoding: .utf8) {
+                                                DispatchQueue.main.async {
+                                                    if result == "true" {
+                                                        // 密碼驗證成功，執行登入後的相關操作
+                                                        AuthManager.shared.saveUserAccountToKeychain(account: account)
+                                                        AuthManager.shared.saveUserPasswordToKeychain(password: password)
+                                                        // 切換到下一個畫面
+                                                        UserDefaults.standard.set(true, forKey: "isUserLoggedIn") // 使用者已經登入
+                                                        UserDataManager.shared.fetchUserData{ error in
+                                                            if let error = error {
+                                                                // 處理錯誤情況，例如顯示錯誤訊息
+                                                                print("無法獲取用戶資料，錯誤：\(error.localizedDescription)")
+                                                            } else {
+                                                                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                                                                print("用戶資料下載成功：\(UserDataManager.shared.userData)")
+                                                            }
+                                                        }
+                                                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                                            if let window = windowScene.windows.first {
+                                                                guard let StartVC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as? StartVC else {
+                                                                    return
+                                                                }
+                                                                let mainController = StartVC
+                                                                // Set the main view controller as the root view controller of the window
+                                                                window.rootViewController = mainController
+                                                                // Make the window key and visible
+                                                                window.makeKeyAndVisible()
+                                                            }
+                                                        }
+                                                        
+                                                    } else {
+                                                        // 密碼驗證失敗，顯示錯誤提示
+                                                        let alert = UIAlertController(title: "登入失敗", message: "帳號或密碼錯誤", preferredStyle: .alert)
+                                                        alert.addAction(UIAlertAction(title: "帳號或密碼錯誤", style: .default))
+                                                        self.present(alert, animated: true, completion: nil)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        task.resume()
                                     showAlert(title: "註冊成功", message: "您已成功註冊帳號")
                                 } else {
                                     // 註冊失敗

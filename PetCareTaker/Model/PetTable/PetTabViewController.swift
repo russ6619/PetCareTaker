@@ -15,7 +15,7 @@ class PetTabViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        UserDataManager.shared.petsData = UserDataManager.shared.petsData.filter { $0.petID != "" }
         petTable.reloadData()
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
@@ -41,8 +41,9 @@ class PetTabViewController: UIViewController {
         
     }
     @objc func addButtonTapped() {
+//        if UserDataManager.shared.petsData.
         // 創建一個新的空白寵物資料
-        let newPet = Pet(petID: "", name: "", gender: "", type: "", birthDate: "", size: "", neutered: "", vaccinated: "", personality: "", photo: "", precautions: "")
+        let newPet = Pet(petID: "", name: "寵物名稱", gender: "寵物性別", type: "品種", birthDate: "出生日期", size: "尺寸", neutered: "是否結紮", vaccinated: "是否規律施打疫苗", personality: "個性", photo: "", precautions: "寵物注意事項或介紹")
         
         // 將新的寵物資料添加到 petsData 中
         UserDataManager.shared.petsData.append(newPet)

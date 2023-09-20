@@ -11,9 +11,9 @@ class TaskBoardTableVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        tableView.register(TasksCell.self, forCellReuseIdentifier: "TasksCell")
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -21,25 +21,30 @@ class TaskBoardTableVC: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return UserDataManager.shared.tasksData.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TasksCell", for: indexPath) as! TasksCell
 
-        // Configure the cell...
+        // 獲取特定索引處的任務
+        let task = UserDataManager.shared.tasksData[indexPath.row]
+        
+        // 設置自定義cell的內容
+        let dateString = "\(task.StartDate) ～ \(task.EndDate)"
+        let rewardString = task.TaskReward
+        let deadline = "任務期限：\n\(task.TaskDeadline)"
+        cell.configure(date: dateString, taskName: task.TaskName, reward: rewardString, deadline: deadline, imageColor: UIColor.systemGreen)
 
         return cell
     }
-    */
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
+
 
     /*
     // Override to support conditional editing of the table view.
