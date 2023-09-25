@@ -350,7 +350,6 @@
                     </tabBar>
                     <connections>
                         <segue destination="17M-nt-fQb" kind="relationship" relationship="viewControllers" id="RCC-fS-4Qk"/>
-                        <segue destination="5gM-Ji-DVO" kind="relationship" relationship="viewControllers" id="Hlo-mb-mjj"/>
                         <segue destination="FFi-md-vdJ" kind="relationship" relationship="viewControllers" id="lQd-U7-IF7"/>
                         <segue destination="Sru-v0-fNL" kind="relationship" relationship="viewControllers" id="vMY-TE-fXZ"/>
                         <segue destination="whZ-R5-4Yn" kind="relationship" relationship="viewControllers" id="Dea-lP-qL7"/>
@@ -469,13 +468,6 @@
                     <view key="view" contentMode="scaleToFill" id="BOJ-hR-5Kq">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="calendar.badge.clock.rtl" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Zl4-Sg-Yj7">
-                                <rect key="frame" x="76" y="362" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" systemColor="systemGreenColor"/>
-                            </imageView>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="IAd-Y9-sfL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
@@ -541,11 +533,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="rU9-jb-8tF"/>
+        <segue reference="VPl-dh-ZT5"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo1" width="1024" height="1024"/>
-        <image name="calendar.badge.clock.rtl" catalog="system" width="128" height="108"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

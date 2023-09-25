@@ -12,6 +12,7 @@ class ServerApiHelper {
 
     let apiUrlString: String
     
+    let imageUrlString: String
     let updatePhotoUrl: String
     
     // User
@@ -29,11 +30,17 @@ class ServerApiHelper {
     let deleteTasksUrl: String
     let queryTasksUrl: String
     let updateTasksUrl: String
+    let queryPublisherPhoneUrl: String
     
 
     private init() {
+        // 測試
         apiUrlString = "http://localhost:8888/PetCareTakerServer/"
         
+        // 連線
+//        apiUrlString = "https://repo.serveo.net/PetCareTakerServer/"
+        
+        imageUrlString = apiUrlString + "uploads/"
         updatePhotoUrl = apiUrlString + "updatePhoto.php"
         
         // User
@@ -53,6 +60,8 @@ class ServerApiHelper {
         deleteTasksUrl = apiUrlString + "Tasks/deleteTasks.php"
         queryTasksUrl = apiUrlString + "Tasks/queryTasks.php"
         updateTasksUrl = apiUrlString + "Tasks/updateTasks.php"
+        
+        queryPublisherPhoneUrl = apiUrlString + "Tasks/queryPublisherPhone.php"
     }
 }
 

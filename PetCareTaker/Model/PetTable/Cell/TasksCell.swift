@@ -12,6 +12,7 @@ class TasksCell: UITableViewCell {
     private var taskDeadlineLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textColor = .label
         label.textAlignment = .left
         return label
     }()
@@ -26,6 +27,7 @@ class TasksCell: UITableViewCell {
     private var taskDateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .label
         label.textAlignment = .center
         return label
     }()
@@ -33,6 +35,7 @@ class TasksCell: UITableViewCell {
     private var taskNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 22)
+        label.textColor = .label
         label.textAlignment = .left
         return label
     }()
@@ -40,6 +43,7 @@ class TasksCell: UITableViewCell {
     private var taskRewardLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .label
         label.textAlignment = .right
         return label
     }()
@@ -77,14 +81,14 @@ class TasksCell: UITableViewCell {
             // 設置 taskDateIcon 的約束
             taskDateIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             taskDateIcon.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            taskDateIcon.widthAnchor.constraint(equalToConstant: 30),
-            taskDateIcon.heightAnchor.constraint(equalToConstant: 30),
+            taskDateIcon.widthAnchor.constraint(equalToConstant: 36),
+            taskDateIcon.heightAnchor.constraint(equalToConstant: 36),
             
             // 設置 taskDeadlineLabel 的約束
             taskDeadlineLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             taskDeadlineLabel.topAnchor.constraint(equalTo: taskDateIcon.bottomAnchor, constant: 0),
             taskDeadlineLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            taskDeadlineLabel.widthAnchor.constraint(equalToConstant: 100),
+            taskDeadlineLabel.widthAnchor.constraint(equalToConstant: 80),
             
             // 設置 taskNameLabel 的約束
             taskNameLabel.leadingAnchor.constraint(equalTo: taskDeadlineLabel.trailingAnchor, constant: 10),
@@ -108,7 +112,7 @@ class TasksCell: UITableViewCell {
     func configure(date: String, taskName: String, reward: String, deadline: String,imageColor: UIColor) {
         taskDateLabel.text = date
         taskNameLabel.text = taskName
-        taskRewardLabel.text = "NT:\(reward)"
+        taskRewardLabel.text = "NT$ \(reward)"
         taskDeadlineLabel.text = deadline
         taskDateIcon.image?.withTintColor(imageColor)
     }

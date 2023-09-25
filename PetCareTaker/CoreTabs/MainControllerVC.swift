@@ -14,7 +14,7 @@ class MainControllerVC: UITabBarController {
 
         view.backgroundColor = .systemBackground
         
-        self.selectedIndex = 2
+        self.selectedIndex = 1
     }
     
     

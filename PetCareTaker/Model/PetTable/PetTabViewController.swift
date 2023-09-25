@@ -11,7 +11,7 @@ class PetTabViewController: UIViewController {
         return table
     }()
     
-    
+    var petsImages = [String: UIImage]()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -21,7 +21,44 @@ class PetTabViewController: UIViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
         navigationItem.rightBarButtonItem = addButton
         
+        guard let imageUrl = URL(string: ServerApiHelper.shared.imageUrlString) else {
+            return
+        }
+        // 使用 petID 來設置圖像
+        UserDataManager.shared.downloadImage(from: imageUrl) { (result) in
+            switch result {
+            case .success((let image, let fileName)):
+                // 在這裡使用下載的圖片和檔案名稱
+                // 在這裡使用下載的圖片和檔案名稱
+                if let petID = self.getPetIDForImage(fileName) {
+                    // 使用 petID 作為鍵來設置圖像
+                    self.petsImages[petID] = image
+                    // 刷新表格視圖
+                    self.petTable.reloadData()
+                }
+                print("下載的檔案名稱: \(fileName)")
+            case .failure(let error):
+                // 下載圖片失敗，處理錯誤
+                print("下載失敗: \(error.localizedDescription)")
+            }
+        }
+
     }
+    
+    private func getPetIDForImage(_ fileName: String) -> String? {
+        // 尋找 "petsImageWith" 的範圍
+        if let range = fileName.range(of: "petsImageWith") {
+            // 提取 "petsImageWith" 之後的部分，這部分應該是寵物ID
+            let petIDPart = fileName[range.upperBound...]
+            
+            // 將提取的部分轉換為字符串並返回
+            return String(petIDPart)
+        }
+        
+        // 如果未找到 "petsImageWith"，返回 nil
+        return nil
+    }
+
     
     // MARK: ViewDidLoad
     override func viewDidLoad() {
@@ -87,7 +124,11 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
         // 當用戶點擊單元格時，執行以下代碼
         let petInformationEditVC = PetInformationEditVC() // 創建PetInformationEditVC實例
         let selectedPet = UserDataManager.shared.petsData[indexPath.row]
+        let selectedPetID = UserDataManager.shared.petsData[indexPath.row].petID
+        let selectedPetNowImage = petsImages[selectedPetID]
         petInformationEditVC.selectedPet = selectedPet // 設置選定的寵物信息
+        petInformationEditVC.selectedPetID = selectedPetID
+        petInformationEditVC.petNowImage.image = selectedPetNowImage
         
         navigationController?.pushViewController(petInformationEditVC, animated: true)
     }

@@ -219,10 +219,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
         
-        // 創建一個輕觸手勢辨識器，用於關閉鍵盤
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        tapGestureRecognizer.cancelsTouchesInView = false // 允許觸摸事件傳遞到子視圖
-        view.addGestureRecognizer(tapGestureRecognizer)
+        
         
         
     }
@@ -356,10 +353,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         view.addSubview(personScrollView)
     }
     
-    @objc func handleTap() {
-        // 在這裡觸發解除 firstResponder，關閉鍵盤
-        view.endEditing(true)
-    }
+    
     
     @objc private func didTapCreatPetBtn() {
         // 創建 PetVC 實例
@@ -435,7 +429,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
 extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // 當用戶選擇了圖像後調用的方法
-    // 當用戶選擇了圖像後調用的方法
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
             // 將選擇的圖像轉換為 Data
@@ -484,20 +477,26 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
                     // 成功上傳圖像資料
-                    if let data = data, let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    if let data = data {
                         do {
-                            // 解析伺服器返回的 JSON 數據，其中包含圖像路徑
-                            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                               let imagePath = json["imagePath"] as? String {
-                                // 存儲伺服器返回的圖像路徑
-                                self.serverImagePath = imagePath
-                                print("伺服器返回的圖像路徑：\(imagePath)")
-                                // 存儲伺服器返回的圖像路徑到 userData
-                                if let imagePath = self.serverImagePath {
-                                    UserDataManager.shared.userData["ImagePath"] = imagePath
+                            // 嘗試解析伺服器返回的 JSON 數據
+                            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                                if let imagePath = json["imagePath"] as? String {
+                                    // 存儲伺服器返回的圖像路徑
+                                    self.serverImagePath = imagePath
+                                    print("伺服器返回的圖像路徑：\(imagePath)")
+                                    // 存儲伺服器返回的圖像路徑到 userData
+                                    if let imagePath = self.serverImagePath {
+                                        UserDataManager.shared.userData["ImagePath"] = imagePath
+                                    }
+                                    
+                                    // 在這裡處理成功後的邏輯
+                                } else {
+                                    // 無法找到 'imagePath' 鍵
+                                    print("伺服器返回的 JSON 缺少 'imagePath' 鍵")
+                                    
+                                    // 在這裡處理上傳失敗後的邏輯
                                 }
-
-                                // 在這裡處理成功後的邏輯
                             } else {
                                 // 無法解析伺服器返回的數據
                                 print("無法解析伺服器返回的數據")
@@ -506,19 +505,25 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
                             }
                         } catch {
                             // 處理 JSON 解析錯誤
-                            print("JSON 解析錯誤：\(error)")
+                            print("uploadImageDataToServerJSON 解析錯誤：\(error)")
                             
                             // 在這裡處理上傳失敗後的邏輯
                         }
                     } else {
-                        // 上傳失敗或伺服器回應狀態碼不是 200
-                        print("上傳圖像資料失敗，伺服器回應狀態碼：\(httpResponse.statusCode)")
+                        // 上傳失敗，數據為空
+                        print("上傳圖像資料失敗，數據為空")
                         
                         // 在這裡處理上傳失敗後的邏輯
                     }
+                } else {
+                    // 上傳失敗或伺服器回應狀態碼不是 200
+                    print("上傳圖像資料失敗，伺服器回應狀態碼：\(httpResponse.statusCode)")
+                    
+                    // 在這裡處理上傳失敗後的邏輯
                 }
             }
         }.resume()
+
     }
 }
 

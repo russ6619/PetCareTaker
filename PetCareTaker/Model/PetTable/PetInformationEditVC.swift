@@ -18,13 +18,14 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     let userID: String = UserDataManager.shared.userData["UserID"] as! String
     
     var petTypes: PetTypes?
-    var petimage: PetImage = PetImage() // 實例化 PetImage
+    var petNowImage: PetImage = PetImage() // 實例化 PetImage
     var didSelectedOptions: [String] = []
     
     
     var petInfo: PetInfo = PetInfo()
     // 定義selectedPet屬性以保存選定的寵物數據
     var selectedPet: Pet!
+    var selectedPetID: String!
     
     // 在此處定義您的表單項目
     let sectionTitles: [String] = ["","寵物名稱", "寵物介紹", "基本資料", "詳細資料"]
@@ -46,6 +47,11 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     
     func configureImageSelectionCell(_ cell: ImageSelectionCell) {
         cell.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
     }
     
     // MARK: ViewDidLoad
@@ -78,10 +84,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         ])
         
         
-        // 創建一個輕觸手勢辨識器，用於關閉鍵盤
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        tapGestureRecognizer.cancelsTouchesInView = false // 允許觸摸事件傳遞到子視圖
-        view.addGestureRecognizer(tapGestureRecognizer)
+
         
         
         // 創建一個 Save 按鈕
@@ -91,10 +94,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         self.navigationItem.rightBarButtonItem = saveButton
     }
     
-    @objc func handleTap() {
-        // 在這裡觸發解除 firstResponder，關閉鍵盤
-        view.endEditing(true)
-    }
+    
     
     // MARK: SAVE BTN
     @objc func saveButtonTapped() {
@@ -170,7 +170,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             // 創建一個包含 userID 和 selectedPet 的實例
             let petData = PetAndUserData(
                 userID: userID,
-                petID: selectedPet.petID, 
+                petID: selectedPet.petID,
                 name: selectedPet.name,
                 gender: selectedPet.gender,
                 type: selectedPet.type,
@@ -182,8 +182,20 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 photo: selectedPet.photo,
                 precautions: selectedPet.precautions
             )
-
-            print(petData)
+            
+            print("petData: \(petData)")
+            // 獲取是否規律施打疫苗
+            if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
+                if let petImage = imageCell.petImage.image {
+                    
+                    DispatchQueue.main.async {
+                        // 更新畫面程式
+                        self.uploadPetImage()
+                    }
+                }
+            }
+                
+                
             // 使用 JSONEncoder 將結構轉換為 JSON 數據
             if let jsonData = try? JSONEncoder().encode(petData) {
                 // 創建 URLRequest
@@ -218,14 +230,15 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                             // 在這裡解析伺服器回傳的 JSON 數據
                             // 可以更新本地寵物資料的 petID
                             let createdPet = try JSONDecoder().decode(Pet.self, from: data)
-                            print("建立寵物資料成功")
+                            
+                            print("建立寵物資料成功: \(createdPet)")
                         } catch {
                             print("解析伺服器回傳的 JSON 失敗：\(error)")
                         }
                         
                         // 更新成功後的處理
                         DispatchQueue.main.async {
-                            print("寵物資料建立成功")
+                            print("寵物資料更新成功")
                             UserDataManager.shared.fetchUserPetData(userID: self.userID) { error in
                                 if let error = error {
                                     // 處理錯誤情況，例如顯示錯誤訊息
@@ -257,13 +270,80 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 } else {
                     // 更新成功
                     DispatchQueue.main.async {
-                        print("寵物資料更新成功")
+                        print("寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
                         let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "確定", style: .default))
                         self.present(alert, animated: true, completion: nil)
                     }
                 }
             })
+        }
+    }
+    
+    // MARK: uploadPetImage
+    func uploadPetImage() {
+        if let petImage = petNowImage.image, let imageData = petImage.jpegData(compressionQuality: 0.8) {
+            let uniqueFileName = "petsImageWith\(selectedPet.petID)"
+            
+            guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
+                return
+            }
+            
+            var request = URLRequest(url: uploadImageUrl)
+            request.httpMethod = "POST"
+            
+            // 設置HTTP標頭
+            let boundary = "Boundary-\(UUID().uuidString)"
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            // 創建HTTP主體
+            var body = Data()
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"fileToUpload\"; filename=\"\(uniqueFileName)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            body.append(imageData)
+            body.append("\r\n".data(using: .utf8)!)
+            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            
+            request.httpBody = body
+            
+            let session = URLSession.shared
+            let task = session.dataTask(with: request) { data, response, error in
+                DispatchQueue.main.async {
+                    print("response: \(String(describing: response))")
+                    if let error = error {
+                        // 處理錯誤情況
+                        print("照片上傳失敗：\(error)")
+                        // 在主線程中更新 UI，顯示錯誤訊息等等...
+                    } else if let data = data {
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                               let imagePath = json["imagePath"] as? String {
+                                // 在這裡處理文件路徑，例如顯示照片或進行其他操作
+                                self.selectedPet.photo = "\(imagePath)"
+                                print("伺服器返回的文件路徑：\(imagePath)")
+                            } else {
+                                print("無法解析伺服器返回的JSON數據")
+                            }
+                        } catch {
+                            print("解析JSON時出現錯誤：\(error)")
+                        }
+                    }
+                }
+            }
+            task.resume()
+        } else {
+            print("沒有要上傳的圖片")
+        }
+        // 遍歷 petsData，尋找匹配的 petID
+        if let pet = UserDataManager.shared.petsData.first(where: { $0.petID == self.selectedPetID }) {
+            // 找到匹配的 pet，獲取其 photo
+            let photoURL = pet.photo
+            
+            print("找到 petID 為 \(String(describing: self.selectedPetID)) 的寵物的 photo：\(photoURL)")
+        } else {
+            // 沒有找到匹配的 petID
+            print("未找到 petID 為 \(String(describing: self.selectedPetID)) 的寵物")
         }
     }
     
@@ -335,7 +415,10 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 // petImageViewCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "petImageViewCell", for: indexPath) as! petImageViewCell
-                cell.petImage.image = petimage.image
+//                if petNowImage.image == UIImage(systemName: "pawprint.circle.fill") {
+//                    cell.petImage.image = nil
+//                }
+                cell.petImage.image = petNowImage.image
                 
                 return cell
             } else if indexPath.row == 1 {
@@ -365,7 +448,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 // 種類
                 var petTypeMenuItems: [UIMenuElement] = []
                 
-                let allowedPetCategories = ["貓", "狗", "鳥", "兔", "鼠"]
+                let allowedPetCategories = ["請選擇寵物種類", "貓", "狗", "兔","鳥", "鼠"]
                 
                 for petCategory in allowedPetCategories {
                     let breedAction = UIAction(title: petCategory, handler: { action in
@@ -383,24 +466,22 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 // 尺寸
                 let sizeMenuItems: [UIMenuElement] = [
-                    UIAction(title: "迷你(小於5公斤)", handler: { action in
-                        print("迷你(小於5公斤)")
-                        // 在這裡處理所選尺寸的操作
-                    }),
-                    UIAction(title: "小型(5-10公斤)", handler: { action in
-                        print("小型(5-10公斤)")
-                        // 在這裡處理所選尺寸的操作
-                    }),
-                    UIAction(title: "中型(10-20公斤)", handler: { action in
-                        print("中型(10-20公斤)")
-                        // 在這裡處理所選尺寸的操作
-                    }),
-                    UIAction(title: "大型(20-40公斤)", handler: { action in
-                        print("大型(20-40公斤)")
+                    UIAction(title: "請選擇寵物尺寸", handler: { action in
                         // 在這裡處理所選尺寸的操作
                     }),
                     UIAction(title: "超大型(大於40公斤)", handler: { action in
-                        print("超大型(大於40公斤)")
+                        // 在這裡處理所選尺寸的操作
+                    }),
+                    UIAction(title: "大型(20-40公斤)", handler: { action in
+                        // 在這裡處理所選尺寸的操作
+                    }),
+                    UIAction(title: "中型(10-20公斤)", handler: { action in
+                        // 在這裡處理所選尺寸的操作
+                    }),
+                    UIAction(title: "小型(5-10公斤)", handler: { action in
+                        // 在這裡處理所選尺寸的操作
+                    }),
+                    UIAction(title: "迷你(小於5公斤)", handler: { action in
                         // 在這裡處理所選尺寸的操作
                     })
                 ]
@@ -418,7 +499,6 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 
                 for year in yearsRange.reversed() {
                     let yearAction = UIAction(title: "\(year)", handler: { action in
-                        print("\(year)")
                         // 在這裡處理所選年份的操作
                     })
                     yearMenuItems.append(yearAction)
@@ -435,8 +515,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 3 {
                 // 月份選擇
                 let monthMenuItems: [UIMenuElement] = (1...12).map { month in
-                    UIAction(title: "\(month)月", handler: { action in
-                        print("\(month)月")
+                    UIAction(title: "\(month)", handler: { action in
                         // 在這裡處理所選月份的操作
                     })
                 }
@@ -452,12 +531,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 4 {
                 // 性別選擇
                 let genderMenuItems: [UIMenuElement] = [
+                    UIAction(title: "選擇性別", handler: { action in
+                        // 在這裡處理所選性別的操作
+                    }),
                     UIAction(title: "Male,公", handler: { action in
-                        print("Male,公")
                         // 在這裡處理所選性別的操作
                     }),
                     UIAction(title: "Female,母", handler: { action in
-                        print("Female,母")
                         // 在這裡處理所選性別的操作
                     })
                 ]
@@ -479,12 +559,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 // 選項「是否結紮」
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
                 let neuteredMenuItems: [UIMenuElement] = [
+                    UIAction(title: "是否結紮", handler: { action in
+                        // 在這裡處理已結紮的操作
+                    }),
                     UIAction(title: "已結紮", handler: { action in
-                        print("已結紮")
                         // 在這裡處理已結紮的操作
                     }),
                     UIAction(title: "未結紮", handler: { action in
-                        print("未結紮")
                         // 在這裡處理未結紮的操作
                     })
                 ]
@@ -500,12 +581,13 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ButtonMenuCell", for: indexPath) as! ButtonMenuCell
                 // 選項「是否規律施打疫苗」
                 let vaccinatedMenuItems: [UIMenuElement] = [
+                    UIAction(title: "有沒規律施打疫苗", handler: { action in
+                        // 在這裡處理有規律施打疫苗的操作
+                    }),
                     UIAction(title: "有規律施打疫苗", handler: { action in
-                        print("有規律施打疫苗")
                         // 在這裡處理有規律施打疫苗的操作
                     }),
                     UIAction(title: "沒有規律施打疫苗", handler: { action in
-                        print("沒有規律施打疫苗")
                         // 在這裡處理沒有規律施打疫苗的操作
                     })
                 ]
@@ -539,8 +621,8 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 NSLayoutConstraint.activate([
                     customLabel.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -8),
                     customLabel.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 150),
-                    customLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-                    customLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor)
+                    customLabel.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 10),
+                    customLabel.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -10)
                 ])
                 
                 return cell
@@ -559,7 +641,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             // petImageViewCell 的計算高度
-            let imageSize = petimage.image?.size ?? CGSize(width: 0, height: 0) // 如果沒有圖，使用默認大小
+            let imageSize = petNowImage.image?.size ?? CGSize(width: 0, height: 0) // 如果沒有圖，使用默認大小
             let cellHeight: CGFloat
             if imageSize.height != 0 {
                 cellHeight = imageSize.height + 100
@@ -611,7 +693,7 @@ extension PetInformationEditVC: ImageSelectionCellDelegate {
         let circularImage = makeCircularImage(compressedImage)
         
         // 將處理後的圖片設置給 petInfo 或 petImageViewCell 中的 petImage
-        petimage.image = circularImage
+        petNowImage.image = circularImage
         
         // 找到 petImageViewCell 的 indexPath
         if let indexPath = tableView.indexPath(for: petImageViewCell()) {

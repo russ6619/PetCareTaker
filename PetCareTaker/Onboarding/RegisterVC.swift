@@ -47,6 +47,7 @@ class RegisterVC: UIViewController {
         
         view.addSubview(livingAreaMenuBtn)
         
+        userPhoneNB.keyboardType = .numberPad
         
         // 解析 JSON 資料並賦值給 cities 陣列
         if let data = NSDataAsset(name: "taiwanDistricts")?.data {
@@ -86,10 +87,7 @@ class RegisterVC: UIViewController {
         
     }
     
-    // 全部鍵盤都關掉dimiss,比較簡單跟常用
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

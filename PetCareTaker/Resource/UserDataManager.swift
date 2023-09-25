@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class UserDataManager {
     static let shared = UserDataManager()
@@ -246,9 +247,99 @@ class UserDataManager {
             }
         }.resume()
     }
-
+    
+    func createTask(taskData: [String: Any], completion: @escaping (Error?) -> Void) {
+        // 將要傳送的任務數據轉換為 JSON 格式
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: taskData, options: [])
+            
+            // 建立 URL
+            guard let url = URL(string: ServerApiHelper.shared.createTasksUrl) else {
+                completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"]))
+                return
+            }
+            
+            // 建立 URL 請求
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            // 發起網絡請求
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                
+                // 檢查伺服器回應
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        completion(nil) // 成功新增任務
+                    } else {
+                        completion(NSError(domain: "UserDataManager", code: httpResponse.statusCode, userInfo: ["message": "伺服器回應錯誤"]))
+                    }
+                }
+            }.resume()
+        } catch {
+            completion(error)
+            print("CreateTask JSON 轉換錯誤: \(error)")
+        }
+    }
 
     
+    func queryUserPhoneByID(userID: String, completion: @escaping (Result<String, Error>) -> Void) {
+        // 使用 queryPublisherPhoneUrl 從 PHP 後端獲取使用者電話號碼，並包含 userID 參數
+        guard let url = URL(string: ServerApiHelper.shared.queryPublisherPhoneUrl + "?UserID=" + userID) else {
+            completion(.failure(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"])))
+            return
+        }
+        
+        // 創建 URL 請求
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // 發起網絡請求
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            // 解析從 PHP 後端返回的數據
+            if let data = data {
+                if let phone = String(data: data, encoding: .utf8) {
+                    completion(.success(phone)) // 成功下載並返回電話號碼
+                } else {
+                    completion(.failure(NSError(domain: "UserDataManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "無法解析數據"])))
+                }
+            } else {
+                completion(.failure(NSError(domain: "UserDataManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "未收到數據"])))
+            }
+        }.resume()
+    }
+
+
+    // MARK: DownloadImage
+    func downloadImage(from imageURL: URL, completion: @escaping (Result<(UIImage, String), Error>) -> Void) {
+        URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(.failure(error))
+                } else if let data = data, let image = UIImage(data: data) {
+                    // 解析檔案名稱
+                    let fileName = imageURL.lastPathComponent
+                    completion(.success((image, fileName)))
+                } else {
+                    let downloadError = NSError(domain: "UserDataManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "無法下載圖片"])
+                    completion(.failure(downloadError))
+                }
+            }
+        }.resume()
+    }
+
+
+
     
 }
 

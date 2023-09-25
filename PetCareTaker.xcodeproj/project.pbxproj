@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D25C43532AC12BE6008A2D9B /* PublishTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */; };
+		D25C43582AC17353008A2D9B /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D25C43572AC17353008A2D9B /* IQKeyboardManagerSwift */; };
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
 		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
 		D272ECC02AB873270082C9AA /* TaskBoardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */; };
@@ -20,6 +22,7 @@
 		D2752C5F2AB08FD300147E20 /* petImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C5E2AB08FD300147E20 /* petImageViewCell.swift */; };
 		D2752C632AB092D200147E20 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C622AB092D200147E20 /* TextViewCell.swift */; };
 		D2752C662AB1A37500147E20 /* WSPlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2752C652AB1A37500147E20 /* WSPlaceholderTextView.swift */; };
+		D2755CE82ABD984B00128513 /* TaskDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2755CE72ABD984B00128513 /* TaskDetailVC.swift */; };
 		D27CFFEA2A8B6181003222C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFE92A8B6181003222C8 /* AppDelegate.swift */; };
 		D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */; };
 		D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFED2A8B6181003222C8 /* LoginVC.swift */; };
@@ -44,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishTaskVC.swift; sourceTree = "<group>"; };
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
 		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardTableVC.swift; sourceTree = "<group>"; };
@@ -57,6 +61,7 @@
 		D2752C5E2AB08FD300147E20 /* petImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = petImageViewCell.swift; sourceTree = "<group>"; };
 		D2752C622AB092D200147E20 /* TextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		D2752C652AB1A37500147E20 /* WSPlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WSPlaceholderTextView.swift; sourceTree = "<group>"; };
+		D2755CE72ABD984B00128513 /* TaskDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailVC.swift; sourceTree = "<group>"; };
 		D27CFFE62A8B6181003222C8 /* PetCareTaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetCareTaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D27CFFE92A8B6181003222C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D27CFFEB2A8B6181003222C8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +92,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D2A65F412AA5708000E45AE8 /* KeychainAccess in Frameworks */,
+				D25C43582AC17353008A2D9B /* IQKeyboardManagerSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +119,15 @@
 				D2752C652AB1A37500147E20 /* WSPlaceholderTextView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		D2755CE62ABD980800128513 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+				D2755CE72ABD984B00128513 /* TaskDetailVC.swift */,
+				D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */,
+			);
+			path = Task;
 			sourceTree = "<group>";
 		};
 		D27CFFDD2A8B6181003222C8 = {
@@ -186,6 +201,7 @@
 		D2A687472A983F700028F409 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D2755CE62ABD980800128513 /* Task */,
 				D2F772222AB562F900063245 /* PetTable */,
 			);
 			path = Model;
@@ -240,6 +256,7 @@
 			name = PetCareTaker;
 			packageProductDependencies = (
 				D2A65F402AA5708000E45AE8 /* KeychainAccess */,
+				D25C43572AC17353008A2D9B /* IQKeyboardManagerSwift */,
 			);
 			productName = PetCareTaker;
 			productReference = D27CFFE62A8B6181003222C8 /* PetCareTaker.app */;
@@ -271,6 +288,7 @@
 			mainGroup = D27CFFDD2A8B6181003222C8;
 			packageReferences = (
 				D2A65F3F2AA5708000E45AE8 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				D25C43562AC17353008A2D9B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 			);
 			productRefGroup = D27CFFE72A8B6181003222C8 /* Products */;
 			projectDirPath = "";
@@ -304,6 +322,7 @@
 				D272ECC42ABAC5CD0082C9AA /* TasksCell.swift in Sources */,
 				D2A687A42A9DE8680028F409 /* MainControllerVC.swift in Sources */,
 				D2A687422A9731A80028F409 /* PasswordTextField.swift in Sources */,
+				D2755CE82ABD984B00128513 /* TaskDetailVC.swift in Sources */,
 				D2752C662AB1A37500147E20 /* WSPlaceholderTextView.swift in Sources */,
 				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
 				D28F2F452AA07D4D007E16E4 /* PersonalVC.swift in Sources */,
@@ -315,6 +334,7 @@
 				D2F772242AB5698700063245 /* Struct.swift in Sources */,
 				D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */,
 				D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */,
+				D25C43532AC12BE6008A2D9B /* PublishTaskVC.swift in Sources */,
 				D2752C322AAF2E3A00147E20 /* PetNameTableViewCell.swift in Sources */,
 				D2752C302AAF19D300147E20 /* PetInformationEditVC.swift in Sources */,
 				D2752C2E2AAEB19D00147E20 /* PetTableViewCell.swift in Sources */,
@@ -554,6 +574,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D25C43562AC17353008A2D9B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hackiftekhar/IQKeyboardManager";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 		D2A65F3F2AA5708000E45AE8 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
@@ -565,6 +593,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D25C43572AC17353008A2D9B /* IQKeyboardManagerSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D25C43562AC17353008A2D9B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */;
+			productName = IQKeyboardManagerSwift;
+		};
 		D2A65F402AA5708000E45AE8 /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D2A65F3F2AA5708000E45AE8 /* XCRemoteSwiftPackageReference "KeychainAccess" */;

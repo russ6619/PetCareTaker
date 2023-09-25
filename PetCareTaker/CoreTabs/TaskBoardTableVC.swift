@@ -8,19 +8,57 @@
 import UIKit
 
 class TaskBoardTableVC: UITableViewController {
+    
+//    private let filterMenuBtn: UIBarButtonItem = {
+//        let button = UIBarButtonItem()
+//        button.image = UIImage(systemName: "list.dash")
+//        button.menu = UIMenu(children: [
+//            UIAction(title: "短期任務", handler: { action in
+//            print("短期任務")}),
+//            UIAction(title: "長期任務", handler: { action in
+//            print("長期任務")}),
+//            UIAction(title: "即期任務", handler: { action in
+//            print("即期任務")})
+//        ])
+//        return button
+//    }()
+        
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         tableView.register(TasksCell.self, forCellReuseIdentifier: "TasksCell")
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        // 左上角的 Reload 按鈕
+        let reloadButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(reloadData))
+        navigationItem.leftBarButtonItem = reloadButton
+        
+        let createdTaskBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createdTask))
+        
+        navigationItem.rightBarButtonItem = createdTaskBtn
     }
 
+    @objc func reloadData() {
+        // 在這裡重新加載資料和刷新表格
+        UserDataManager.shared.fetchTaskData { error in
+            if let error = error {
+                print("無法獲取任務清單，錯誤：\(error.localizedDescription)")
+            } else {
+                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                print("任務清單下載成功")
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    @objc func createdTask() {
+        
+        let publishTaskVC = PublishTaskVC()
+        navigationController?.show(publishTaskVC, sender: nil)
+    }
+    
     // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return UserDataManager.shared.tasksData.count
@@ -32,16 +70,37 @@ class TaskBoardTableVC: UITableViewController {
         // 獲取特定索引處的任務
         let task = UserDataManager.shared.tasksData[indexPath.row]
         
+        guard let startDate = dateFormatter(task.StartDate),
+              let endDate = dateFormatter(task.EndDate),
+              let deadlineDate = dateFormatter(task.TaskDeadline) else {
+            return cell
+        }
+        
         // 設置自定義cell的內容
-        let dateString = "\(task.StartDate) ～ \(task.EndDate)"
-        let rewardString = task.TaskReward
-        let deadline = "任務期限：\n\(task.TaskDeadline)"
+        let dateString = "\(startDate.month) ～ \(endDate.month)"
+        let rewardString = "\(formatNumberString(task.TaskReward))"
+        let deadline = "任務期限：\n\(deadlineDate.month)"
+        
         cell.configure(date: dateString, taskName: task.TaskName, reward: rewardString, deadline: deadline, imageColor: UIColor.systemGreen)
 
         return cell
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 獲取所選任務
+        let selectedTask = UserDataManager.shared.tasksData[indexPath.row]
+
+        // 創建 TaskDetailViewController 的實例
+        let taskDetailVC = TaskDetailVC()
+
+        // 傳遞所選任務資料給 TaskDetailViewController
+        taskDetailVC.selectedTask = selectedTask
+
+        // 將 TaskDetailViewController 推入導航堆疊，顯示詳細資料
+        navigationController?.pushViewController(taskDetailVC, animated: true)
     }
 
 
@@ -90,5 +149,34 @@ class TaskBoardTableVC: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func dateFormatter(_ dateString: String) -> (year: String, month: String)? {
+        // 創建日期格式化器
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+
+        // 解析日期字符串
+        if let date = dateFormatter.date(from: dateString) {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.year, .month, .day], from: date)
+
+            if let year = components.year, let month = components.month, let day = components.day {
+                return (year: "\(year)", month: "\(month)/\(day)")
+            }
+        }
+        return nil
+    }
+
+    func formatNumberString(_ numberString: String) -> String {
+        if let numberValue = Double(numberString) {
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.groupingSeparator = ","
+            numberFormatter.maximumFractionDigits = 0 // 不顯示小數點
+            return numberFormatter.string(from: NSNumber(value: numberValue)) ?? numberString
+        } else {
+            return numberString
+        }
+    }
 
 }

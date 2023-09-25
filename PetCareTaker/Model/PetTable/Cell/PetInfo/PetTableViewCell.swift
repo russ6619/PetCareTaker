@@ -93,8 +93,22 @@ class PetTableViewCell: UITableViewCell {
     func configure(with pet: Pet) {
         
         // 在這裡設置視圖的內容
-//        petImageView.image = UIImage(named: pet.photo)
-        petImageView.image = UIImage(systemName: "pawprint.circle.fill")
+        if let imageURL = URL(string: ServerApiHelper.shared.apiUrlString + pet.photo) {
+            UserDataManager.shared.downloadImage(from: imageURL) { (result) in
+                switch result {
+                case .success((let image, let fileName)):
+                    // 在這裡使用下載的圖片
+                    self.petImageView.image =  image
+                    print("fileName: \(fileName)")
+                    print("下載內容： \(pet.photo)")
+                case .failure(let error):
+                    // 下載圖片失敗，處理錯誤
+                    print("下載失敗: \(error.localizedDescription)")
+                    self.petImageView.image = UIImage(systemName: "pawprint.circle.fill")
+                }
+            }
+        }
+        
         petNameLabel.text = pet.name
         petBasicLabel.text = "\(pet.type), \(calculateAge(from: pet.birthDate)), \(pet.gender),  \(pet.size)"
         petPersonalityLabel.text = "\(pet.personality)"
@@ -112,12 +126,20 @@ class PetTableViewCell: UITableViewCell {
             let ageComponents = calendar.dateComponents([.year, .month], from: petDate, to: currentDate)
             
             if let years = ageComponents.year, let months = ageComponents.month {
-                return "\(years)歲\(months)個月"
-            } else if let years = ageComponents.year {
-                return "\(years)歲"
+                    if years >= 1 {
+                        if months == 0 {
+                            return "\(years)歲"
+                        }
+                        return "\(years)歲又\(months)個月"
+                    } else {
+                        return "\(months)個月大"
+                    }
+                } else if let years = ageComponents.year {
+                    return "\(years)歲"
+            } else if let months = ageComponents.month {
+                return "\(months)月大"
             }
         }
-        
         return "年齡未知"
     }
 

@@ -59,21 +59,6 @@ class petImageViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        // 設置一個固定的高度，根據您的需求調整值
-//        var cellHeight: CGFloat = 0
-//        
-//        guard petImage.image != nil else {
-//            frame.size.height = cellHeight
-//            return
-//        }
-//        // 如果有圖像，計算 cell 的高度，根據您的需求來調整計算邏輯
-//        let imageSize = petImage.image?.size ?? CGSize(width: 10, height: 10) // 如果沒有圖像，使用預設大小
-//        let imageAspectRatio = imageSize.width / imageSize.height
-//        let cellWidth = contentView.bounds.width
-//        cellHeight = cellWidth / imageAspectRatio
-//        
-//        frame.size.height = cellHeight
-        
     }
 
 

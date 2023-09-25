@@ -24,13 +24,10 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+        userPhoneLogin.keyboardType = .numberPad
     }
     
-    // 關閉鍵盤
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true) 
-    }
+
     
     @IBAction func loginCheck(_ sender: Any) {
         
