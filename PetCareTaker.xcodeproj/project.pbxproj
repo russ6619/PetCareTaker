@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		D25C43532AC12BE6008A2D9B /* PublishTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */; };
 		D25C43582AC17353008A2D9B /* IQKeyboardManagerSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D25C43572AC17353008A2D9B /* IQKeyboardManagerSwift */; };
+		D25C435A2AC1BA11008A2D9B /* PublishedTaskTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C43592AC1BA11008A2D9B /* PublishedTaskTableVC.swift */; };
+		D25C435C2AC2802C008A2D9B /* TaskForSelfCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C435B2AC2802C008A2D9B /* TaskForSelfCell.swift */; };
+		D25C435E2AC2B477008A2D9B /* TaskEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C435D2AC2B477008A2D9B /* TaskEditVC.swift */; };
 		D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */; };
 		D26DA6A42AAACEF7008DC76A /* UIImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */; };
 		D272ECC02AB873270082C9AA /* TaskBoardTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */; };
@@ -32,7 +35,6 @@
 		D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27CFFFD2A8B7759003222C8 /* RegisterVC.swift */; };
 		D28F2F452AA07D4D007E16E4 /* PersonalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F442AA07D4D007E16E4 /* PersonalVC.swift */; };
 		D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F492AA07E0C007E16E4 /* MessageVC.swift */; };
-		D28F2F4E2AA07EDA007E16E4 /* AcceptedTaskVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */; };
 		D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */; };
 		D28F2F542AA1828D007E16E4 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */; };
 		D2A65F3C2AA426ED00E45AE8 /* PetTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */; };
@@ -48,6 +50,9 @@
 
 /* Begin PBXFileReference section */
 		D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishTaskVC.swift; sourceTree = "<group>"; };
+		D25C43592AC1BA11008A2D9B /* PublishedTaskTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTaskTableVC.swift; sourceTree = "<group>"; };
+		D25C435B2AC2802C008A2D9B /* TaskForSelfCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskForSelfCell.swift; sourceTree = "<group>"; };
+		D25C435D2AC2B477008A2D9B /* TaskEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditVC.swift; sourceTree = "<group>"; };
 		D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewExtension.swift; sourceTree = "<group>"; };
 		D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Resize.swift"; sourceTree = "<group>"; };
 		D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskBoardTableVC.swift; sourceTree = "<group>"; };
@@ -73,7 +78,6 @@
 		D27CFFFD2A8B7759003222C8 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		D28F2F442AA07D4D007E16E4 /* PersonalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalVC.swift; sourceTree = "<group>"; };
 		D28F2F492AA07E0C007E16E4 /* MessageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageVC.swift; sourceTree = "<group>"; };
-		D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedTaskVC.swift; sourceTree = "<group>"; };
 		D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		D28F2F532AA1828D007E16E4 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		D2A65F3B2AA426ED00E45AE8 /* PetTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 		D2752C592AB08CB500147E20 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				D25C435B2AC2802C008A2D9B /* TaskForSelfCell.swift */,
 				D272ECC32ABAC5CD0082C9AA /* TasksCell.swift */,
 				D2F772202AB5623B00063245 /* PetInfo */,
 				D2F772212AB5626400063245 /* PetDetails */,
@@ -126,6 +131,7 @@
 			children = (
 				D2755CE72ABD984B00128513 /* TaskDetailVC.swift */,
 				D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */,
+				D25C435D2AC2B477008A2D9B /* TaskEditVC.swift */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -169,7 +175,7 @@
 				D28F2F442AA07D4D007E16E4 /* PersonalVC.swift */,
 				D28F2F492AA07E0C007E16E4 /* MessageVC.swift */,
 				D272ECBF2AB873270082C9AA /* TaskBoardTableVC.swift */,
-				D28F2F4D2AA07EDA007E16E4 /* AcceptedTaskVC.swift */,
+				D25C43592AC1BA11008A2D9B /* PublishedTaskTableVC.swift */,
 				D28F2F4F2AA07EEF007E16E4 /* SettingVC.swift */,
 				D272ECC12AB937450082C9AA /* StartVC.swift */,
 			);
@@ -326,7 +332,8 @@
 				D2752C662AB1A37500147E20 /* WSPlaceholderTextView.swift in Sources */,
 				D27CFFEE2A8B6181003222C8 /* LoginVC.swift in Sources */,
 				D28F2F452AA07D4D007E16E4 /* PersonalVC.swift in Sources */,
-				D28F2F4E2AA07EDA007E16E4 /* AcceptedTaskVC.swift in Sources */,
+				D25C435E2AC2B477008A2D9B /* TaskEditVC.swift in Sources */,
+				D25C435A2AC1BA11008A2D9B /* PublishedTaskTableVC.swift in Sources */,
 				D2A65F3C2AA426ED00E45AE8 /* PetTabViewController.swift in Sources */,
 				D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */,
 				D2F7721F2AB4389B00063245 /* petPersonalityTableVC.swift in Sources */,
@@ -346,6 +353,7 @@
 				D27CFFEC2A8B6181003222C8 /* SceneDelegate.swift in Sources */,
 				D2752C5B2AB08D5F00147E20 /* ImageSelectionCell.swift in Sources */,
 				D272ECC02AB873270082C9AA /* TaskBoardTableVC.swift in Sources */,
+				D25C435C2AC2802C008A2D9B /* TaskForSelfCell.swift in Sources */,
 				D26DA6A22AA99BDC008DC76A /* TextViewExtension.swift in Sources */,
 				D28F2F502AA07EEF007E16E4 /* SettingVC.swift in Sources */,
 				D2A65F432AA60DE700E45AE8 /* UserDataManager.swift in Sources */,

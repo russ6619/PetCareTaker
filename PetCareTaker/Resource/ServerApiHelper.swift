@@ -29,9 +29,9 @@ class ServerApiHelper {
     let createTasksUrl: String
     let deleteTasksUrl: String
     let queryTasksUrl: String
-    let updateTasksUrl: String
+    let updateTaskUrl: String
     let queryPublisherPhoneUrl: String
-    
+    let queryTasksFromUserIDUrl: String
 
     private init() {
         // 測試
@@ -59,8 +59,8 @@ class ServerApiHelper {
         createTasksUrl = apiUrlString + "Tasks/createTasks.php"
         deleteTasksUrl = apiUrlString + "Tasks/deleteTasks.php"
         queryTasksUrl = apiUrlString + "Tasks/queryTasks.php"
-        updateTasksUrl = apiUrlString + "Tasks/updateTasks.php"
-        
+        updateTaskUrl = apiUrlString + "Tasks/updateTasks.php"
+        queryTasksFromUserIDUrl = apiUrlString + "Tasks/queryTasksFromUserID.php"
         queryPublisherPhoneUrl = apiUrlString + "Tasks/queryPublisherPhone.php"
     }
 }

@@ -224,13 +224,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
     }
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
-
-    
     // MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

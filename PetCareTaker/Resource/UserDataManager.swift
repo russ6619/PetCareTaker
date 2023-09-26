@@ -14,6 +14,7 @@ class UserDataManager {
     var userData = [String: Any]()
     
     var tasksData = [Tasks]()
+    var selfTaskData = [Tasks]()
     
     var petsData = [Pet]() // 存儲寵物對象的數組
     
@@ -285,6 +286,87 @@ class UserDataManager {
             completion(error)
             print("CreateTask JSON 轉換錯誤: \(error)")
         }
+    }
+    
+    func updateTask(taskData: [String: Any], completion: @escaping (Error?) -> Void) {
+        // 將要傳送的任務數據轉換為 JSON 格式
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: taskData, options: [])
+            
+            // 建立 URL
+            guard let url = URL(string: ServerApiHelper.shared.updateTaskUrl) else {
+                completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"]))
+                return
+            }
+            
+            // 建立 URL 請求
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            // 發起網絡請求
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                
+                // 檢查伺服器回應
+                if let httpResponse = response as? HTTPURLResponse {
+                    if httpResponse.statusCode == 200 {
+                        completion(nil) // 成功更新任務
+                    } else {
+                        completion(NSError(domain: "UserDataManager", code: httpResponse.statusCode, userInfo: ["message": "伺服器回應錯誤"]))
+                    }
+                }
+            }.resume()
+        } catch {
+            completion(error)
+            print("UpdateTask JSON 轉換錯誤: \(error)")
+        }
+    }
+
+
+    func fetchTaskDataFromID(publisherID: String, completion: @escaping (Error?) -> Void) {
+        // 使用 queryTasksFromUserIDUrl 從 PHP 後端獲取特定出版者的任務數據
+        guard var urlComponents = URLComponents(string: ServerApiHelper.shared.queryTasksFromUserIDUrl) else {
+            completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"]))
+            return
+        }
+        
+        // 在 URL 中添加 PublisherID 查詢參數
+        let queryItem = URLQueryItem(name: "PublisherID", value: publisherID)
+        urlComponents.queryItems = [queryItem]
+        
+        // 創建 URL 請求
+        guard let url = urlComponents.url else {
+            completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "URL 無效"]))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // 發起網絡請求
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            // 解析從 PHP 後端返回的數據
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    self.selfTaskData = try decoder.decode([Tasks].self, from: data)
+                    completion(nil) // 成功下載並設定任務資料
+                } catch let error {
+                    completion(error)
+                    print("selfTasks JSON 解析錯誤: \(error)")
+                }
+            }
+        }.resume()
     }
 
     

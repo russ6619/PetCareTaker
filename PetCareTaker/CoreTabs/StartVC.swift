@@ -115,6 +115,16 @@ class StartVC: UIViewController {
                 // 如果成功下載用戶資料，獲取用戶的 userID
                 guard let userID: String = UserDataManager.shared.userData["UserID"] as? String else { return }
                 
+                UserDataManager.shared.fetchTaskDataFromID(publisherID: userID) { error in
+                    if let error = error {
+                        // 處理錯誤情況，例如顯示錯誤訊息
+                        print("無法獲取用戶發佈的任務資料，錯誤：\(error.localizedDescription)")
+                    } else {
+                        // 寵物資料下載成功，可以在這裡處理用戶寵物資料，例如設定 userPetData
+                        print("用戶任務資料下載成功：\(UserDataManager.shared.selfTaskData)")
+                    }
+                }
+                
                 // 使用 userID 調用 fetchUserPetData 來下載用戶的寵物資料
                 UserDataManager.shared.fetchUserPetData(userID: userID) { error in
                     if let error = error {

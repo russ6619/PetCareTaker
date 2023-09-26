@@ -461,19 +461,32 @@
             </objects>
             <point key="canvasLocation" x="-244" y="449"/>
         </scene>
-        <!--Accepted TaskVC-->
-        <scene sceneID="r5F-38-L59">
+        <!--Published Task TableVC-->
+        <scene sceneID="Khw-A9-fR2">
             <objects>
-                <viewController id="Pmb-hj-UWY" customClass="AcceptedTaskVC" customModule="PetCareTaker" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="BOJ-hR-5Kq">
+                <tableViewController id="5lG-Oy-fcO" customClass="PublishedTaskTableVC" customModule="PetCareTaker" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="ZSd-Ur-8AT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="IAd-Y9-sfL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="51t-Xm-k3s"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gAZ-Od-p8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="lPe-ib-5Pq">
+                                <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lPe-ib-5Pq" id="iTu-SK-nHu">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5lG-Oy-fcO" id="zHv-K5-zSR"/>
+                            <outlet property="delegate" destination="5lG-Oy-fcO" id="iBA-S4-YsY"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="aEW-aS-GDn"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U0t-Ui-3oe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="555" y="1206"/>
         </scene>
@@ -489,7 +502,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Pmb-hj-UWY" kind="relationship" relationship="rootViewController" id="yA2-fz-z0e"/>
+                        <segue destination="5lG-Oy-fcO" kind="relationship" relationship="rootViewController" id="qbQ-MN-zwu"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pvM-QL-ypy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

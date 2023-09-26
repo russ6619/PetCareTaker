@@ -1,17 +1,19 @@
 //
-//  PublishTaskVC.swift
+//  TaskEditVC.swift
 //  PetCareTaker
 //
-//  Created by 李暠勳 on 2023/9/25.
+//  Created by 李暠勳 on 2023/9/26.
 //
 
 import UIKit
 
-class PublishTaskVC: UIViewController, UITextViewDelegate {
+class TaskEditVC: UIViewController {
     
+    var selectedTask: Tasks!
+
     private var taskTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "發佈任務"
+        label.text = "編輯任務"
         label.font = UIFont.systemFont(ofSize: 30)
         return label
     }()
@@ -20,7 +22,7 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 24)
         textField.textColor = .label
-        textField.placeholder = "請填寫任務名稱"
+        textField.placeholder = "任務名稱"
         textField.returnKeyType = .continue
         textField.leftViewMode = .always
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
@@ -39,7 +41,7 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         let textView = WSPlaceholderTextView()
         textView.font = UIFont.systemFont(ofSize: 16)
         textView.textColor = .label
-        textView.placeholder = "請輸入您的任務內容"
+        textView.placeholder = "任務內容"
         textView.placeholderColor = .gray
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.label.cgColor
@@ -92,7 +94,7 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textColor = .label
-        textField.placeholder = "請填寫任務獎金"
+        textField.placeholder = "任務獎金"
         textField.keyboardType = .numberPad
         textField.returnKeyType = .continue
         textField.autocapitalizationType = .none
@@ -106,9 +108,9 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         return textField
     }()
     
-    private var publisherBtn: UIButton = {
+    private var editBtn: UIButton = {
         let button = UIButton()
-        button.setTitle("發佈任務", for: .normal)
+        button.setTitle("確認編輯", for: .normal)
         button.titleLabel?.textColor = .label
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.backgroundColor = .link
@@ -129,9 +131,15 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
     // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        publisherBtn.addTarget(self, action: #selector(editBtnPressed), for: .touchUpInside)
+        editBtn.addTarget(self, action: #selector(editBtnPressed), for: .touchUpInside)
 
         // Do any additional setup after loading the view.
+        // 檢查是否有選定的任務
+        if let task = selectedTask {
+            // 如果有選定的任務，則填充資料到介面元素中
+            fillData(task: task)
+        }
+        
         addSubviewToView()
     }
     
@@ -149,7 +157,7 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         taskDeadlineDate.translatesAutoresizingMaskIntoConstraints = false
         taskRewardField.translatesAutoresizingMaskIntoConstraints = false
         taskPublisherPhone.translatesAutoresizingMaskIntoConstraints = false
-        publisherBtn.translatesAutoresizingMaskIntoConstraints = false
+        editBtn.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             // 設置 taskTitleLabel 的約束
@@ -194,9 +202,9 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
             taskRewardField.widthAnchor.constraint(equalToConstant: 150),
             
             // 設置 editBtn 的約束
-            publisherBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            publisherBtn.topAnchor.constraint(equalTo: taskRewardField.bottomAnchor, constant: 8),
-            publisherBtn.widthAnchor.constraint(equalToConstant: 60),
+            editBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            editBtn.topAnchor.constraint(equalTo: taskRewardField.bottomAnchor, constant: 8),
+            editBtn.widthAnchor.constraint(equalToConstant: 60),
             
             // 設置 taskPublisherPhone 的約束
             taskPublisherPhone.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -215,15 +223,35 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         view.addSubview(taskDeadlineLabel)
         view.addSubview(taskDeadlineDate)
         view.addSubview(taskRewardField)
-        view.addSubview(publisherBtn)
+        view.addSubview(editBtn)
         view.addSubview(taskPublisherPhone)
         
     }
     
+    func fillData(task: Tasks) {
+        selectedTask = task
+        taskNameField.text = task.TaskName
+        taskInfoText.text = task.TaskInfo
+        
+        // 設定日期選擇器的日期
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let startDate = dateFormatter.date(from: task.StartDate),
+           let endDate = dateFormatter.date(from: task.EndDate),
+           let deadlineDate = dateFormatter.date(from: task.TaskDeadline) {
+            taskStartDate.date = startDate
+            taskEndDate.date = endDate
+            taskDeadlineDate.date = deadlineDate
+        }
+        
+        // 設定獎金欄位
+        taskRewardField.text = task.TaskReward
+    }
 
+    
     // MARK: @objc
     @objc func editBtnPressed() {
-        
         // 檢查是否所有欄位都有值
         guard let taskName = taskNameField.text,
               let taskInfo = taskInfoText.text,
@@ -253,8 +281,10 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
             return
         }
         
+        // 構建要更新的任務資料
         let taskData: [String: Any] = [
-            "PublisherID": userID, // 這裡可以替換成用戶的實際 ID
+            "TaskID": selectedTask.TaskID,
+            "PublisherID": userID,
             "TaskName": taskName,
             "TaskInfo": taskInfo,
             "TaskDeadline": deadlineDateString,
@@ -263,28 +293,21 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
             "EndDate": endDateString
         ]
         
-        UserDataManager.shared.createTask(taskData: taskData) { (error) in
+        // 調用 UserDataManager 的 updateTask 方法來更新任務
+        UserDataManager.shared.updateTask(taskData: taskData) { (error) in
             if let error = error {
-                self.showAlert(title: "錯誤", message: "新增任務失敗: \(error.localizedDescription)")
+                self.showAlert(title: "錯誤", message: "更新任務失敗: \(error.localizedDescription)")
             } else {
-                // 成功新增任務，可以執行相關操作，例如返回前一個畫面或者顯示成功訊息
+                // 成功更新任務，可以執行相關操作，例如返回前一個畫面或者顯示成功訊息
                 DispatchQueue.main.async {
-                    UserDataManager.shared.fetchTaskDataFromID(publisherID: userID) { error in
-                        if let error = error {
-                            // 處理錯誤情況，例如顯示錯誤訊息
-                            print("無法獲取用戶發佈的任務資料，錯誤：\(error.localizedDescription)")
-                        } else {
-                            // 用戶任務資料下載成功，可以在這裡處理用戶寵物資料，例如設定 userPetData
-                            print("用戶任務資料下載成功：\(UserDataManager.shared.selfTaskData)")
-                            // 在成功新增任務後，發送一個通知
-                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TaskAddedNotification"), object: nil)
-                        }
-                    }
+                    // 在成功更新任務後，發送一個通知
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TaskUpdatedNotification"), object: nil)
+                    self.showAlert(title: "成功", message: "更新任務成功")
                 }
-                self.showAlert(title: "成功", message: "新增任務成功")
             }
         }
     }
+
     
     func showAlert(title: String, message: String) {
         
@@ -295,19 +318,5 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
-        
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+
 }
-
-

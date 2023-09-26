@@ -198,7 +198,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "288DD0A4-C8D7-4EA7-97C2-C640AB67D682"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PetCareTaker/Model/PetTable/PetInformationEditVC.swift"
@@ -261,7 +261,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3F6C276D-3753-469B-84E6-1A4BBADCAEF5"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PetCareTaker/Model/PetTable/PetInformationEditVC.swift"

@@ -23,7 +23,6 @@ class TaskBoardTableVC: UITableViewController {
 //        return button
 //    }()
         
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -37,19 +36,35 @@ class TaskBoardTableVC: UITableViewController {
         let createdTaskBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(createdTask))
         
         navigationItem.rightBarButtonItem = createdTaskBtn
+        
+        // 訂閱新增任務通知
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTaskAddedNotification), name: NSNotification.Name(rawValue: "TaskAddedNotification"), object: nil)
+
     }
+    
+    @objc func handleTaskAddedNotification() {
+        // 在這裡執行更新數據的操作，例如重新加載表格數據
+        reloadData()
+    }
+
 
     @objc func reloadData() {
         // 在這裡重新加載資料和刷新表格
-        UserDataManager.shared.fetchTaskData { error in
-            if let error = error {
-                print("無法獲取任務清單，錯誤：\(error.localizedDescription)")
-            } else {
-                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
-                print("任務清單下載成功")
+        
+        DispatchQueue.main.async {
+            // 更新畫面程式
+            UserDataManager.shared.fetchTaskData { error in
+                if let error = error {
+                    print("無法獲取任務清單，錯誤：\(error.localizedDescription)")
+                } else {
+                    // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                    print("任務清單更新成功")
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
             }
         }
-        tableView.reloadData()
     }
     
     @objc func createdTask() {
@@ -103,52 +118,6 @@ class TaskBoardTableVC: UITableViewController {
         navigationController?.pushViewController(taskDetailVC, animated: true)
     }
 
-
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     func dateFormatter(_ dateString: String) -> (year: String, month: String)? {
         // 創建日期格式化器
