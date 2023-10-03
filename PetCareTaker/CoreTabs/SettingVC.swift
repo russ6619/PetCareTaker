@@ -7,10 +7,7 @@
 
 import UIKit
 
-struct SettingCellModel {
-    let title: String
-    let handler: (() -> Void)
-}
+
 
 /// View Controller to show user settings
 final class SettingVC: UIViewController {
@@ -57,7 +54,6 @@ final class SettingVC: UIViewController {
             AuthManager.shared.logOut { success in
                 if success {
                     // 登出成功，切換到登入畫面
-                    AuthManager.shared.isUserLoggedIn = false
                     DispatchQueue.main.async {
 //                        let loginVC = LoginVC()
 //                        loginVC.modalPresentationStyle = .fullScreen

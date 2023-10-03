@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  StartVC.swift
 //  PetCareTaker
 //
 //  Created by 李暠勳 on 2023/8/15.
@@ -24,10 +24,26 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        userPhoneLogin.keyboardType = .numberPad
         
+        userPhoneLogin.layer.masksToBounds = true
+        userPhoneLogin.layer.cornerRadius = 16
+        userPhoneLogin.returnKeyType = .continue
+        userPhoneLogin.leftViewMode = .always
+        userPhoneLogin.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userPhoneLogin.autocapitalizationType = .none
+        userPhoneLogin.autocorrectionType = .no
         
-        
+        userPasswordLogin.layer.masksToBounds = true
+        userPasswordLogin.layer.cornerRadius = 16
+        userPasswordLogin.returnKeyType = .continue
+        userPasswordLogin.leftViewMode = .always
+        userPasswordLogin.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userPasswordLogin.autocapitalizationType = .none
+        userPasswordLogin.autocorrectionType = .no
     }
+    
+
     
     @IBAction func loginCheck(_ sender: Any) {
         
@@ -98,7 +114,19 @@ class LoginVC: UIViewController {
                                     print("用戶資料下載成功：\(UserDataManager.shared.userData)")
                                 }
                             }
-                            self.performSegue(withIdentifier: "loginOK", sender: nil)
+                            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                if let window = windowScene.windows.first {
+                                    guard let StartVC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as? StartVC else {
+                                        return
+                                    }
+                                    let mainController = StartVC
+                                    // Set the main view controller as the root view controller of the window
+                                    window.rootViewController = mainController
+                                    // Make the window key and visible
+                                    window.makeKeyAndVisible()
+                                }
+                            }
+                            
                         } else {
                             // 密碼驗證失敗，顯示錯誤提示
                             let alert = UIAlertController(title: "登入失敗", message: "帳號或密碼錯誤", preferredStyle: .alert)

@@ -6,131 +6,19 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         
-        // 檢查使用者是否已經登入
-//        print(AuthManager.shared.isUserLoggedIn)
-        if AuthManager.shared.isUserLoggedIn {
-            // 使用者已經登入，從Keychain中獲取帳號和密碼
-            if let storedAccount = AuthManager.shared.getUserAccountFromKeychain(),
-               let storedPassword = AuthManager.shared.getUserPasswordFromKeychain() {
-//                print("Acc: \(storedAccount), Pas: \(storedPassword)")
-                // 執行帳號和密碼比對
-                checkLogin(account: storedAccount, password: storedPassword) { success in
-                    if !success {
-                        // 比對失敗，跳轉到登入畫面
-                        self.redirectToLogin()
-                    } else {
-                        DispatchQueue.main.async {
-                            // 更新畫面程式
-                            self.loginSetupData()
-                        }
-                    }
-                }
-            } else {
-                // Keychain中沒有存儲帳號和密碼，跳轉到登入畫面
-                redirectToLogin()
-                print("Keychain中沒有存儲帳號和密碼，跳轉到登入畫面")
-            }
-        } else {
-            // 使用者尚未登入，執行切換到登入畫面的操作
-            DispatchQueue.main.async {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-                
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                    if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                        window.rootViewController = loginVC
-                    } else {
-                        // 如果沒有窗口，創建一個新的窗口
-                        let newWindow = UIWindow(windowScene: windowScene)
-                        newWindow.rootViewController = loginVC
-                        newWindow.makeKeyAndVisible()
-                    }
-                }
-            }
-        }
+        
         return true
     }
-    
-    // 檢查帳號和密碼是否正確
-    func checkLogin(account: String, password: String, completion: @escaping (Bool) -> Void) {
-        let passwordHash = AuthManager.shared.sha256(password) // 將密碼進行SHA-256加密
-        
-        let url = URL(string: ServerApiHelper.shared.loginUserUrl)!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let params = "Phone=\(account)&Password=\(passwordHash)"
-        request.httpBody = params.data(using: .utf8)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                completion(false) // 請求失敗，回傳 false
-                // 在這裡顯示連接錯誤警告
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "連線錯誤", message: "無法連接到伺服器。請檢查您的網路連接或伺服器設定。", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
-                    UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-                }
-                return
-            }
-            if let data = data,
-               let result = String(data: data, encoding: .utf8) {
-//                print("result: \(result)")
-                // 根據 result 的值來判斷帳號和密碼是否正確
-                if result == "true" {
-                    completion(true) // 帳號和密碼正確，回傳 true
-                } else {
-                    completion(false) // 帳號和密碼不正確，回傳 false
-                }
-            }
-        }
-        task.resume()
-    }
-
-    
-    // 登入成功設定資料
-    func loginSetupData() {
-        // 在這裡設置已登入者的資料，個人資料等等...
-        UserDataManager.shared.fetchUserData { error in
-            if let error = error {
-                // 處理錯誤情況，例如顯示錯誤訊息
-                print("無法獲取用戶資料，錯誤：\(error.localizedDescription)")
-            } else {
-                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
-                print("用戶資料下載成功：\(UserDataManager.shared.userData)")
-            }
-        }
-    }
-    
-    // 跳轉到登入畫面
-    func redirectToLogin() {
-        DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC")
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                if let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                    window.rootViewController = loginVC
-                } else {
-                    // 如果沒有窗口，創建一個新的窗口
-                    let newWindow = UIWindow(windowScene: windowScene)
-                    newWindow.rootViewController = loginVC
-                    newWindow.makeKeyAndVisible()
-                }
-            }
-        }
-    }
-    
-    
-    
     
     // MARK: UISceneSession Lifecycle
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -147,4 +35,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
 }
+
 

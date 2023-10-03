@@ -15,43 +15,51 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     
     var componentIsSelect = false
     
-    struct Constraints {    // 圓角
-        static let cornerRadious: CGFloat = 8.0
-    }
+    var serverImagePath: String?
     
     private let personScrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = true // 垂直滾動條
         scrollView.isScrollEnabled = true
         scrollView.backgroundColor = UIColor.systemBackground
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    private let paperView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "個人資訊"
-        label.textColor = .label
-        label.font = UIFont.systemFont(ofSize: 40)
-        return label
-    }()
+//    private let titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "個人資訊"
+//        label.textColor = .label
+//        label.font = UIFont.systemFont(ofSize: 40)
+//        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+//        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+//        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+//        label.layer.shadowRadius = 5 // 陰影半徑
+//        return label
+//    }()
     
     private let personalImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(systemName: "camera.circle.fill")
         image.isUserInteractionEnabled = true
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.layer.masksToBounds = true
+        image.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
+        image.layer.cornerRadius = 100
         return image
     }()
     
     private let userNameLabel: UILabel = {
         let label = UILabel()
         label.text = "名稱"
+        label.font = UIFont.systemFont(ofSize: 22)
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        label.layer.shadowRadius = 5 // 陰影半徑
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -68,14 +76,21 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         field.backgroundColor = .secondarySystemBackground
         field.layer.borderWidth = 1.0
         field.layer.borderColor = UIColor.secondaryLabel.cgColor
+        field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
     
     private let genderLabel: UILabel = {
         let label = UILabel()
         label.text = "性別"
+        label.font = UIFont.systemFont(ofSize: 22)
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        label.layer.shadowRadius = 5 // 陰影半徑
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -84,35 +99,21 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         button.insertSegment(withTitle: "Male,男", at: 0, animated: false)
         button.insertSegment(withTitle: "Female,女", at: 1, animated: false)
         button.layer.cornerRadius = Constraints.cornerRadious
-        return button
-    }()
-    
-    private let petTableCell: UITableViewCell = {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "petcell")
-        cell.imageView?.image = UIImage(systemName: "pawprint.fill")
-        cell.textLabel?.text = "編輯寵物資訊"
-        cell.selectionStyle = .default
-        cell.layer.borderWidth = 1.0 // 外框線寬度
-        cell.layer.borderColor = UIColor.black.cgColor // 外框線顏色
-        return cell
-    }()
-    
-    private let creatPetBtn: UIButton = {
-        let button = UIButton()
-        button.setTitle( "新增寵物欄位", for: .normal)
-        button.setTitleColor(.label, for: .normal)
-        button.layer.cornerRadius = Constraints.cornerRadious
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.blue.cgColor
-        button.contentVerticalAlignment = .center
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     private let livingArea: UILabel = {
         let label = UILabel()
         label.text = "居住區域"
+        label.font = UIFont.systemFont(ofSize: 22)
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        label.layer.shadowRadius = 5 // 陰影半徑
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -125,6 +126,12 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             UIAction(title: "臺北市", handler: { action in
             print("臺北市")})
         ])
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = Constraints.cornerRadious
+        button.backgroundColor = .secondarySystemBackground
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -133,6 +140,11 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         label.textColor = .label
         label.text = "自我介紹"
         label.font = UIFont.systemFont(ofSize: 28)
+        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        label.layer.shadowRadius = 5 // 陰影半徑
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -141,18 +153,30 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         text.textColor = .label
         text.text = "請輸入自我介紹"
         text.font = UIFont.systemFont(ofSize: 16)
+        text.layer.masksToBounds = true
+        text.layer.cornerRadius = Constraints.cornerRadious
+        text.backgroundColor = .secondarySystemBackground
         text.layer.borderWidth = 1.0
-        text.layer.borderColor = UIColor.black.cgColor
+        text.layer.borderColor = UIColor.secondaryLabel.cgColor
         text.addBottomBorder(borderColor: UIColor.systemGray.cgColor, borderWidth: text.width - 30)
         text.addCharCalculator(max: 300)
+        text.translatesAutoresizingMaskIntoConstraints = false
+        
         return text
     }()
+    private var introductionTextViewHeightConstraint: NSLayoutConstraint!
+
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
     
     // MARK: ViewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        addSubviewToScrollView()
+        
+        
         
     }
     
@@ -161,8 +185,80 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let boldFont = UIFont.boldSystemFont(ofSize: 18)
+        
+        self.navigationController?.navigationBar.topItem?.title = "個人資訊"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: boldFont]
         
         userNameFiled.delegate = self
+        // 啟用 UITextView 的自動調整高度功能
+        introductionTextView.isScrollEnabled = false
+        introductionTextView.delegate = self
+        self.introductionTextViewHeightConstraint = introductionTextView.heightAnchor.constraint(equalToConstant: 200)
+
+        addSubviewToScrollView()
+
+        NSLayoutConstraint.activate([
+        //設定personScrollView
+            personScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            personScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            personScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            personScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            personScrollView.heightAnchor.constraint(equalToConstant: introductionTextView.bottom + 100),
+            
+        // 設定 personalImage 位置，在 title 下面置中
+            personalImage.heightAnchor.constraint(equalToConstant: 200),
+            personalImage.widthAnchor.constraint(equalToConstant: 200),
+            personalImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        
+        // 設定 userNameLabel 位置，在 personalImage 下面，左半邊
+            userNameLabel.topAnchor.constraint(equalTo: personalImage.bottomAnchor, constant: 20),
+            userNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            userNameLabel.widthAnchor.constraint(equalToConstant: 60),
+            userNameLabel.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 userNameFiled 位置，在 userNameLabel 右邊，與 userNameLabel 等高
+            userNameFiled.topAnchor.constraint(equalTo: userNameLabel.topAnchor),
+            userNameFiled.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            userNameFiled.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            userNameFiled.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 genderLabel 位置，在 userNameLabel 下方，與 userNameLabel 左右對齊
+            genderLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 20),
+            genderLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            genderLabel.widthAnchor.constraint(equalToConstant: 60),
+            genderLabel.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 genderSelectButton 位置，在 genderLabel 右邊，與 genderLabel 等高
+            genderSelectButton.topAnchor.constraint(equalTo: genderLabel.topAnchor),
+            genderSelectButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            genderSelectButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            genderSelectButton.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 livingArea 位置，在 genderLabel 下方，與genderLabel一齊靠左
+            livingArea.topAnchor.constraint(equalTo: genderLabel.bottomAnchor, constant: 20),
+            livingArea.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            livingArea.widthAnchor.constraint(equalToConstant: 100),
+            livingArea.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 livingAreaMenuBtn 位置，在 livingArea 下方，與genderSelectButton一齊靠左
+            livingAreaMenuBtn.topAnchor.constraint(equalTo: livingArea.topAnchor),
+            livingAreaMenuBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            livingAreaMenuBtn.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
+            livingAreaMenuBtn.heightAnchor.constraint(equalToConstant: 40),
+        
+        // 設定 introductionLabel 位置，在 livingArea 下方，靠左
+            introductionLabel.topAnchor.constraint(equalTo: livingArea.bottomAnchor, constant: 20),
+            introductionLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+//            livingArea.widthAnchor.constraint(equalToConstant: 60),
+//            livingArea.heightAnchor.constraint(equalToConstant: 40),
+        
+            introductionTextView.topAnchor.constraint(equalTo: introductionLabel.bottomAnchor, constant: 10),
+            introductionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            introductionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            introductionTextViewHeightConstraint // 這是之前創建的高度約束
+        ])
+        
         
         if let data = NSDataAsset(name: "taiwanDistricts")?.data {
             do {
@@ -196,8 +292,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         
         view.backgroundColor = .systemBackground
         
-        
-        
         guard let name = UserDataManager.shared.userData["Name"] as? String,
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
               let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
@@ -206,6 +300,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         userNameFiled.text = name
         introductionTextView.text = introduction
         livingAreaMenuBtn.setTitle(residenceArea, for: .normal)
+        personalImage.image = UserDataManager.shared.userImage
+        
         
         
         if gender == "Male,男" {
@@ -215,7 +311,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         }
         
         
-        creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
+//        creatPetBtn.addTarget(self, action: #selector(didTapCreatPetBtn), for: .touchUpInside)
+        
         // 添加Image點擊手勢
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePressedToPicker))
         personalImage.addGestureRecognizer(tapGesture)
@@ -226,130 +323,38 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
         
-                
+        
+        let creatPetBtn = UIBarButtonItem(title: "寵物資訊", style: .plain, target: self, action: #selector(didTapCreatPetBtn))
+        self.navigationItem.leftBarButtonItem = creatPetBtn
+        
+        
     }
     
-    
+    // MARK: viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        personScrollView.frame = view.bounds
-        personScrollView.contentSize = CGSize(width: view.width, height: introductionTextView.bottom + 20) // 設置內容大小
-        
-        titleLabel.frame = CGRect(
-            x: 0,
-            y: 10,
-            width: 162,
-            height: 48)
-        titleLabel.center.x = view.xCenter
-        
-        // 設定 personalImage 位置，在 titleLabel 下面靠左
-        personalImage.frame = CGRect(
-            x: 45,
-            y: titleLabel.bottom + 30.0,
-            width: 150,
-            height: 150)
-        personalImage.contentMode = .scaleAspectFill // 設置圖片內容模式
-        personalImage.clipsToBounds = true // 裁剪圖片以適應圓形邊界
-        personalImage.layer.cornerRadius = personalImage.frame.size.width / 2 // 設置圓角半徑為寬度的一半
-        // 設定 userNameLabel 位置，在 personalImage 右邊，在 title 下方
-        userNameLabel.frame = CGRect(
-            x: 0,
-            y: titleLabel.bottom + 10,
-            width: 60,
-            height: 40)
-        userNameLabel.center.x = personalImage.right + (view.width - personalImage.right) / 2
-        
-        // 設定 userNameFiled 位置，在 userNameLabel 下面，中心點與 userNameLabel 對齊
-        userNameFiled.frame = CGRect(
-            x: 0,
-            y: userNameLabel.bottom + 5,
-            width: view.width - personalImage.right - 60,
-            height: 40)
-        userNameFiled.center.x = userNameLabel.center.x
-        
-        // 設定 genderLabel 位置，在 userNameFiled 下方，與 userNameLabel 左右對齊
-        genderLabel.frame = CGRect(
-            x: 0,
-            y: userNameFiled.bottom + 10,
-            width: 60,
-            height: 40)
-        genderLabel.center.x = userNameLabel.center.x
-        
-        // 設定 genderSelectButton 位置，在 genderLabel 下方，中心點與上方 genderLabel 中心點 x 一樣
-        genderSelectButton.frame = CGRect(
-            x: 0,
-            y: genderLabel.bottom + 5,
-            width: view.width - personalImage.right - 40,
-            height: 40)
-        genderSelectButton.center.x = genderLabel.center.x
-        
-        
-        // 設定 petTableCell 位置，在 genderSelectButton 下方，水平置中
-        petTableCell.frame = CGRect(
-            x: view.xCenter - petTableCell.width / 2,
-            y: genderSelectButton.bottom + 20,
-            width: petTableCell.width,
-            height: petTableCell.height)
-        
-        // 設定 creatPetBtn 位置，在 petTableCell 下方，水平置中
-        creatPetBtn.frame = CGRect(
-            x: 0,
-            y: petTableCell.bottom + 10,
-            width: 200,
-            height: 36)
-        creatPetBtn.center.x = view.xCenter
-        
-        // 設定 livingArea 位置，在 creatPetBtn 下方，水平置中
-        livingArea.frame = CGRect(
-            x: 0,
-            y: creatPetBtn.bottom + 10,
-            width: 100,
-            height: 36)
-        livingArea.center.x = view.xCenter
-        
-        // 設定 livingAreaMenuBtn 位置，在 livingArea 下方，水平置中
-        livingAreaMenuBtn.frame = CGRect(
-            x: view.xCenter - 75,
-            y: livingArea.bottom,
-            width: 150,
-            height: 50)
-        
-        // 設定 introductionLabel 位置，在 petTypeBtn 下方，水平置中
-        introductionLabel.frame = CGRect(
-            x: 0,
-            y: livingAreaMenuBtn.bottom + 5,
-            width: 130,
-            height: 40)
-        introductionLabel.center.x = view.xCenter
-        
-        // 設定 introductionTextView 位置，在 introductionLabel 下方，水平置中
-        introductionTextView.frame = CGRect(
-            x: 0,
-            y: introductionLabel.bottom + 10,
-            width: view.width - 100,
-            height: 600)
-        introductionTextView.center.x = view.xCenter
-        
+//        personScrollView.frame = view.bounds
+//        personScrollView.contentSize = CGSize(width: view.width, height: introductionTextView.bottom + 100)
     }
     
     
     private func addSubviewToScrollView() {
-        
-        personScrollView.addSubview(titleLabel)
+        view.addSubview(personScrollView)
+//        personScrollView.addSubview(titleLabel)
         personScrollView.addSubview(personalImage)
         personScrollView.addSubview(userNameLabel)
         personScrollView.addSubview(userNameFiled)
         personScrollView.addSubview(genderLabel)
         personScrollView.addSubview(genderSelectButton)
-        personScrollView.addSubview(petTableCell)
-        personScrollView.addSubview(creatPetBtn)
+//        personScrollView.addSubview(petTableCell)
+//        personScrollView.addSubview(creatPetBtn)
         personScrollView.addSubview(livingArea)
         personScrollView.addSubview(livingAreaMenuBtn)
         personScrollView.addSubview(introductionLabel)
         personScrollView.addSubview(introductionTextView)
-        view.addSubview(personScrollView)
     }
+    
+    
     
     @objc private func didTapCreatPetBtn() {
         // 創建 PetVC 實例
@@ -363,7 +368,15 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     // Save 按鈕的動作
     @objc func saveButtonTapped() {
         // 在這裡處理 Save 按鈕被點擊的邏輯
-        UserDataManager.shared.userData["Name"] = userNameFiled.text
+        guard let username = userNameFiled.text, !username.isEmpty else {
+            // 彈出警告
+            let alert = UIAlertController(title: "錯誤", message: "名稱不能為空", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "確定", style: .default))
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        UserDataManager.shared.userData["Name"] = username
         UserDataManager.shared.userData["Introduction"] = introductionTextView.text
         UserDataManager.shared.userData["ResidenceArea"] = livingAreaMenuBtn.titleLabel?.text
         
@@ -419,8 +432,30 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     // 當用戶選擇了圖像後調用的方法
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let selectedImage = info[.originalImage] as? UIImage {
-            // 在這裡處理選擇的圖像，例如顯示在 personalImage 上
+            // 將選擇的圖像設置到personalImage
             personalImage.image = selectedImage
+            // 將選擇的圖像轉換為 Data
+            // 處理圖像選擇後的操作，並將圖像轉換為 Data
+            if let imageData = selectedImage.jpegData(compressionQuality: 0.7) {
+                uploadImageToServer(imageData: imageData) { result in
+                    switch result {
+                    case .success(let imagePath):
+                        // 成功上傳圖像，imagePath 包含伺服器端文件的路徑
+                        print("伺服器返回的圖像路徑：\(imagePath)")
+                        
+                        // 在這裡處理成功後的邏輯，例如更新用戶頭像
+                        // 可以在主線程中更新 UI
+                        DispatchQueue.main.async {
+                            self.personalImage.image = selectedImage // 更新圖像
+                        }
+                        
+                    case .failure(let error):
+                        // 上傳失敗，處理錯誤
+                        print("上傳圖像失敗：\(error.localizedDescription)")
+                    }
+                }
+            }
+
         }
         
         // 關閉圖像選擇器
@@ -432,4 +467,91 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         // 關閉圖像選擇器
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    // 上傳圖像資料到後端伺服器
+    func uploadImageToServer(imageData: Data, completionHandler: @escaping (Result<String, Error>) -> Void) {
+        
+        guard let userID = UserDataManager.shared.userData["UserID"] else {
+            return
+        }
+        
+        let uniqueFileName = "personImageWith\(userID)"
+        
+        guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
+            return
+        }
+        
+        var request = URLRequest(url: uploadImageUrl)
+        request.httpMethod = "POST"
+        
+        // 設置HTTP標頭
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        // 創建HTTP主體
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"fileToUpload\"; filename=\"\(uniqueFileName)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                completionHandler(.failure(error))
+                return
+            }
+            
+            if let data = data {
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let imagePath = json["imagePath"] as? String {
+                        completionHandler(.success(imagePath))
+                        UserDataManager.shared.userData["Photo"] = "/uploads/\(uniqueFileName)"
+                    } else {
+                        completionHandler(.failure(NSError(domain: "Invalid JSON response", code: 0, userInfo: nil)))
+                    }
+                } catch {
+                    completionHandler(.failure(error))
+                }
+            }
+        }
+        
+        task.resume()
+    }
+
+}
+
+extension PersonalVC: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // 計算新的 textView 高度
+        let fixedWidth = textView.frame.size.width
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        // 設定最高度
+        let mixHeight: CGFloat = 200.0
+        
+        if newSize.height >= mixHeight {
+            introductionTextViewHeightConstraint.constant = newSize.height
+        } else {
+            introductionTextViewHeightConstraint.constant = mixHeight
+        }
+        
+        // 更新 scrollView 的內容大小
+        personScrollView.contentSize.height = introductionTextView.frame.maxY + 100
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        // 檢查當前文字長度
+            let currentText = textView.text as NSString
+            let updatedText = currentText.replacingCharacters(in: range, with: text)
+            
+            // 如果超過 300 字，就不允許輸入
+            return updatedText.count <= 300
+    }
+    
 }

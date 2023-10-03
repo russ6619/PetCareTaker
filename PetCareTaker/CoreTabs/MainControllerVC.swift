@@ -7,14 +7,15 @@
 
 import UIKit
 
-class ControllerVC: UITabBarController {
+class MainControllerVC: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
-        self.selectedIndex = 2
+        self.selectedIndex = 1
+        
     }
     
     

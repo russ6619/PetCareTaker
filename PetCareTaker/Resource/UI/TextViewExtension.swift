@@ -51,8 +51,14 @@ extension UITextView {
                     
                     // Adjust the label's frame if needed
                     textLabel.frame.size = textLabel.intrinsicContentSize
-                    textLabel.frame.origin.x = self.width - textLabel.intrinsicContentSize.width
+                    textLabel.frame.origin.x = self.width - textLabel.intrinsicContentSize.width - 5
                     textLabel.frame.origin.y = self.height - textLabel.intrinsicContentSize.height
                 }
     }
+    
+    
+    
+    
+
+    
 }

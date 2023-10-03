@@ -10,7 +10,6 @@ import CryptoKit
 
 
 class RegisterVC: UIViewController {
-    @IBOutlet weak var testText: UITextField!
     
     @IBOutlet weak var userPhoneNB: UITextField!
     @IBOutlet weak var userPassWord: PasswordTextField!
@@ -26,9 +25,12 @@ class RegisterVC: UIViewController {
     
     @IBOutlet weak var livingAreaLabel: UILabel!
     
+    @IBOutlet weak var checkBtn: UIButton!
+    
     var cities: [City] = []  // 解析後的資料陣列
     var cityMenuItems: [UIMenuElement] = []
     var residenceArea: String = ""
+    
     
     private let livingAreaMenuBtn: UIButton = {
         let button = UIButton()
@@ -39,6 +41,15 @@ class RegisterVC: UIViewController {
             UIAction(title: "臺北市", handler: { action in
                 print("臺北市")})
         ])
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 25
+        button.backgroundColor = .secondarySystemBackground
+        button.layer.borderWidth = 0.2
+        button.layer.borderColor = UIColor.secondaryLabel.cgColor
+        button.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        button.layer.shadowOpacity = 0.5 // 陰影不透明度
+        button.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        button.layer.shadowRadius = 5 // 陰影半徑
         return button
     }()
     
@@ -47,7 +58,41 @@ class RegisterVC: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(livingAreaMenuBtn)
+        checkBtn.layer.masksToBounds = true
+        checkBtn.layer.cornerRadius = 20
+        checkBtn.layer.borderWidth = 0.2
+        checkBtn.layer.borderColor = UIColor.secondaryLabel.cgColor
+        checkBtn.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        checkBtn.layer.shadowOpacity = 0.5 // 陰影不透明度
+        checkBtn.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        checkBtn.layer.shadowRadius = 5 // 陰影半徑
+        checkBtn.backgroundColor = UIColor(red: 255, green: 176, blue: 44, alpha: 100)
+        checkBtn.tintColor = UIColor(red: 0, green: 86, blue: 179, alpha: 70)
         
+        userPhoneNB.keyboardType = .numberPad
+        userPhoneNB.layer.masksToBounds = true
+        userPhoneNB.layer.cornerRadius = 16
+        userPhoneNB.returnKeyType = .continue
+        userPhoneNB.leftViewMode = .always
+        userPhoneNB.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userPhoneNB.autocapitalizationType = .none
+        userPhoneNB.autocorrectionType = .no
+        
+        userName.layer.masksToBounds = true
+        userName.layer.cornerRadius = 16
+        userName.returnKeyType = .continue
+        userName.leftViewMode = .always
+        userName.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userName.autocapitalizationType = .none
+        userName.autocorrectionType = .no
+        
+        userPassWord.layer.masksToBounds = true
+        userPassWord.layer.cornerRadius = 16
+        userPassWord.returnKeyType = .continue
+        userPassWord.leftViewMode = .always
+        userPassWord.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userPassWord.autocapitalizationType = .none
+        userPassWord.autocorrectionType = .no
         
         // 解析 JSON 資料並賦值給 cities 陣列
         if let data = NSDataAsset(name: "taiwanDistricts")?.data {
@@ -79,12 +124,26 @@ class RegisterVC: UIViewController {
         }
         
         // 創建最終的UIMenu，將城市菜單作為子項添加
-        let finalMenu = UIMenu(children: cityMenuItems)
+        let finalMenu = UIMenu(title: "居住地", children: cityMenuItems)
         
         // 將最終的UIMenu設置為livingAreaMenuBtn的menu
         livingAreaMenuBtn.menu = finalMenu
+        livingAreaMenuBtn.setTitle("請選擇居住地", for: .normal)
         
     }
+    
+/*
+ 選擇的顏色色碼
+ HEX #FFB02C
+ RGB (255,176,44)
+ CMYK (0,23,67,2)
+ 
+ #0056B3
+ 0,86,179
+ 
+ #2B92FF
+ 43,146,255
+*/
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -92,15 +151,12 @@ class RegisterVC: UIViewController {
         // 設定 livingAreaMenuBtn 位置，在 petTypeLabel 下方，水平置中
         livingAreaMenuBtn.frame = CGRect(
             x: view.xCenter - 75,
-            y: livingAreaLabel.bottom,
+            y: livingAreaLabel.bottom + 50,
             width: 150,
             height: 50)
         
     }
     
-    
-    @IBAction func petInformation(_ sender: Any) {
-    }
     
     @IBAction func checkRegister(_ sender: Any) {
         
@@ -142,7 +198,6 @@ class RegisterVC: UIViewController {
         
         // 檢查 name 是否為空
         if name.isEmpty {
-            print("名稱不能為空")
             checkForUserName.text = "名稱不能為空"
             checkForUserName.textColor = .systemRed
             userName.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 244/255, alpha: 1)
@@ -153,15 +208,17 @@ class RegisterVC: UIViewController {
             userName.setupTextFieldStyle()
         }
         
-        if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty {
+        if residenceArea.isEmpty {
+            showAlert(title: "請選擇居住地", message: "居住地不能為空")
+        }
+        
+        if accountCheckResult == .valid && passwordCheckResult == .valid && !name.isEmpty && !residenceArea.isEmpty {
             // 對密碼進行 SHA-256 加密
             let encryptedPassword = AuthManager.shared.sha256(password)
             
             
                 let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
-                
-                //                    let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 do {
                     let jsonData = try JSONEncoder().encode(userInfo)
@@ -197,6 +254,61 @@ class RegisterVC: UIViewController {
                             if let responseString = String(data: data, encoding: .utf8) {
                                 if responseString == "成功添加新使用者" {
                                     // 註冊成功
+                                        let passwordHash = AuthManager.shared.sha256(password) // 將密碼進行SHA-256加密
+                                        
+                                        let url = URL(string: ServerApiHelper.shared.loginUserUrl)!
+                                        var request = URLRequest(url: url)
+                                        request.httpMethod = "POST"
+                                        
+                                        let params = "Phone=\(account)&Password=\(passwordHash)"
+                                        request.httpBody = params.data(using: .utf8)
+                                        
+                                        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                                            if let error = error {
+                                                print("Error: \(error)")
+                                                return
+                                            }
+                                            if let data = data,
+                                               let result = String(data: data, encoding: .utf8) {
+                                                DispatchQueue.main.async {
+                                                    if result == "true" {
+                                                        // 密碼驗證成功，執行登入後的相關操作
+                                                        AuthManager.shared.saveUserAccountToKeychain(account: account)
+                                                        AuthManager.shared.saveUserPasswordToKeychain(password: password)
+                                                        // 切換到下一個畫面
+                                                        UserDefaults.standard.set(true, forKey: "isUserLoggedIn") // 使用者已經登入
+                                                        UserDataManager.shared.fetchUserData{ error in
+                                                            if let error = error {
+                                                                // 處理錯誤情況，例如顯示錯誤訊息
+                                                                print("無法獲取用戶資料，錯誤：\(error.localizedDescription)")
+                                                            } else {
+                                                                // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
+                                                                print("用戶資料下載成功：\(UserDataManager.shared.userData)")
+                                                            }
+                                                        }
+                                                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                                                            if let window = windowScene.windows.first {
+                                                                guard let StartVC = self.storyboard?.instantiateViewController(withIdentifier: "StartVC") as? StartVC else {
+                                                                    return
+                                                                }
+                                                                let mainController = StartVC
+                                                                // Set the main view controller as the root view controller of the window
+                                                                window.rootViewController = mainController
+                                                                // Make the window key and visible
+                                                                window.makeKeyAndVisible()
+                                                            }
+                                                        }
+                                                        
+                                                    } else {
+                                                        // 密碼驗證失敗，顯示錯誤提示
+                                                        let alert = UIAlertController(title: "登入失敗", message: "帳號或密碼錯誤", preferredStyle: .alert)
+                                                        alert.addAction(UIAlertAction(title: "帳號或密碼錯誤", style: .default))
+                                                        self.present(alert, animated: true, completion: nil)
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        task.resume()
                                     showAlert(title: "註冊成功", message: "您已成功註冊帳號")
                                 } else {
                                     // 註冊失敗
@@ -229,26 +341,4 @@ class RegisterVC: UIViewController {
     }
 }
 
-struct UserInfo: Codable {
-    var phone: String
-    var password: String
-    var name: String
-    var residenceArea: String
-    
-    enum CodingKeys: String, CodingKey {
-        case phone = "Phone"
-        case password = "Password"
-        case name = "Name"
-        case residenceArea = "ResidenceArea"
-    }
-}
 
-struct City: Codable {
-    let name: String
-    let districts: [District]
-}
-
-struct District: Codable {
-    let zip: String
-    let name: String
-}
