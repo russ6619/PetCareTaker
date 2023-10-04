@@ -217,7 +217,7 @@ class RegisterVC: UIViewController {
             let encryptedPassword = AuthManager.shared.sha256(password)
             
             
-                let userInfo = UserInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
+                let userInfo = UserRegisterInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 
                 do {

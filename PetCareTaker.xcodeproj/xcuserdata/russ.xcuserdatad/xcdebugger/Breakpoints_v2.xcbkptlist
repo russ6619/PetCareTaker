@@ -125,8 +125,8 @@
             filePath = "PetCareTaker/Model/PetTable/Cell/PetInfo/PetTableViewCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "144"
-            endingLineNumber = "144"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "calculateAge(from:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -765,8 +765,8 @@
             filePath = "PetCareTaker/Model/PetTable/PetInformationEditVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "476"
-            endingLineNumber = "476"
+            startingLineNumber = "478"
+            endingLineNumber = "478"
             landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
             <Locations>
@@ -799,6 +799,54 @@
                   startingLineNumber = "454"
                   endingLineNumber = "454"
                   offsetFromSymbolStart = "1536">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PetCareTaker/Model/Task/TaskDetailVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "showTaskPublisherInfo()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49 - 57bc759470677b96"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.TaskDetailVC.showTaskPublisherInfo() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Model/Task/TaskDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49 - e3ea3b13f07feb64"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;PetCareTaker.UserDataResponse, Swift.Error&gt;) -&gt; () in PetCareTaker.TaskDetailVC.showTaskPublisherInfo() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Model/Task/TaskDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "124">
                </Location>
             </Locations>
          </BreakpointContent>

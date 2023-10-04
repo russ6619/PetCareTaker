@@ -49,7 +49,7 @@ class TaskBoardTableVC: UITableViewController {
         let backgroundImage = UIImageView(image: UIImage(named: "Logo2"))
         backgroundImage.contentMode = .scaleAspectFill
 
-        tableView.backgroundView = backgroundImage
+//        tableView.backgroundView = backgroundImage
 
     }
     
@@ -81,7 +81,7 @@ class TaskBoardTableVC: UITableViewController {
     @objc func createdTask() {
         
         let publishTaskVC = PublishTaskVC()
-        navigationController?.show(publishTaskVC, sender: nil)
+        navigationController?.pushViewController(publishTaskVC, animated: true)
     }
     
     // MARK: - Table view data source

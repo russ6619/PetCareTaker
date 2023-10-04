@@ -26,8 +26,8 @@ class PublishedTaskTableVC: UITableViewController {
         tableView.register(TaskForSelfCell.self, forCellReuseIdentifier: "TaskForSelfCell")
         
         // 訂閱通知
-            NotificationCenter.default.addObserver(self, selector: #selector(handleNotification(_:)), name: NSNotification.Name(rawValue: "TaskAddedNotification"), object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(handleNotification(_:)), name: NSNotification.Name(rawValue: "TaskUpdatedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification(_:)), name: NSNotification.Name(rawValue: "TaskAddedNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleNotification(_:)), name: NSNotification.Name(rawValue: "TaskUpdatedNotification"), object: nil)
         
         userPublishedTasks = UserDataManager.shared.selfTaskData
         DispatchQueue.main.async {
@@ -91,9 +91,9 @@ class PublishedTaskTableVC: UITableViewController {
         // 設置自定義cell的內容
         let dateString = "\(startDate.month) ～ \(endDate.month)"
         let rewardString = "\(formatNumberString(task.TaskReward))"
-        var deadline = "任務截止：\n\(remainingTime)\n"
+        var deadline = "任務截止：\n\(remainingTime)"
         if task.TaskStatus == "已過期" {
-            deadline = "任務已過期"
+            deadline = "任務截止：\n已過期"
         }
         let taskinfo = "\(task.TaskInfo)"
         
@@ -214,8 +214,10 @@ class PublishedTaskTableVC: UITableViewController {
                     return "\(months)月\(days)天到期"
                 } else if days > 0 {
                     return "\(days)天到期"
-                } else {
+                } else if days == 0{
                     return "今天到期"
+                } else {
+                    return "已過期"
                 }
             }
         }

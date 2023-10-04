@@ -456,6 +456,8 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 4 && indexPath.row == 2 {
             showPersonalityOptions()
         }
+        
+        tableView.deselectRow(at: indexPath, animated: true) //取消選取
     }
     
     

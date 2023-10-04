@@ -141,6 +141,8 @@ class TaskEditVC: UIViewController {
         }
         
         addSubviewToView()
+        
+        view.backgroundColor = .white
     }
     
 
@@ -260,7 +262,7 @@ class TaskEditVC: UIViewController {
               !taskInfo.isEmpty,
               !taskRewardStr.isEmpty,
               let userID: String = UserDataManager.shared.userData["UserID"] as? String else {
-            showAlert(title: "錯誤", message: "所有欄位皆必填")
+            showAlertOne(title: "錯誤", message: "所有欄位皆必填")
             return
         }
         
@@ -277,7 +279,7 @@ class TaskEditVC: UIViewController {
         
         // 將任務獎金轉換為數字
         guard let taskReward = Int(taskRewardStr) else {
-            showAlert(title: "錯誤", message: "任務獎金格式錯誤")
+            showAlertOne(title: "錯誤", message: "任務獎金格式錯誤")
             return
         }
         
@@ -296,20 +298,23 @@ class TaskEditVC: UIViewController {
         // 調用 UserDataManager 的 updateTask 方法來更新任務
         UserDataManager.shared.updateTask(taskData: taskData) { (error) in
             if let error = error {
-                self.showAlert(title: "錯誤", message: "更新任務失敗: \(error.localizedDescription)")
+                self.showAlertOne(title: "錯誤", message: "更新任務失敗: \(error.localizedDescription)")
             } else {
                 // 成功更新任務，可以執行相關操作，例如返回前一個畫面或者顯示成功訊息
                 DispatchQueue.main.async {
                     // 在成功更新任務後，發送一個通知
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TaskUpdatedNotification"), object: nil)
-                    self.showAlert(title: "成功", message: "更新任務成功")
+                    self.showAlertMore(title: "成功", message: "更新任務成功") { _ in
+                        // 成功更新任務後，返回上一頁
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
     }
 
     
-    func showAlert(title: String, message: String) {
+    func showAlertOne(title: String, message: String) {
         
         DispatchQueue.main.async {
             // 更新畫面程式
@@ -317,6 +322,12 @@ class TaskEditVC: UIViewController {
             alert.addAction(UIAlertAction(title: "確定", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func showAlertMore(title: String, message: String, completion: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: completion))
+        self.present(alert, animated: true, completion: nil)
     }
 
 }

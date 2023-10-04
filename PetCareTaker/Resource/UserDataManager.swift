@@ -380,36 +380,34 @@ class UserDataManager {
     }
 
     
-    func queryUserPhoneByID(userID: String, completion: @escaping (Result<String, Error>) -> Void) {
-        // 使用 queryPublisherPhoneUrl 從 PHP 後端獲取使用者電話號碼，並包含 userID 參數
-        guard let url = URL(string: ServerApiHelper.shared.queryPublisherPhoneUrl + "?UserID=" + userID) else {
+    func queryUserInfoByID(userID: String, completion: @escaping (Result<UserDataResponse, Error>) -> Void) {
+        guard let url = URL(string: ServerApiHelper.shared.queryPublisherInfoUrl + "?UserID=" + userID) else {
             completion(.failure(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法建立 URL"])))
             return
         }
-        
-        // 創建 URL 請求
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
-        // 發起網絡請求
+
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
-            // 解析從 PHP 後端返回的數據
+
             if let data = data {
-                if let phone = String(data: data, encoding: .utf8) {
-                    completion(.success(phone)) // 成功下載並返回電話號碼
-                } else {
-                    completion(.failure(NSError(domain: "UserDataManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "無法解析數據"])))
+                do {
+                    let userDataResponse = try JSONDecoder().decode(UserDataResponse.self, from: data)
+                    completion(.success(userDataResponse))
+                } catch {
+                    completion(.failure(error))
                 }
             } else {
                 completion(.failure(NSError(domain: "UserDataManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "未收到數據"])))
             }
         }.resume()
     }
+
 
 
     // MARK: DownloadImage
@@ -430,6 +428,51 @@ class UserDataManager {
         }.resume()
     }
 
+    func parseUserData(from json: [String: Any]) -> UserData? {
+        guard let userData = json["userData"] as? [String: Any],
+//              let userID = userData["UserID"] as? String,
+              let phone = userData["Phone"] as? String,
+              let name = userData["Name"] as? String,
+//              let gender = userData["Gender"] as? String,
+              let photo = userData["Photo"] as? String,
+              let residenceArea = userData["ResidenceArea"] as? String,
+              let introduction = userData["Introduction"] as? String else {
+                  return nil
+              }
+
+        let userInfo = UserData(phone: phone, name: name,photo: photo, residenceArea: residenceArea, introduction: introduction)
+        return userInfo
+    }
+
+    func parsePetData(from json: [String: Any]) -> [Pet] {
+        guard let petsData = json["petsData"] as? [[String: Any]] else {
+            return []
+        }
+
+        var pets: [Pet] = []
+
+        for petData in petsData {
+            guard let petID = petData["PetID"] as? String,
+                  let name = petData["Name"] as? String,
+                  let gender = petData["Gender"] as? String,
+                  let type = petData["Type"] as? String,
+                  let birthDate = petData["BirthDate"] as? String,
+                  let size = petData["Size"] as? String,
+                  let neutered = petData["Neutered"] as? String,
+                  let vaccinated = petData["Vaccinated"] as? String,
+                  let personality = petData["Personality"] as? String,
+                  let photo = petData["Photo"] as? String,
+                  let precautions = petData["Precautions"] as? String else {
+                      continue
+                  }
+
+            let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions)
+
+            pets.append(pet)
+        }
+
+        return pets
+    }
 
 
     

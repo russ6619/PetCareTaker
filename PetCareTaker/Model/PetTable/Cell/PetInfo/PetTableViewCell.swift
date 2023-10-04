@@ -35,6 +35,13 @@ class PetTableViewCell: UITableViewCell {
         return label
     }()
     
+    private var petPrecautionsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor.systemGray
+        return label
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -44,18 +51,20 @@ class PetTableViewCell: UITableViewCell {
         contentView.addSubview(petBasicLabel)
         contentView.addSubview(petPersonalityLabel)
         contentView.addSubview(petDetailedLabel)
-        
+        contentView.addSubview(petPrecautionsLabel)
         
         petImageView.translatesAutoresizingMaskIntoConstraints = false
         petNameLabel.translatesAutoresizingMaskIntoConstraints = false
         petBasicLabel.translatesAutoresizingMaskIntoConstraints = false
         petPersonalityLabel.translatesAutoresizingMaskIntoConstraints = false
         petDetailedLabel.translatesAutoresizingMaskIntoConstraints = false
+        petPrecautionsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         petNameLabel.numberOfLines = 0
         petBasicLabel.numberOfLines = 0
         petPersonalityLabel.numberOfLines = 0
         petDetailedLabel.numberOfLines = 0
+        petPrecautionsLabel.numberOfLines = 0
 
         
         NSLayoutConstraint.activate([
@@ -83,7 +92,12 @@ class PetTableViewCell: UITableViewCell {
             // 設置 petDetailedLabel 的約束
             petDetailedLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 10),
             petDetailedLabel.topAnchor.constraint(equalTo: petPersonalityLabel.bottomAnchor, constant: 5),
-            petDetailedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+//            petDetailedLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            
+            // 設置 petPrecautionsLabel 的約束
+            petPrecautionsLabel.leadingAnchor.constraint(equalTo: petImageView.trailingAnchor, constant: 10),
+            petPrecautionsLabel.topAnchor.constraint(equalTo: petDetailedLabel.bottomAnchor, constant: 5),
+            petPrecautionsLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
         ])
         
         
@@ -93,11 +107,12 @@ class PetTableViewCell: UITableViewCell {
         super.init(coder: aDecoder)
     }
 
-    func configure(with pet: Pet, images: [String: UIImage]) {
+    func configure(with pet: PetProtocol, images: [String: UIImage]) {
         petNameLabel.text = pet.name
         petBasicLabel.text = "\(pet.type), \(calculateAge(from: pet.birthDate)), \(pet.gender),  \(pet.size)"
         petPersonalityLabel.text = "\(pet.personality)"
         petDetailedLabel.text = "\(pet.neutered), \(pet.vaccinated)"
+        petPrecautionsLabel.text = pet.precautions
         
         setPetImage(for: pet, in: images)
         
@@ -106,12 +121,12 @@ class PetTableViewCell: UITableViewCell {
         petImageView.layer.cornerRadius = petImageView.frame.size.width / 2
     }
     
-    func setPetImage(for pet: Pet, in images: [String: UIImage]) {
+    func setPetImage(for pet: PetProtocol, in images: [String: UIImage]) {
         if let petImage = images[pet.petID] {
             petImageView.image = petImage
         } else {
             // 如果未找到圖像，您可以設置一個預設圖像或顯示空白圖像
-            petImageView.image = UIImage(named: "placeholder_image")
+            petImageView.image = UIImage(systemName: "pawprint.circle.fill")
         }
     }
 

@@ -141,6 +141,7 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
     // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         publisherBtn.addTarget(self, action: #selector(editBtnPressed), for: .touchUpInside)
 
         // Do any additional setup after loading the view.
@@ -312,7 +313,13 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
                         }
                     }
                 }
-                self.showAlert(title: "成功", message: "新增任務成功")
+                DispatchQueue.main.async {
+                    // 更新畫面程式
+                    self.showAlertMore(title: "成功", message: "新增任務成功") { _ in
+                        // 成功更新任務後，返回上一頁
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             }
         }
     }
@@ -328,6 +335,11 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
     }
     
         
+    func showAlertMore(title: String, message: String, completion: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "確定", style: .default, handler: completion))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     /*
      // MARK: - Navigation

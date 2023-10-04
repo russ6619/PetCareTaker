@@ -16,6 +16,8 @@ class MainControllerVC: UITabBarController {
         
         self.selectedIndex = 1
         
+        self.tabBarController?.tabBar.layer.borderWidth = 1
+        self.tabBarController?.tabBar.layer.borderColor = UIColor.black.cgColor
     }
     
     

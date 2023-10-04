@@ -352,6 +352,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="AQr-Af-cAC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="selectedImageTintColor" red="0.94716221089999997" green="0.65853994010000005" blue="0.20408609050000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </tabBar>
                     <connections>
@@ -365,11 +366,11 @@
             </objects>
             <point key="canvasLocation" x="-242" y="-304"/>
         </scene>
-        <!--個人資訊-->
+        <!--我的-->
         <scene sceneID="rXF-XN-gHG">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="17M-nt-fQb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="個人資訊" image="person.fill" catalog="system" id="DOB-Y0-3Au">
+                    <tabBarItem key="tabBarItem" title="我的" image="person.fill" catalog="system" id="DOB-Y0-3Au">
                         <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBarItem>
                     <toolbarItems/>

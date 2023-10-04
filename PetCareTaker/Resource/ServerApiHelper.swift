@@ -30,15 +30,15 @@ class ServerApiHelper {
     let deleteTasksUrl: String
     let queryTasksUrl: String
     let updateTaskUrl: String
-    let queryPublisherPhoneUrl: String
+    let queryPublisherInfoUrl: String
     let queryTasksFromUserIDUrl: String
 
     private init() {
         // 測試
-//        apiUrlString = "http://localhost:8888/PetCareTakerServer/"
+        apiUrlString = "http://localhost:8888/PetCareTakerServer/"
         
         // 連線
-        apiUrlString = "https://depulso.serveo.net/PetCareTakerServer/"
+//        apiUrlString = "https://depulso.serveo.net/PetCareTakerServer/"
         
         imageUrlString = apiUrlString + "uploads/"
         updatePhotoUrl = apiUrlString + "updatePhoto.php"
@@ -61,7 +61,7 @@ class ServerApiHelper {
         queryTasksUrl = apiUrlString + "Tasks/queryTasks.php"
         updateTaskUrl = apiUrlString + "Tasks/updateTasks.php"
         queryTasksFromUserIDUrl = apiUrlString + "Tasks/queryTasksFromUserID.php"
-        queryPublisherPhoneUrl = apiUrlString + "Tasks/queryPublisherPhone.php"
+        queryPublisherInfoUrl = apiUrlString + "Tasks/queryPublisherInfo.php"
     }
 }
 
