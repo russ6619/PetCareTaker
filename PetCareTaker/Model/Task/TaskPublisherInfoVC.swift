@@ -47,6 +47,10 @@ class TaskPublisherInfoVC: UIViewController {
         
         // 添加 tableView 到視圖中
         view.addSubview(userPetsTable)
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         
     }
 

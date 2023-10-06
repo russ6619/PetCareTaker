@@ -148,6 +148,10 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         addSubviewToView()
         
         taskInfoText.delegate = self
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
 

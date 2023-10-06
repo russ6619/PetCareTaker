@@ -114,6 +114,10 @@ class TaskDetailVC: UIViewController {
         addSubviewToView()
         taskPublisherInfo.addTarget(self, action: #selector(showTaskPublisherInfo), for: .touchUpInside)
         
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
     @objc func showTaskPublisherInfo() {

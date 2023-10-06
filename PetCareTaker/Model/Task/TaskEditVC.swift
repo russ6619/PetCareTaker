@@ -131,6 +131,8 @@ class TaskEditVC: UIViewController {
     // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        
         editBtn.addTarget(self, action: #selector(editBtnPressed), for: .touchUpInside)
 
         // Do any additional setup after loading the view.
@@ -142,8 +144,13 @@ class TaskEditVC: UIViewController {
         
         addSubviewToView()
         
-        view.backgroundColor = .white
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
+        
     }
+    
     
 
     override func viewDidLayoutSubviews() {

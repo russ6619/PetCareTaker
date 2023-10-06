@@ -103,15 +103,18 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PetCell", for: indexPath) as! PetTableViewCell
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PetCell", for: indexPath) as! PetTableViewCell
+
         // 獲取特定位置的寵物數據
         let pet = UserDataManager.shared.petsData[indexPath.row]
-        
+
         // 使用 configure 方法設置單元格的內容
         cell.configure(with: pet,images: petsImages)
-                
+
+        cell.accessoryType = .disclosureIndicator
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

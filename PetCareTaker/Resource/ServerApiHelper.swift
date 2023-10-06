@@ -20,11 +20,13 @@ class ServerApiHelper {
     let registerUserUrl: String
     let queryUserUrl: String
     let updateUserUrl: String
+    let deleteUserUrl: String
     // UserPets
     let createPetUrl: String
     let deletePetUrl: String
     let queryPetUrl: String
     let updatePetUrl: String
+    let renamePetPhoto: String
     // Tasks
     let createTasksUrl: String
     let deleteTasksUrl: String
@@ -32,10 +34,11 @@ class ServerApiHelper {
     let updateTaskUrl: String
     let queryPublisherInfoUrl: String
     let queryTasksFromUserIDUrl: String
+    
 
     private init() {
         // 測試
-        apiUrlString = "http://localhost:8888/PetCareTakerServer/"
+        apiUrlString = "http://localhost:8888/PetCareTakerServerTest/"
         
         // 連線
 //        apiUrlString = "https://depulso.serveo.net/PetCareTakerServer/"
@@ -48,12 +51,15 @@ class ServerApiHelper {
         registerUserUrl = apiUrlString + "User/registerUser.php"
         queryUserUrl = apiUrlString + "User/queryUser.php"
         updateUserUrl = apiUrlString + "User/updateUser.php"
+        deleteUserUrl = apiUrlString + "User/deleteUser.php"
         
         // UserPets
         createPetUrl = apiUrlString + "UserPet/createPet.php"
         deletePetUrl = apiUrlString + "UserPet/deletePet.php"
         queryPetUrl = apiUrlString + "UserPet/queryPet.php"
         updatePetUrl = apiUrlString + "UserPet/updatePet.php"
+        
+        renamePetPhoto = apiUrlString + "renamePetPhoto.php"
         
         // Tasks
         createTasksUrl = apiUrlString + "Tasks/createTasks.php"

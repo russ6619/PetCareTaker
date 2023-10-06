@@ -58,30 +58,17 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    
+        
         
     }
     
-//    private func getPetIDForImage(_ fileName: String) -> String? {
-//        // 尋找 "petsImageWith" 的範圍
-//        if let range = fileName.range(of: "petsImageWith") {
-//            // 提取 "petsImageWith" 之後的部分，這部分應該是寵物ID
-//            let petIDPart = fileName[range.upperBound...]
-//
-//            // 將提取的部分轉換為字符串並返回
-//            return String(petIDPart)
-//        }
-//
-//        // 如果未找到 "petsImageWith"，返回 nil
-//        return nil
-//    }
     
     // MARK: ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // 設置 UIViewController 的 view
         view.backgroundColor = .white
-                
+        
         // 設置 UITableView 的代理和數據源
         tableView.dataSource = self
         tableView.delegate = self
@@ -106,14 +93,19 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         ])
         
         
-
+        
         
         
         // 創建一個 Save 按鈕
-        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonTapped))
+        let saveButton = UIBarButtonItem(title: "存檔", style: .plain, target: self, action: #selector(saveButtonTapped))
         
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton
+        
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
     
     
@@ -186,6 +178,9 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             }
         }
         
+        // 獲取寵物照片
+        
+        
         if selectedPet.name != "",
            selectedPet.precautions != "",
            selectedPet.gender != "寵物性別",
@@ -224,8 +219,6 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                     }
                 }
                 
-                
-                // 使用 JSONEncoder 將結構轉換為 JSON 數據
                 if let jsonData = try? JSONEncoder().encode(petData) {
                     // 創建 URLRequest
                     guard let createPetUrl = URL(string: ServerApiHelper.shared.createPetUrl) else {
@@ -254,13 +247,53 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                             }
                         } else if let data = data {
                             // 處理成功建立寵物資料的情況
-                            // 解析伺服器回傳的 JSON 數據，如果有需要的話
                             do {
-                                // 在這裡解析伺服器回傳的 JSON 數據
                                 // 可以更新本地寵物資料的 petID
                                 let createdPet = try JSONDecoder().decode(Pet.self, from: data)
-                                
+                                // 更新檔案名稱
                                 print("建立寵物資料成功: \(createdPet)")
+                                // 在這裡執行ServerApiHelper.shared.renamePetPhoto這個ＵＲＬ的php, userID = userID, petID = createdPet.petID
+                                self.renamePetPhoto(userID: self.userID, petID: createdPet.petID) { success, newFileName in
+                                    if success {
+                                        if let fileName = newFileName {
+                                            // 成功收到 "newFileName" 的值
+                                            print("New file name: \(fileName)")
+                                            self.selectedPet.photo = fileName
+                                            
+                                            DispatchQueue.main.async {
+                                                UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
+                                                    // 處理更新完成後的邏輯
+                                                    if let error = error {
+                                                        // 處理錯誤情況
+                                                        print("變更照片名稱更新寵物資料失敗：\(error)")
+                                                        DispatchQueue.main.async {
+                                                            let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
+                                                            alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                            self.present(alert, animated: true, completion: nil)
+                                                        }
+                                                    } else {
+                                                        // 更新成功
+                                                        DispatchQueue.main.async {
+                                                            print("變更照片名稱寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
+                                                            URLCache.shared.removeAllCachedResponses()
+                                                            let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
+                                                            alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                            self.present(alert, animated: true, completion: nil)
+                                                        }
+                                                    }
+                                                })
+                                            }
+                                            
+                                        } else {
+                                            // 未收到有效的 "newFileName" 值
+                                            print("未收到有效的文件名")
+                                        }
+                                    } else {
+                                        // 出現錯誤
+                                        print("執行 PHP 腳本失敗")
+                                    }
+                                }
+                                
                             } catch {
                                 print("解析伺服器回傳的 JSON 失敗：\(error)")
                             }
@@ -290,30 +323,6 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
                     if imageCell.petImage.image != nil {
                         self.uploadPetImage()
-                        
-                        DispatchQueue.main.async {
-                            UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
-                                // 處理更新完成後的邏輯
-                                if let error = error {
-                                    // 處理錯誤情況
-                                    print("更新寵物資料失敗：\(error)")
-                                    DispatchQueue.main.async {
-                                        let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
-                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
-                                        self.present(alert, animated: true, completion: nil)
-                                    }
-                                } else {
-                                    // 更新成功
-                                    DispatchQueue.main.async {
-                                        print("寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
-                                        URLCache.shared.removeAllCachedResponses()
-                                        let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
-                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
-                                        self.present(alert, animated: true, completion: nil)
-                                    }
-                                }
-                            })
-                        }
                     }
                 }
             }
@@ -323,7 +332,68 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             alert.addAction(UIAlertAction(title: "確定", style: .default))
             present(alert, animated: true, completion: nil)
         }
+        self.navigationController?.popViewController(animated: true)
     }
+    
+    // MARK: renamePetPhoto
+    func renamePetPhoto(userID: String, petID: String, completion: @escaping (Bool, String?) -> Void) {
+        // 設定 PHP 腳本的 URL，替換成你的實際 PHP 腳本 URL
+        guard let phpScriptURL = URL(string: ServerApiHelper.shared.renamePetPhoto) else {
+            return
+        }
+        
+        // 準備要傳遞的參數，例如 userID 和 petID
+        let parameters: [String: String] = [
+            "userID": userID,
+            "petID": petID
+        ]
+        
+        // 創建一個 URLComponents 對象，用於構建 URL
+        var components = URLComponents(url: phpScriptURL, resolvingAgainstBaseURL: false)
+        
+        // 將參數添加為 URL 的查詢項目
+        components?.queryItems = parameters.map { key, value in
+            URLQueryItem(name: key, value: value)
+        }
+        
+        // 創建 URLRequest
+        var request = URLRequest(url: (components?.url)!)
+        request.httpMethod = "POST"
+        
+        // 設定 HTTP 請求的標頭
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        // 創建 URLSession 並發送請求
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                // 處理錯誤情況
+                print("執行 PHP 腳本失敗：\(error)")
+                completion(false, nil) // 呼叫回調並傳遞失敗狀態
+            } else if let data = data {
+                // 處理 PHP 腳本的回應數據，如果有需要的話
+                let responseString = String(data: data, encoding: .utf8)
+                print("PHP 腳本回應：\(responseString ?? "")")
+                
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    if let success = json["success"] as? Bool, success,
+                       let newFileName = json["newFileName"] as? String {
+                        // 成功時，呼叫回調並傳遞成功狀態和新文件名
+                        completion(true, newFileName)
+                    } else {
+                        // 如果回應中不包含 "success" 或不是 true，或者缺少 "newFileName"
+                        completion(false, nil)
+                    }
+                } else {
+                    // 解析 JSON 失敗
+                    completion(false, nil)
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    
     
     // MARK: uploadPetImage
     func uploadPetImage() {
@@ -331,7 +401,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             
             if let petImage = self.petNowImage,
                let imageData = petImage.jpegData(compressionQuality: 0.8) {
-                let uniqueFileName = "petsImageWith\(self.selectedPet.petID)"
+                let uniqueFileName = "petsImage\(self.userID)With\(self.selectedPet.petID)"
                 
                 guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
                     return
@@ -369,9 +439,33 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                                    let imagePath = json["imagePath"] as? String {
                                     // 在這裡處理文件路徑，例如顯示照片或進行其他操作
                                     self.selectedPet.photo = "\(imagePath)"
+                                    
                                     // 調用代理方法，傳遞更新的照片和 petID
                                     self.editDelegate?.didUpdatePetImage(self.petNowImage, forPetID: self.selectedPet.petID)
                                     print("伺服器返回的文件路徑：\(imagePath)")
+                                    DispatchQueue.main.async {
+                                        UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
+                                            // 處理更新完成後的邏輯
+                                            if let error = error {
+                                                // 處理錯誤情況
+                                                print("更新寵物資料失敗：\(error)")
+                                                DispatchQueue.main.async {
+                                                    let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                    self.present(alert, animated: true, completion: nil)
+                                                }
+                                            } else {
+                                                // 更新成功
+                                                DispatchQueue.main.async {
+                                                    print("寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
+                                                    URLCache.shared.removeAllCachedResponses()
+                                                    let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
+                                                    alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                    self.present(alert, animated: true, completion: nil)
+                                                }
+                                            }
+                                        })
+                                    }
                                 } else {
                                     print("無法解析伺服器返回的JSON數據")
                                 }
@@ -468,11 +562,11 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 // petImageViewCell
                 let cell = tableView.dequeueReusableCell(withIdentifier: "petImageViewCell", for: indexPath) as! petImageViewCell
-
+                
                 
                 cell.setPetImage(petNowImage)
                 cell.petImage.layer.masksToBounds = true
-                cell.petImage.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
+                cell.petImage.contentMode = .scaleAspectFit // 設置圖片視圖的內容模式
                 cell.petImage.layer.cornerRadius = 100
                 
                 return cell
@@ -706,7 +800,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
         
         return UITableView.automaticDimension
     }
-
+    
     
 }
 
@@ -802,11 +896,11 @@ extension PetInformationEditVC: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // 檢查當前文字長度
-            let currentText = textView.text as NSString
-            let updatedText = currentText.replacingCharacters(in: range, with: text)
-            
-            // 如果超過 300 字，就不允許輸入
-            return updatedText.count <= 300
+        let currentText = textView.text as NSString
+        let updatedText = currentText.replacingCharacters(in: range, with: text)
+        
+        // 如果超過 300 字，就不允許輸入
+        return updatedText.count <= 300
     }
     
 }

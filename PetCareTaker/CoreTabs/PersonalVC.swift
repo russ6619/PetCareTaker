@@ -44,7 +44,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         image.isUserInteractionEnabled = true
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
-        image.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
+        image.contentMode = .scaleAspectFit // 設置圖片視圖的內容模式
         image.layer.cornerRadius = 100
         return image
     }()
@@ -318,7 +318,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         personalImage.addGestureRecognizer(tapGesture)
         
         // 創建一個 Save 按鈕
-        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveButtonTapped))
+        let saveButton = UIBarButtonItem(title: "存檔", style: .plain, target: self, action: #selector(saveButtonTapped))
         
         // 設置 Save 按鈕為右側的 bar button item
         self.navigationItem.rightBarButtonItem = saveButton

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 enum PetInfoSection: Int, CaseIterable {
@@ -209,4 +210,13 @@ struct PetData: PetProtocol, Codable {
 struct SettingCellModel {
     let title: String
     let handler: (() -> Void)
+    let style: UIAlertAction.Style // 新增樣式屬性
+
+    init(title: String, style: UIAlertAction.Style, handler: @escaping () -> Void) {
+        self.title = title
+        self.style = style
+        self.handler = handler
+    }
+
+    // ... 其他屬性和方法
 }

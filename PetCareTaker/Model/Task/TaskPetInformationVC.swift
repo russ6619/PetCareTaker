@@ -67,7 +67,10 @@ class TaskPetInformationVC: UIViewController {
         petTable.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         view.addSubview(petTable)
-        
+        // 設定返回按鈕的標題
+        let backButton = UIBarButtonItem()
+        backButton.title = "返回"
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
     }
 
 }

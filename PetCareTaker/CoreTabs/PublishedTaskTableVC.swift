@@ -35,7 +35,8 @@ class PublishedTaskTableVC: UITableViewController {
         }
         
         // 啟用編輯模式
-            self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.editButtonItem.title = "編輯"
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     @objc func handleNotification(_ notification: Notification) {
