@@ -104,6 +104,7 @@ class StartVC: UIViewController {
                 print("任務清單下載成功：\(UserDataManager.shared.tasksData)")
             }
         }
+        print("fetchUserData開始")
         UserDataManager.shared.fetchUserData { error in
             if let error = error {
                 // 處理錯誤情況，例如顯示錯誤訊息
@@ -111,10 +112,11 @@ class StartVC: UIViewController {
             } else {
                 // 資料下載成功，可以在這裡處理用戶資料，例如更新界面
                 print("用戶資料下載成功：\(UserDataManager.shared.userData)")
-                
+                print("下載的userID: \(String(describing: UserDataManager.shared.userData["UserID"]))")
                 // 如果成功下載用戶資料，獲取用戶的 userID
-                guard let userID: String = UserDataManager.shared.userData["UserID"] as? String else { return }
-                
+                guard let userID: String = UserDataManager.shared.userData["UserID"] else {
+                    return }
+                print("userID = \(userID)")
                 // 下載使用者照片
                 let uniqueFileName = "personImageWith\(userID)"
                 guard let imageUrl = URL(string: "\(ServerApiHelper.shared.imageUrlString)\(uniqueFileName)") else {
@@ -139,7 +141,7 @@ class StartVC: UIViewController {
                         }
                     }
                 }
-                
+                print("fetchTaskDataFromID開始")
                 UserDataManager.shared.fetchTaskDataFromID(publisherID: userID) { error in
                     if let error = error {
                         // 處理錯誤情況，例如顯示錯誤訊息
@@ -149,7 +151,8 @@ class StartVC: UIViewController {
                         print("用戶任務資料下載成功：\(UserDataManager.shared.selfTaskData)")
                     }
                 }
-                
+                print("fetchUserPetData開始")
+                print("userID = \(userID)")
                 // 使用 userID 調用 fetchUserPetData 來下載用戶的寵物資料
                 UserDataManager.shared.fetchUserPetData(userID: userID) { error in
                     if let error = error {

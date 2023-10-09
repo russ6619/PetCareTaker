@@ -22,7 +22,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     weak var editDelegate: PetInformationEditDelegate?
     
     var editingCell: ButtonMenuCell?
-    let userID: String = UserDataManager.shared.userData["UserID"] as! String
+    let userID: String = UserDataManager.shared.userData["UserID"]!
     
     var petTypes: PetTypes?
     var petNowImage: UIImage! // 實例化 PetImage
@@ -248,50 +248,53 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                         } else if let data = data {
                             // 處理成功建立寵物資料的情況
                             do {
-                                // 可以更新本地寵物資料的 petID
-                                let createdPet = try JSONDecoder().decode(Pet.self, from: data)
-                                // 更新檔案名稱
-                                print("建立寵物資料成功: \(createdPet)")
-                                // 在這裡執行ServerApiHelper.shared.renamePetPhoto這個ＵＲＬ的php, userID = userID, petID = createdPet.petID
-                                self.renamePetPhoto(userID: self.userID, petID: createdPet.petID) { success, newFileName in
-                                    if success {
-                                        if let fileName = newFileName {
-                                            // 成功收到 "newFileName" 的值
-                                            print("New file name: \(fileName)")
-                                            self.selectedPet.photo = fileName
-                                            
-                                            DispatchQueue.main.async {
-                                                UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
-                                                    // 處理更新完成後的邏輯
-                                                    if let error = error {
-                                                        // 處理錯誤情況
-                                                        print("變更照片名稱更新寵物資料失敗：\(error)")
-                                                        DispatchQueue.main.async {
-                                                            let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
-                                                            alert.addAction(UIAlertAction(title: "確定", style: .default))
-                                                            self.present(alert, animated: true, completion: nil)
+                                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                                   let petID = json["petID"] as? String {
+                                    // 成功解析 "petID"
+                                    print("建立寵物資料成功，petID: \(petID)")
+                                    self.renamePetPhoto(userID: self.userID, petID: petID) { success, newFileName in
+                                        if success {
+                                            if let fileName = newFileName {
+                                                // 成功收到 "newFileName" 的值
+                                                print("New file name: \(fileName)")
+                                                self.selectedPet.photo = fileName
+                                                
+                                                DispatchQueue.main.async {
+                                                    UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
+                                                        // 處理更新完成後的邏輯
+                                                        if let error = error {
+                                                            // 處理錯誤情況
+                                                            print("變更照片名稱更新寵物資料失敗：\(error)")
+                                                            DispatchQueue.main.async {
+                                                                let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
+                                                                alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                                self.present(alert, animated: true, completion: nil)
+                                                            }
+                                                        } else {
+                                                            // 更新成功
+                                                            DispatchQueue.main.async {
+                                                                print("變更照片名稱寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
+                                                                URLCache.shared.removeAllCachedResponses()
+                                                                let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
+                                                                alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                                                self.present(alert, animated: true, completion: nil)
+                                                            }
                                                         }
-                                                    } else {
-                                                        // 更新成功
-                                                        DispatchQueue.main.async {
-                                                            print("變更照片名稱寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
-                                                            URLCache.shared.removeAllCachedResponses()
-                                                            let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
-                                                            alert.addAction(UIAlertAction(title: "確定", style: .default))
-                                                            self.present(alert, animated: true, completion: nil)
-                                                        }
-                                                    }
-                                                })
+                                                    })
+                                                }
+                                                
+                                            } else {
+                                                // 未收到有效的 "newFileName" 值
+                                                print("未收到有效的文件名")
                                             }
-                                            
                                         } else {
-                                            // 未收到有效的 "newFileName" 值
-                                            print("未收到有效的文件名")
+                                            // 出現錯誤
+                                            print("執行rename PHP 腳本失敗")
                                         }
-                                    } else {
-                                        // 出現錯誤
-                                        print("執行 PHP 腳本失敗")
                                     }
+                                } else {
+                                    // 如果無法解析 "petID"，進行錯誤處理
+                                    print("無法解析 'petID'")
                                 }
                                 
                             } catch {
@@ -329,10 +332,13 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         } else {
             // 顯示警告訊息告知使用者
             let alert = UIAlertController(title: "警告", message: "所有欄位都需填寫", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "確定", style: .default))
+            alert.addAction(UIAlertAction(title: "確定", style: .default) { _ in
+                // 在確定按鈕處理程序中執行畫面切換
+                self.navigationController?.popViewController(animated: true)
+            })
             present(alert, animated: true, completion: nil)
         }
-        self.navigationController?.popViewController(animated: true)
+        
     }
     
     // MARK: renamePetPhoto
@@ -428,7 +434,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 let session = URLSession.shared
                 let task = session.dataTask(with: request) { data, response, error in
                     DispatchQueue.main.async {
-                        print("response: \(String(describing: response))")
+                        //                        print("response: \(String(describing: response))")
                         if let error = error {
                             // 處理錯誤情況
                             print("照片上傳失敗：\(error)")
@@ -448,7 +454,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                                             // 處理更新完成後的邏輯
                                             if let error = error {
                                                 // 處理錯誤情況
-                                                print("更新寵物資料失敗：\(error)")
+                                                print("上傳照片.更新寵物資料失敗：\(error)")
                                                 DispatchQueue.main.async {
                                                     let alert = UIAlertController(title: "錯誤", message: "寵物資料更新失敗", preferredStyle: .alert)
                                                     alert.addAction(UIAlertAction(title: "確定", style: .default))
@@ -457,7 +463,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                                             } else {
                                                 // 更新成功
                                                 DispatchQueue.main.async {
-                                                    print("寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
+                                                    print("上傳照片.寵物資料更新成功: \(String(describing: UserDataManager.shared.petsData))")
                                                     URLCache.shared.removeAllCachedResponses()
                                                     let alert = UIAlertController(title: "成功", message: "寵物資料更新成功", preferredStyle: .alert)
                                                     alert.addAction(UIAlertAction(title: "確定", style: .default))
@@ -850,7 +856,6 @@ extension PetInformationEditVC: ImageSelectionCellDelegate {
             tableView.beginUpdates()
             tableView.endUpdates()
         }
-        
         tableView.reloadData()
     }
     

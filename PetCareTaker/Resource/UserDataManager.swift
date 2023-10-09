@@ -11,7 +11,7 @@ import UIKit
 class UserDataManager {
     static let shared = UserDataManager()
     
-    var userData = [String: Any]()
+    var userData = [String: String]()
     var userImage = UIImage()
     
     var tasksData = [Tasks]()
@@ -52,8 +52,9 @@ class UserDataManager {
                 // 解析從 PHP 後端返回的數據
                 if let data = data {
                     do {
-                        if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
+                        if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
                             // 將用戶資料存儲到 UserDataManager 中
+                            print("fetchUserData data = \(data)")
                             self.userData = userData
                             //                        print(self.userData)
                             completion(nil) // 成功下載並設定資料

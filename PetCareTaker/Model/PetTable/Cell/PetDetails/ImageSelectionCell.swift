@@ -11,7 +11,7 @@ class ImageSelectionCell: UITableViewCell {
     
     private let imageButton: UIButton = {
         let button = UIButton()
-        button.setTitle( "選擇寵物的大頭照", for: .normal)
+        button.setTitle( "請先選擇寵物的大頭照因為會刷新畫面", for: .normal)
         button.setTitleColor(.link, for: .normal)
         button.contentVerticalAlignment = .center
         button.isUserInteractionEnabled = true

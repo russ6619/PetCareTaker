@@ -45,7 +45,6 @@
 		D2A687712A99A9CE0028F409 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687702A99A9CE0028F409 /* AuthManager.swift */; };
 		D2A687992A99F3BB0028F409 /* ServerApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687982A99F3BB0028F409 /* ServerApiHelper.swift */; };
 		D2A687A42A9DE8680028F409 /* MainControllerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A687A32A9DE8680028F409 /* MainControllerVC.swift */; };
-		D2C11CB02ACA92C3006EB3E4 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CAF2ACA92C3006EB3E4 /* CustomTextField.swift */; };
 		D2C11CB22ACC149D006EB3E4 /* TaskPublisherInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB12ACC149D006EB3E4 /* TaskPublisherInfoVC.swift */; };
 		D2C11CB42ACC45C4006EB3E4 /* TaskPetInformationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB32ACC45C4006EB3E4 /* TaskPetInformationVC.swift */; };
 		D2C11CB62ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB52ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift */; };
@@ -91,7 +90,6 @@
 		D2A687702A99A9CE0028F409 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		D2A687982A99F3BB0028F409 /* ServerApiHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerApiHelper.swift; sourceTree = "<group>"; };
 		D2A687A32A9DE8680028F409 /* MainControllerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainControllerVC.swift; sourceTree = "<group>"; };
-		D2C11CAF2ACA92C3006EB3E4 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		D2C11CB12ACC149D006EB3E4 /* TaskPublisherInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPublisherInfoVC.swift; sourceTree = "<group>"; };
 		D2C11CB32ACC45C4006EB3E4 /* TaskPetInformationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPetInformationVC.swift; sourceTree = "<group>"; };
 		D2C11CB52ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPublisherInformationCell.swift; sourceTree = "<group>"; };
@@ -132,7 +130,6 @@
 				D26DA6A12AA99BDC008DC76A /* TextViewExtension.swift */,
 				D26DA6A32AAACEF7008DC76A /* UIImage+Resize.swift */,
 				D2752C652AB1A37500147E20 /* WSPlaceholderTextView.swift */,
-				D2C11CAF2ACA92C3006EB3E4 /* CustomTextField.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -355,7 +352,6 @@
 				D2A65F3C2AA426ED00E45AE8 /* PetTabViewController.swift in Sources */,
 				D27CFFFE2A8B7759003222C8 /* RegisterVC.swift in Sources */,
 				D2F7721F2AB4389B00063245 /* petPersonalityTableVC.swift in Sources */,
-				D2C11CB02ACA92C3006EB3E4 /* CustomTextField.swift in Sources */,
 				D2A687712A99A9CE0028F409 /* AuthManager.swift in Sources */,
 				D2F772242AB5698700063245 /* Struct.swift in Sources */,
 				D28F2F4A2AA07E0C007E16E4 /* MessageVC.swift in Sources */,

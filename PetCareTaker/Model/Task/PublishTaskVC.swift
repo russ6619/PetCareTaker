@@ -128,15 +128,6 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         button.layer.cornerRadius = Constraints.cornerRadious
         return button
     }()
-    
-    private var taskPublisherPhone: UILabel = {
-        let label = UILabel()
-        label.text = "發佈的任務會自動帶入你的電話號碼，以便他人聯絡你"
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .label
-        label.textAlignment = .center
-        return label
-    }()
 
     // MARK: ViewDidLoad
     override func viewDidLoad() {
@@ -167,7 +158,6 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         taskDeadlineLabel.translatesAutoresizingMaskIntoConstraints = false
         taskDeadlineDate.translatesAutoresizingMaskIntoConstraints = false
         taskRewardField.translatesAutoresizingMaskIntoConstraints = false
-        taskPublisherPhone.translatesAutoresizingMaskIntoConstraints = false
         publisherBtn.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -216,10 +206,6 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
             publisherBtn.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             publisherBtn.topAnchor.constraint(equalTo: taskRewardField.bottomAnchor, constant: 8),
             publisherBtn.widthAnchor.constraint(equalToConstant: 60),
-            
-            // 設置 taskPublisherPhone 的約束
-            taskPublisherPhone.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            taskPublisherPhone.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -70),
         ])
     }
     
@@ -235,7 +221,6 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
         view.addSubview(taskDeadlineDate)
         view.addSubview(taskRewardField)
         view.addSubview(publisherBtn)
-        view.addSubview(taskPublisherPhone)
         
     }
     

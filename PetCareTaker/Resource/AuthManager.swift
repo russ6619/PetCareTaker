@@ -88,7 +88,7 @@ class AuthManager {
             case .lacksPunctuation:
                 passwordResult = "密碼少了符號"
             case .lackTextLength:
-                passwordResult = "密碼長度需要在16至30個數字之間"
+                passwordResult = "密碼長度需要在10至30個數字之間"
             case .empty:
                 passwordResult = "密碼欄位不能空白"
             default:
