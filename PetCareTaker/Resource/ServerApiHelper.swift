@@ -38,10 +38,10 @@ class ServerApiHelper {
 
     private init() {
         // 測試
-        apiUrlString = "http://localhost:8888/PetCareTakerServerTest/"
+//        apiUrlString = "http://localhost:8888/PetCareTakerServerTest/"
         
         // 連線
-//        apiUrlString = "http://172.233.90.79/PetCareTakerServer/"
+        apiUrlString = "http://172.233.90.79/PetCareTakerServer/"
         
         imageUrlString = apiUrlString + "uploads/"
         updatePhotoUrl = apiUrlString + "updatePhoto.php"

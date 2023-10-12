@@ -402,7 +402,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "DB3898E4-8640-40EB-A438-6C59FFBA8535"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PetCareTaker/Resource/UserDataManager.swift"
@@ -442,6 +442,69 @@
                   startingLineNumber = "35"
                   endingLineNumber = "35"
                   offsetFromSymbolStart = "412">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A34B5150-1CB3-449E-9BC9-DBB319284253"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PetCareTaker/CoreTabs/StartVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
+            landmarkName = "loginSetupData()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A34B5150-1CB3-449E-9BC9-DBB319284253 - ef984cd791372926"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Swift.Error&gt;) -&gt; () in PetCareTaker.StartVC.loginSetupData() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/CoreTabs/StartVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "1512">
+               </Location>
+               <Location
+                  uuid = "A34B5150-1CB3-449E-9BC9-DBB319284253 - ef984cd791372926"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Swift.Error&gt;) -&gt; () in PetCareTaker.StartVC.loginSetupData() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/CoreTabs/StartVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "1492">
+               </Location>
+               <Location
+                  uuid = "A34B5150-1CB3-449E-9BC9-DBB319284253 - ef984cd791372941"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Swift.Error&gt;) -&gt; () in PetCareTaker.StartVC.loginSetupData() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/CoreTabs/StartVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "117"
+                  endingLineNumber = "117"
+                  offsetFromSymbolStart = "1512">
                </Location>
             </Locations>
          </BreakpointContent>

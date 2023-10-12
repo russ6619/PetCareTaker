@@ -194,7 +194,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 啟用 UITextView 的自動調整高度功能
         introductionTextView.isScrollEnabled = false
         introductionTextView.delegate = self
-        self.introductionTextViewHeightConstraint = introductionTextView.heightAnchor.constraint(equalToConstant: 200)
+        self.introductionTextViewHeightConstraint = introductionTextView.heightAnchor.constraint(equalToConstant: 100)
 
         addSubviewToScrollView()
 
@@ -253,6 +253,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
 //            livingArea.widthAnchor.constraint(equalToConstant: 60),
 //            livingArea.heightAnchor.constraint(equalToConstant: 40),
         
+        // 設定 introductionTextView 位置，在 introductionLabel 下方
             introductionTextView.topAnchor.constraint(equalTo: introductionLabel.bottomAnchor, constant: 10),
             introductionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             introductionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),

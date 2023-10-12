@@ -22,7 +22,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     weak var editDelegate: PetInformationEditDelegate?
     
     var editingCell: ButtonMenuCell?
-    let userID: String = UserDataManager.shared.userData["UserID"]!
+    let userID: String = UserDataManager.shared.userData["UserID"]! as! String
     
     var petTypes: PetTypes?
     var petNowImage: UIImage! // 實例化 PetImage

@@ -42,12 +42,12 @@ class TaskBoardTableVC: UITableViewController {
         
         
         // 創建一個容器視圖
-        let backgroundContainerView = UIView()
-        backgroundContainerView.backgroundColor = UIColor(white: 1, alpha: 0.7) // 設置半透明的背景色
-
-        // 創建UIImageView來顯示背景圖片
-        let backgroundImage = UIImageView(image: UIImage(named: "Logo2"))
-        backgroundImage.contentMode = .scaleAspectFill
+//        let backgroundContainerView = UIView()
+//        backgroundContainerView.backgroundColor = UIColor(white: 1, alpha: 0.7) // 設置半透明的背景色
+//
+//        // 創建UIImageView來顯示背景圖片
+//        let backgroundImage = UIImageView(image: UIImage(named: "Logo2"))
+//        backgroundImage.contentMode = .scaleAspectFill
 
 //        tableView.backgroundView = backgroundImage
 
