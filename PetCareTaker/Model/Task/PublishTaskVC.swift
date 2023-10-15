@@ -244,14 +244,15 @@ class PublishTaskVC: UIViewController, UITextViewDelegate {
     // MARK: @objc
     @objc func editBtnPressed() {
         
+        let userID: String = String((UserDataManager.shared.userData["UserID"] as? Int)!)
+        
         // 檢查是否所有欄位都有值
         guard let taskName = taskNameField.text,
               let taskInfo = taskInfoText.text,
               let taskRewardStr = taskRewardField.text,
               !taskName.isEmpty,
               !taskInfo.isEmpty,
-              !taskRewardStr.isEmpty,
-              let userID: String = UserDataManager.shared.userData["UserID"] as? String else {
+              !taskRewardStr.isEmpty else {
             showAlert(title: "錯誤", message: "所有欄位皆必填")
             return
         }

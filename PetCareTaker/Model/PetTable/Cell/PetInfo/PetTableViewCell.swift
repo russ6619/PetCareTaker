@@ -122,7 +122,8 @@ class PetTableViewCell: UITableViewCell {
     }
     
     func setPetImage(for pet: PetProtocol, in images: [String: UIImage]) {
-        if let petImage = images[pet.petID] {
+        
+        if let petImage = images[String(pet.petID!)] {
             petImageView.image = petImage
         } else {
             // 如果未找到圖像，您可以設置一個預設圖像或顯示空白圖像

@@ -14,7 +14,7 @@ class PetTabViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UserDataManager.shared.petsData = UserDataManager.shared.petsData.filter { $0.petID != "" }
+        UserDataManager.shared.petsData = UserDataManager.shared.petsData.filter { $0.petID != nil }
         reloadData()
         
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
@@ -56,12 +56,16 @@ class PetTabViewController: UIViewController {
         DispatchQueue.main.async {
             // 更新畫面程式
             for pet in UserDataManager.shared.petsData {
-                if let photoURL = URL(string: "\(imageUrl)\(pet.photo)") {
+                
+                if let petPhoto = pet.photo,
+                   let photoURL = URL(string: "\(imageUrl)\(petPhoto)") {
+                    print("petImageUrl = \(photoURL)")
                         UserDataManager.shared.downloadImage(from: photoURL) { (result) in
                             switch result {
                             case .success((let image, _)):
                                 // 將下載的照片存儲在 petsImages 字典中，以 petID 作為鍵
-                                self.petsImages[pet.petID] = image
+                                let petStringID = String(pet.petID!)
+                                self.petsImages[petStringID] = image
                                 self.petTable.reloadData() // 刷新表格視圖
                             case .failure(let error):
                                 print("下載失敗: \(error.localizedDescription)")
@@ -78,7 +82,7 @@ class PetTabViewController: UIViewController {
     @objc func addButtonTapped() {
 //        if UserDataManager.shared.petsData.
         // 創建一個新的空白寵物資料
-        let newPet = Pet(petID: "", name: "", gender: "寵物性別", type: "品種", birthDate: "出生日期", size: "尺寸", neutered: "是否結紮", vaccinated: "是否規律施打疫苗", personality: "個性", photo: "", precautions: "")
+        let newPet = Pet(petID: nil, name: "", gender: "寵物性別", type: "品種", birthDate: "出生日期", size: "尺寸", neutered: "是否結紮", vaccinated: "是否規律施打疫苗", personality: "個性", photo: "", precautions: "")
         
         // 將新的寵物資料添加到 petsData 中
         UserDataManager.shared.petsData.append(newPet)
@@ -127,7 +131,7 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
         // 設置 editDelegate 為 self
         petInformationEditVC.editDelegate = self
         let selectedPet = UserDataManager.shared.petsData[indexPath.row]
-        let selectedPetID = UserDataManager.shared.petsData[indexPath.row].petID
+        let selectedPetID: String = String(UserDataManager.shared.petsData[indexPath.row].petID!)
         let selectedPetNowImage = petsImages[selectedPetID] ?? nil
         petInformationEditVC.selectedPet = selectedPet // 設置選定的寵物信息
         petInformationEditVC.selectedPetID = selectedPetID
@@ -144,7 +148,7 @@ extension PetTabViewController: UITableViewDataSource, UITableViewDelegate {
             let cancelAction = UIAlertAction(title: "取消", style: .cancel, handler: nil)
             let deleteAction = UIAlertAction(title: "刪除", style: .destructive) { (action) in
                 // 在這裡執行刪除操作
-                let petID_to_delete = Int(selectedPet.petID)!
+                let petID_to_delete = selectedPet.petID!
                 
                 guard let deletePetURL = URL(string: "\(ServerApiHelper.shared.deletePetUrl)?PetID=\(petID_to_delete)") else {
                     return

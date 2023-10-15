@@ -15,6 +15,7 @@ class TaskPublisherInfoVC: UIViewController {
     
     var userImage = UIImage()
         
+    let personalImage = UIImage(systemName: "person.circle.fill")
     
     // 創建 UITableView
     private var userPetsTable: UITableView = {
@@ -65,15 +66,17 @@ class TaskPublisherInfoVC: UIViewController {
         guard let imageUrl = URL(string: ServerApiHelper.shared.apiUrlString) else {
             return
         }
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             // 更新畫面程式
             for pet in self.userPetsInfo {
-                if let photoURL = URL(string: "\(imageUrl)\(pet.photo)") {
+                if let photoURL = URL(string: "\(imageUrl)\(String(describing: pet.photo!))") {
+                    print("任務petImageUrl = \(photoURL)")
                         UserDataManager.shared.downloadImage(from: photoURL) { (result) in
                             switch result {
                             case .success((let image, _)):
+                                let petStringId = String(pet.petID!)
                                 // 將下載的照片存儲在 petsImages 字典中，以 petID 作為鍵
-                                self.petsImages[pet.petID] = image
+                                self.petsImages[petStringId] = image
                                 self.userPetsTable.reloadData() // 刷新表格視圖
                             case .failure(let error):
                                 print("任務發佈者的寵物照片下載失敗: \(error.localizedDescription)")
@@ -83,7 +86,10 @@ class TaskPublisherInfoVC: UIViewController {
                     }
                 }
             
-            if let userPhotoURL = URL(string: "\(imageUrl)\(self.userInfo.photo)") {
+            
+            if let userInfoImage = self.userInfo.photo,
+               let userPhotoURL = URL(string: "\(imageUrl)\(String(describing: userInfoImage))") {
+                print("任務userImageUrl = \(userPhotoURL)")
                 UserDataManager.shared.downloadImage(from: userPhotoURL) { (result) in
                     switch result {
                     case .success((let image, _)):
@@ -96,6 +102,7 @@ class TaskPublisherInfoVC: UIViewController {
                     }
                 }
             }
+            userImage = self.personalImage!
         }
         
     }

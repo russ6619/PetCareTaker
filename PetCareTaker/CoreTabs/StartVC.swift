@@ -114,8 +114,7 @@ class StartVC: UIViewController {
                 print("用戶資料下載成功：\(UserDataManager.shared.userData)")
                 print("下載的userID: \(String(describing: UserDataManager.shared.userData["UserID"]))")
                 // 如果成功下載用戶資料，獲取用戶的 userID
-                guard let userID: String = UserDataManager.shared.userData["UserID"] else {
-                    return }
+                let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
                 print("userID = \(userID)")
                 // 下載使用者照片
                 let uniqueFileName = "personImageWith\(userID)"

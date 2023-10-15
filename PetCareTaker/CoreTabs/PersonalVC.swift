@@ -204,7 +204,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             personScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             personScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             personScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            personScrollView.heightAnchor.constraint(equalToConstant: introductionTextView.bottom + 100),
+//            personScrollView.heightAnchor.constraint(equalToConstant: introductionTextView.bottom + 100),
             
         // 設定 personalImage 位置，在 title 下面置中
             personalImage.heightAnchor.constraint(equalToConstant: 200),

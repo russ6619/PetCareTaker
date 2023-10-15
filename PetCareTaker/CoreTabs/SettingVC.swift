@@ -13,7 +13,7 @@ import MessageUI
 /// View Controller to show user settings
 final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
     
-    let userID: String = UserDataManager.shared.userData["UserID"]! 
+    let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero,

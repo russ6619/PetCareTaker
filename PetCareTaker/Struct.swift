@@ -67,7 +67,7 @@ struct District: Codable {
 }
 
 protocol PetProtocol {
-    var petID: String { get }
+    var petID: Int? { get }
     var name: String { get }
     var type: String { get }
     var birthDate: String { get }
@@ -76,14 +76,14 @@ protocol PetProtocol {
     var personality: String { get }
     var neutered: String { get }
     var vaccinated: String { get }
-    var photo: String { get }
+    var photo: String? { get }
     var precautions: String { get }
 }
 
 
 // 寵物結構
 struct Pet: PetProtocol, Codable {
-    var petID: String
+    var petID: Int?
     var name: String
     var gender: String
     var type: String
@@ -92,7 +92,7 @@ struct Pet: PetProtocol, Codable {
     var neutered: String
     var vaccinated: String
     var personality: String
-    var photo: String
+    var photo: String?
     var precautions: String
 }
 
@@ -109,8 +109,8 @@ struct Tasks: Codable {
 }
 
 struct PetAndUserData: Encodable {
-    let userID: String
-    let petID: String
+    let userID: Int
+    let petID: Int?
     var name: String
     var gender: String
     var type: String
@@ -119,7 +119,7 @@ struct PetAndUserData: Encodable {
     var neutered: String
     var vaccinated: String
     var personality: String
-    var photo: String
+    var photo: String?
     var precautions: String
 }
 
@@ -129,7 +129,7 @@ struct PetAndUserData: Encodable {
 //    var name: String
 //    var residenceArea: String
 //    var introduction: String
-//    
+//
 //    enum CodingKeys: String, CodingKey {
 //        case phone = "Phone"
 //        case password = "Password"
@@ -161,7 +161,7 @@ struct UserDataResponse: Codable {
 struct UserData: Codable {
     let phone: String
     let name: String
-    let photo: String
+    let photo: String?
     let residenceArea: String
     let introduction: String
     
@@ -175,8 +175,8 @@ struct UserData: Codable {
 }
 
 struct PetData: PetProtocol, Codable {
-    let petID: String
-    let userID: String
+    let petID: Int?
+    let userID: Int
     let name: String
     let gender: String
     let type: String
@@ -185,7 +185,7 @@ struct PetData: PetProtocol, Codable {
     let neutered: String
     let vaccinated: String
     let personality: String
-    let photo: String
+    let photo: String?
     let precautions: String
     
     enum CodingKeys: String, CodingKey {

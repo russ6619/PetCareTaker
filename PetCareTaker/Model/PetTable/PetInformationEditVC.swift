@@ -22,7 +22,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     weak var editDelegate: PetInformationEditDelegate?
     
     var editingCell: ButtonMenuCell?
-    let userID: String = UserDataManager.shared.userData["UserID"]! as! String
+    let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
     
     var petTypes: PetTypes?
     var petNowImage: UIImage! // 實例化 PetImage
@@ -178,9 +178,6 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             }
         }
         
-        // 獲取寵物照片
-        
-        
         if selectedPet.name != "",
            selectedPet.precautions != "",
            selectedPet.gender != "寵物性別",
@@ -190,12 +187,31 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
            selectedPet.vaccinated != "是否規律施打疫苗" {
             
             // 判斷 selectedPet.petID 是否為空
-            if selectedPet.petID.isEmpty {
+            if selectedPet.petID != nil {
+                
+                if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
+                    if imageCell.petImage.image != nil {
+                        
+                        DispatchQueue.main.async {
+                            self.uploadPetImage()
+                        }
+                    }
+                }
+                
+                
+            } else {
+                
+                if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
+                    if imageCell.petImage.image != nil {
+                        self.uploadPetImage()
+                    }
+                }
+                
                 // 將 selectedPet 轉換為 JSON
                 // 創建一個包含 userID 和 selectedPet 的實例
                 let petData = PetAndUserData(
-                    userID: userID,
-                    petID: selectedPet.petID,
+                    userID: Int(userID)!,
+                    petID: nil,
                     name: selectedPet.name,
                     gender: selectedPet.gender,
                     type: selectedPet.type,
@@ -209,15 +225,6 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 )
                 
                 print("petData: \(petData)")
-                
-                if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
-                    if imageCell.petImage.image != nil {
-                        
-                        DispatchQueue.main.async {
-                            self.uploadPetImage()
-                        }
-                    }
-                }
                 
                 if let jsonData = try? JSONEncoder().encode(petData) {
                     // 創建 URLRequest
@@ -321,13 +328,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                     }
                     task.resume()
                 }
-            } else {
                 
-                if let imageCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? petImageViewCell {
-                    if imageCell.petImage.image != nil {
-                        self.uploadPetImage()
-                    }
-                }
             }
         } else {
             // 顯示警告訊息告知使用者
@@ -407,7 +408,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
             
             if let petImage = self.petNowImage,
                let imageData = petImage.jpegData(compressionQuality: 0.8) {
-                let uniqueFileName = "petsImage\(self.userID)With\(self.selectedPet.petID)"
+                let uniqueFileName = "petsImage\(self.userID)With\(String(describing: self.selectedPet.petID))"
                 
                 guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
                     return
@@ -447,7 +448,13 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                                     self.selectedPet.photo = "\(imagePath)"
                                     
                                     // 調用代理方法，傳遞更新的照片和 petID
-                                    self.editDelegate?.didUpdatePetImage(self.petNowImage, forPetID: self.selectedPet.petID)
+                                    let petStringID: String
+                                    if self.selectedPet.petID == nil {
+                                        petStringID = ""
+                                    } else {
+                                        petStringID = String(self.selectedPet.petID!)
+                                    }
+                                    self.editDelegate?.didUpdatePetImage(self.petNowImage, forPetID: petStringID)
                                     print("伺服器返回的文件路徑：\(imagePath)")
                                     DispatchQueue.main.async {
                                         UserDataManager.shared.updatePetData(userID: self.userID, selectedPet: self.selectedPet, completion: { error in
@@ -486,11 +493,11 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
                 print("沒有要上傳的圖片")
             }
             // 遍歷 petsData，尋找匹配的 petID
-            if let pet = UserDataManager.shared.petsData.first(where: { $0.petID == self.selectedPetID }) {
+            if let pet = UserDataManager.shared.petsData.first(where: { $0.petID == Int(self.selectedPetID ?? "") }) {
                 // 找到匹配的 pet，獲取其 photo
                 let photoURL = pet.photo
                 
-                print("找到 petID 為 \(String(describing: self.selectedPetID)) 的寵物的 photo：\(photoURL)")
+                print("找到 petID 為 \(String(describing: self.selectedPetID)) 的寵物的 photo：\(String(describing: photoURL))")
             } else {
                 // 沒有找到匹配的 petID
                 print("未找到 petID 為 \(String(describing: self.selectedPetID)) 的寵物")

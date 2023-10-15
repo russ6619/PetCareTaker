@@ -110,8 +110,8 @@ class TaskBoardTableVC: UITableViewController {
         cell.configure(date: dateString, taskName: task.TaskName, reward: rewardString, deadline: deadline)
 
         cell.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
-        cell.layer.shadowOpacity = 0.3 // 陰影不透明度
-        cell.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        cell.layer.shadowOpacity = 0.8 // 陰影不透明度
+        cell.layer.shadowOffset = CGSize(width: 2, height: 0) // 陰影偏移量
         cell.layer.shadowRadius = 2 // 陰影半徑
 //        cell.backgroundColor = UIColor.clear
         return cell

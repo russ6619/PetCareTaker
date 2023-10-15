@@ -11,7 +11,7 @@ import UIKit
 class UserDataManager {
     static let shared = UserDataManager()
     
-    var userData = [String: String]()
+    var userData = [String: Any]()
     var userImage = UIImage()
     
     var tasksData = [Tasks]()
@@ -52,7 +52,7 @@ class UserDataManager {
                 // 解析從 PHP 後端返回的數據
                 if let data = data {
                     do {
-                        if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+                        if let userData = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                             // 將用戶資料存儲到 UserDataManager 中
                             print("fetchUserData data = \(data)")
                             self.userData = userData
@@ -148,15 +148,16 @@ class UserDataManager {
                                let personality = petData["Personality"] as? String,
                                let photo = petData["Photo"] as? String,
                                let precautions = petData["Precautions"] as? String {
-                                
-                                let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions) 
-                                pets.append(pet)
+                                if let petIntID = Int(petID) {
+                                    let pet = Pet(petID: petIntID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions)
+                                    pets.append(pet)
+                                }
                             }
                         }
                         
                         // 將寵物數據存儲在 UserDataManager 中
                         self.petsData = pets
-                        self.petsData = self.petsData.filter { $0.petID != "" }
+                        self.petsData = self.petsData.filter { !$0.petID!.words.isEmpty }
 
                         completion(nil) // 成功下載並設定寵物資料
                     } else {
@@ -203,7 +204,7 @@ class UserDataManager {
                             if let fetchError = fetchError {
                                 completion(fetchError) // 處理下載寵物資料的錯誤
                             } else {
-                                self.petsData = self.petsData.filter { $0.petID != "" }
+                                self.petsData = self.petsData.filter { !$0.petID!.words.isEmpty }
                                 completion(nil) // 成功更新並下載新寵物資料
                             }
                         }
@@ -466,10 +467,12 @@ class UserDataManager {
                   let precautions = petData["Precautions"] as? String else {
                       continue
                   }
-
-            let pet = Pet(petID: petID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions)
-
-            pets.append(pet)
+            if let petIntID = Int(petID) {
+                
+                let pet = Pet(petID: petIntID, name: name, gender: gender, type: type, birthDate: birthDate, size: size, neutered: neutered, vaccinated: vaccinated, personality: personality, photo: photo, precautions: precautions)
+                
+                pets.append(pet)
+            }
         }
 
         return pets

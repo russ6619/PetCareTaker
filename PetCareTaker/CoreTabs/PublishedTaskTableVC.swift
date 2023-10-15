@@ -10,7 +10,7 @@ import UIKit
 class PublishedTaskTableVC: UITableViewController {
     
     var userPublishedTasks: [Tasks] = []
-    let userID = UserDataManager.shared.userData["UserID"] as! String
+    let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -51,6 +51,7 @@ class PublishedTaskTableVC: UITableViewController {
     
     @objc func reloadData() {
         // 在這裡重新加載資料和刷新表格
+        print("userID = \(userID)")
         UserDataManager.shared.fetchTaskDataFromID(publisherID: userID) { error in
             if let error = error {
                 print("無法獲取發佈清單，錯誤：\(error.localizedDescription)")
@@ -101,8 +102,8 @@ class PublishedTaskTableVC: UITableViewController {
         cell.configure(date: dateString, taskName: task.TaskName, taskInfo: taskinfo, reward: rewardString, deadline: deadline)
         
         cell.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
-        cell.layer.shadowOpacity = 0.3 // 陰影不透明度
-        cell.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        cell.layer.shadowOpacity = 0.8 // 陰影不透明度
+        cell.layer.shadowOffset = CGSize(width: 2, height: 0) // 陰影偏移量
         cell.layer.shadowRadius = 2 // 陰影半徑
         
         return cell
