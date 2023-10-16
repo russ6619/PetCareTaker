@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "8A207663-B684-4FC4-9DCD-3DA5866761C9"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "97928343-0087-4855-BEDF-6650370BF710"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PetCareTaker/RegisterVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "checkRegister(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "97928343-0087-4855-BEDF-6650370BF710 - 1597d2b9e73a6921"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/RegisterVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "96"
+                  endingLineNumber = "96"
+                  offsetFromSymbolStart = "6288">
+               </Location>
+               <Location
+                  uuid = "97928343-0087-4855-BEDF-6650370BF710 - 1597d2b9e73a6a7e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/RegisterVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "105"
+                  endingLineNumber = "105"
+                  offsetFromSymbolStart = "5476">
+               </Location>
+               <Location
+                  uuid = "97928343-0087-4855-BEDF-6650370BF710 - 1597d2b9e73a6a9f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/RegisterVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "106"
+                  endingLineNumber = "106"
+                  offsetFromSymbolStart = "5836">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4770037D-BE02-4C14-A79A-7728F2074F3C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PetCareTaker/RegisterVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "checkRegister(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4770037D-BE02-4C14-A79A-7728F2074F3C - 1597d2b9e73a1618"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/RegisterVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "2644">
+               </Location>
+               <Location
+                  uuid = "4770037D-BE02-4C14-A79A-7728F2074F3C - 1597d2b9e73a1618"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.RegisterVC.checkRegister(Any) -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/RegisterVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "2652">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PetCareTaker/Model/Task/TaskDetailVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "showTaskPublisherInfo()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49 - 57bc759470677b96"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PetCareTaker.TaskDetailVC.showTaskPublisherInfo() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Model/Task/TaskDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "66CF9AAB-8F68-4A7D-B83A-92D8C7262A49 - e3ea3b13f07feb64"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Result&lt;PetCareTaker.UserDataResponse, Swift.Error&gt;) -&gt; () in PetCareTaker.TaskDetailVC.showTaskPublisherInfo() -&gt; ()"
+                  moduleName = "PetCareTaker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/russ/Desktop/swift/%E7%B7%B4%E7%BF%92/PetCareTaker/PetCareTaker/Model/Task/TaskDetailVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "124">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
