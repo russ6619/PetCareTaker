@@ -26,7 +26,7 @@ class PasswordTextField: UITextField {
         button.isSelected = false
         button.setImage(UIImage(systemName: "eye.fill"), for: .selected)
         button.setImage(UIImage(systemName: "eye.slash.fill"), for: .normal)
-        button.imageView?.contentMode = .scaleAspectFit
+        button.imageView?.contentMode = .scaleAspectFill
         rightView = button
         button.addTarget(self, action: #selector(eyeButtonTap(button:)), for: .touchUpInside)
     }

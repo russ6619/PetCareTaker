@@ -579,7 +579,7 @@ extension PetInformationEditVC: UITableViewDelegate, UITableViewDataSource {
                 
                 cell.setPetImage(petNowImage)
                 cell.petImage.layer.masksToBounds = true
-                cell.petImage.contentMode = .scaleAspectFit // 設置圖片視圖的內容模式
+                cell.petImage.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
                 cell.petImage.layer.cornerRadius = 100
                 
                 return cell

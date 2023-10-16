@@ -116,7 +116,7 @@ class PetTableViewCell: UITableViewCell {
         
         setPetImage(for: pet, in: images)
         
-        petImageView.contentMode = .scaleAspectFit // 設置圖片內容模式
+        petImageView.contentMode = .scaleAspectFill // 設置圖片內容模式
         petImageView.clipsToBounds = true // 裁剪圖片以適應圓形邊界
         petImageView.layer.cornerRadius = petImageView.frame.size.width / 2
     }

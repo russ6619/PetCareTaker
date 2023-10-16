@@ -11,7 +11,7 @@ class petImageViewCell: UITableViewCell {
     
     let petImage: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit // 設置 contentMode
+        image.contentMode = .scaleAspectFill // 設置 contentMode
         image.layer.cornerRadius = image.frame.height / 2
         image.layer.masksToBounds = true
         return image
@@ -34,7 +34,7 @@ class petImageViewCell: UITableViewCell {
             petImage.heightAnchor.constraint(equalToConstant: 200) // 設定圖像高度
         ])
         
-        petImage.contentMode = .scaleAspectFit // 設置圖片內容模式
+        petImage.contentMode = .scaleAspectFill // 設置圖片內容模式
         petImage.layer.cornerRadius = petImage.frame.height / 2
         petImage.layer.masksToBounds = true
 
@@ -47,7 +47,7 @@ class petImageViewCell: UITableViewCell {
     func setPetImage(_ image: UIImage?) {
         if let image = image {
             petImage.image = image
-            petImage.contentMode = .scaleAspectFit // 設置圖片視圖的內容模式
+            petImage.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
             petImage.layer.cornerRadius = petImage.frame.height / 2
             petImage.layer.masksToBounds = true
         } else {

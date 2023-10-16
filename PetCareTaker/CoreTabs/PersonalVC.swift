@@ -44,7 +44,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         image.isUserInteractionEnabled = true
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
-        image.contentMode = .scaleAspectFit // 設置圖片視圖的內容模式
+        image.contentMode = .scaleAspectFill // 設置圖片視圖的內容模式
         image.layer.cornerRadius = 100
         return image
     }()
@@ -472,7 +472,7 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     // 上傳圖像資料到後端伺服器
     func uploadImageToServer(imageData: Data, completionHandler: @escaping (Result<String, Error>) -> Void) {
         
-        guard let userID = UserDataManager.shared.userData["UserID"] else {
+        guard let userID = UserDataManager.shared.userData["UserID"] as? String else {
             return
         }
         
@@ -512,6 +512,7 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
                        let imagePath = json["imagePath"] as? String {
                         completionHandler(.success(imagePath))
                         UserDataManager.shared.userData["Photo"] = "/uploads/\(uniqueFileName)"
+                        print("UserPhoto = \(uniqueFileName)")
                     } else {
                         completionHandler(.failure(NSError(domain: "Invalid JSON response", code: 0, userInfo: nil)))
                     }
