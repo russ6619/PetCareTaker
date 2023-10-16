@@ -117,7 +117,7 @@ class StartVC: UIViewController {
                 let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
                 print("userID = \(userID)")
                 // 下載使用者照片
-                let uniqueFileName = "personImageWith\(userID)"
+                let uniqueFileName = "personImageWith\(userID).jpg"
                 guard let imageUrl = URL(string: "\(ServerApiHelper.shared.imageUrlString)\(uniqueFileName)") else {
                     return
                 }

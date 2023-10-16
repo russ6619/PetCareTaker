@@ -366,7 +366,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         navigationController?.pushViewController(petVC, animated: true)
     }
     
-    // Save 按鈕的動作
+    // MARK: SaveBtn
     @objc func saveButtonTapped() {
         // 在這裡處理 Save 按鈕被點擊的邏輯
         guard let username = userNameFiled.text, !username.isEmpty else {
@@ -392,26 +392,55 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         }
         UserDataManager.shared.userData["Gender"] = gender
         
-        
-        UserDataManager.shared.updateUserProfile{ error in
-            // 處理更新完成後的邏輯
-            if let error = error {
-                // 處理錯誤情況
-                print("更新用戶資料失敗：\(error)")
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "錯誤", message: "個人資料更新失敗", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
-                }
-            } else {
-                // 更新成功
-                DispatchQueue.main.async {
-                    print("個人資料更新成功")
-                    let alert = UIAlertController(title: "成功", message: "個人資料更新成功", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+        // 將選擇的圖像轉換為 Data
+        // 處理圖像選擇後的操作，並將圖像轉換為 Data
+        if let selectedImage = personalImage.image,
+           let imageData = selectedImage.jpegData(compressionQuality: 0.7) {
+            
+            DispatchQueue.main.async {
+                // 更新畫面程式
+                self.uploadImageToServer(imageData: imageData) { result in
+                    switch result {
+                    case .success(let imagePath):
+                        // 成功上傳圖像，imagePath 包含伺服器端文件的路徑
+                        print("伺服器返回的圖像路徑：\(imagePath)")
+                        
+                        // 在這裡處理成功後的邏輯，例如更新用戶頭像
+                        // 可以在主線程中更新 UI
+                        DispatchQueue.main.async {
+                            self.personalImage.image = selectedImage // 更新圖像
+                            UserDataManager.shared.userData["Photo"] = imagePath
+                            UserDataManager.shared.updateUserProfile{ error in
+                                // 處理更新完成後的邏輯
+                                if let error = error {
+                                    // 處理錯誤情況
+                                    print("更新用戶資料失敗：\(error)")
+                                    DispatchQueue.main.async {
+                                        let alert = UIAlertController(title: "錯誤", message: "個人資料更新失敗", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    // 更新成功
+                                    DispatchQueue.main.async {
+                                        print("個人資料更新成功")
+                                        let alert = UIAlertController(title: "成功", message: "個人資料更新成功", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                }
+                            }
+                        }
+                        
+                    case .failure(let error):
+                        // 上傳失敗，處理錯誤
+                        print("上傳圖像失敗：\(error.localizedDescription)")
+                    }
                 }
             }
+            
+            
+            
         }
     }
     
@@ -435,28 +464,7 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         if let selectedImage = info[.originalImage] as? UIImage {
             // 將選擇的圖像設置到personalImage
             personalImage.image = selectedImage
-            // 將選擇的圖像轉換為 Data
-            // 處理圖像選擇後的操作，並將圖像轉換為 Data
-            if let imageData = selectedImage.jpegData(compressionQuality: 0.7) {
-                uploadImageToServer(imageData: imageData) { result in
-                    switch result {
-                    case .success(let imagePath):
-                        // 成功上傳圖像，imagePath 包含伺服器端文件的路徑
-                        print("伺服器返回的圖像路徑：\(imagePath)")
-                        
-                        // 在這裡處理成功後的邏輯，例如更新用戶頭像
-                        // 可以在主線程中更新 UI
-                        DispatchQueue.main.async {
-                            self.personalImage.image = selectedImage // 更新圖像
-                        }
-                        
-                    case .failure(let error):
-                        // 上傳失敗，處理錯誤
-                        print("上傳圖像失敗：\(error.localizedDescription)")
-                    }
-                }
-            }
-
+            
         }
         
         // 關閉圖像選擇器
@@ -472,11 +480,12 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     // 上傳圖像資料到後端伺服器
     func uploadImageToServer(imageData: Data, completionHandler: @escaping (Result<String, Error>) -> Void) {
         
-        guard let userID = UserDataManager.shared.userData["UserID"] as? String else {
+        guard let userID = UserDataManager.shared.userData["UserID"] as? Int else {
             return
         }
         
-        let uniqueFileName = "personImageWith\(userID)"
+        let uniqueFileName = "personImageWith\(userID).jpg"
+        print("uniqueFileName = \(uniqueFileName)")
         
         guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
             return
