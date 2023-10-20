@@ -267,12 +267,12 @@ class TaskEditVC: UIViewController {
               let taskRewardStr = taskRewardField.text,
               !taskName.isEmpty,
               !taskInfo.isEmpty,
-              !taskRewardStr.isEmpty,
-              let userID: String = UserDataManager.shared.userData["UserID"] as? String else {
+              !taskRewardStr.isEmpty else {
             showAlertOne(title: "錯誤", message: "所有欄位皆必填")
             return
         }
         
+        let userID: String = String((UserDataManager.shared.userData["UserID"] as? Int)!)
         let startDate = taskStartDate.date
         let endDate = taskEndDate.date
         let deadlineDate = taskDeadlineDate.date
@@ -302,10 +302,13 @@ class TaskEditVC: UIViewController {
             "EndDate": endDateString
         ]
         
+        print("要更新的任務資訊：\(taskData)")
+        
         // 調用 UserDataManager 的 updateTask 方法來更新任務
         UserDataManager.shared.updateTask(taskData: taskData) { (error) in
             if let error = error {
                 self.showAlertOne(title: "錯誤", message: "更新任務失敗: \(error.localizedDescription)")
+                print("更新任務失敗: \(error.localizedDescription)")
             } else {
                 // 成功更新任務，可以執行相關操作，例如返回前一個畫面或者顯示成功訊息
                 DispatchQueue.main.async {

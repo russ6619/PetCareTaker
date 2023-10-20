@@ -11,12 +11,12 @@ import CryptoKit
 
 class RegisterVC: UIViewController {
     
-    @IBOutlet weak var userPhoneNB: UITextField!
+    @IBOutlet weak var userAccount: UITextField!
     @IBOutlet weak var userPassWord: PasswordTextField!
     @IBOutlet weak var userName: UITextField!
     
     
-    @IBOutlet weak var checkForPhone: UILabel!
+    @IBOutlet weak var checkForAccount: UILabel!
     @IBOutlet weak var checkForPassword: UILabel!
     @IBOutlet weak var checkForUserName: UILabel!
     
@@ -66,17 +66,16 @@ class RegisterVC: UIViewController {
         checkBtn.layer.shadowOpacity = 0.5 // 陰影不透明度
         checkBtn.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
         checkBtn.layer.shadowRadius = 5 // 陰影半徑
-        checkBtn.backgroundColor = UIColor(red: 255, green: 176, blue: 44, alpha: 100)
-        checkBtn.tintColor = UIColor(red: 0, green: 86, blue: 179, alpha: 70)
+        checkBtn.backgroundColor = UIColor.orange
+        checkBtn.tintColor = UIColor.white
         
-        userPhoneNB.keyboardType = .numberPad
-        userPhoneNB.layer.masksToBounds = true
-        userPhoneNB.layer.cornerRadius = 16
-        userPhoneNB.returnKeyType = .continue
-        userPhoneNB.leftViewMode = .always
-        userPhoneNB.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        userPhoneNB.autocapitalizationType = .none
-        userPhoneNB.autocorrectionType = .no
+        userAccount.layer.masksToBounds = true
+        userAccount.layer.cornerRadius = 16
+        userAccount.returnKeyType = .continue
+        userAccount.leftViewMode = .always
+        userAccount.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userAccount.autocapitalizationType = .none
+        userAccount.autocorrectionType = .no
         
         userName.layer.masksToBounds = true
         userName.layer.cornerRadius = 16
@@ -160,7 +159,7 @@ class RegisterVC: UIViewController {
     
     @IBAction func checkRegister(_ sender: Any) {
         
-        guard let account = userPhoneNB.text,
+        guard let account = userAccount.text,
               let password = userPassWord.text,
               let name = userName.text else {
             return
@@ -171,17 +170,17 @@ class RegisterVC: UIViewController {
         
         let allCheckText = AuthManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
         
-        checkForPhone.text = allCheckText.accountResult
+        checkForAccount.text = allCheckText.accountResult
         checkForPassword.text = allCheckText.passwordResult
         
         if allCheckText.accountResult == "格式有效" {
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkForPhone, accountImage: self.accountImageView)
+                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkForAccount, accountImage: self.accountImageView)
             }
         } else {
             print("\(allCheckText.accountResult)")
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneNB, accountLabel: self.checkForPhone, accountImage: self.accountImageView)
+                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userAccount, accountLabel: self.checkForAccount, accountImage: self.accountImageView)
             }
         }
         

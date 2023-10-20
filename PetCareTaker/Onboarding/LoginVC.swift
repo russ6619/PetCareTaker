@@ -10,29 +10,28 @@ import CryptoKit
 
 class LoginVC: UIViewController {
     
-    @IBOutlet weak var userPhoneLogin: UITextField!
+    @IBOutlet weak var userAccountLogin: UITextField!
     @IBOutlet weak var userPasswordLogin: UITextField!
     
     @IBOutlet weak var didNotHaveAnAccountLabel: UILabel!
     
-    @IBOutlet weak var checkPhoneLogin: UILabel!
+    @IBOutlet weak var checkAccountLogin: UILabel!
     @IBOutlet weak var checkPasswordLogin: UILabel!
     
-    @IBOutlet weak var checkPhoneLoginImage: UIImageView!
+    @IBOutlet weak var checkAccountLoginImage: UIImageView!
     @IBOutlet weak var checkPasswordLoginImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        userPhoneLogin.keyboardType = .numberPad
         
-        userPhoneLogin.layer.masksToBounds = true
-        userPhoneLogin.layer.cornerRadius = 16
-        userPhoneLogin.returnKeyType = .continue
-        userPhoneLogin.leftViewMode = .always
-        userPhoneLogin.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        userPhoneLogin.autocapitalizationType = .none
-        userPhoneLogin.autocorrectionType = .no
+        userAccountLogin.layer.masksToBounds = true
+        userAccountLogin.layer.cornerRadius = 16
+        userAccountLogin.returnKeyType = .continue
+        userAccountLogin.leftViewMode = .always
+        userAccountLogin.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userAccountLogin.autocapitalizationType = .none
+        userAccountLogin.autocorrectionType = .no
         
         userPasswordLogin.layer.masksToBounds = true
         userPasswordLogin.layer.cornerRadius = 16
@@ -47,7 +46,7 @@ class LoginVC: UIViewController {
     
     @IBAction func loginCheck(_ sender: Any) {
         
-        guard let phone = userPhoneLogin.text,
+        guard let phone = userAccountLogin.text,
               let password = userPasswordLogin.text else {
             return
         }
@@ -56,17 +55,17 @@ class LoginVC: UIViewController {
         
         let allCheckText = AuthManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
         
-        checkPhoneLogin.text = allCheckText.accountResult
+        checkAccountLogin.text = allCheckText.accountResult
         checkPasswordLogin.text = allCheckText.passwordResult
         
         if allCheckText.accountResult == "格式有效" {
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
+                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkAccountLogin, accountImage: self.checkAccountLoginImage)
             }
         } else {
             print("\(allCheckText.accountResult)")
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneLogin, accountLabel: self.checkPhoneLogin, accountImage: self.checkPhoneLoginImage)
+                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userAccountLogin, accountLabel: self.checkAccountLogin, accountImage: self.checkAccountLoginImage)
             }
         }
         

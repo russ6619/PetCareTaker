@@ -82,7 +82,7 @@
                                     <constraint firstAttribute="height" constant="240" id="eie-Vq-uva"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="PhoneNumber" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOq-R4-fzy">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Account" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OOq-R4-fzy">
                                 <rect key="frame" x="115" y="459" width="163" height="34"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -128,13 +128,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="XKO-u4-Um6"/>
                     <connections>
+                        <outlet property="checkAccountLogin" destination="6BS-YO-iXl" id="Dti-oj-R88"/>
+                        <outlet property="checkAccountLoginImage" destination="hox-0I-NTu" id="5Q0-FA-B8F"/>
                         <outlet property="checkPasswordLogin" destination="OVJ-8m-Nog" id="62E-22-LR7"/>
                         <outlet property="checkPasswordLoginImage" destination="H4C-pN-1bn" id="1Sh-4S-jzI"/>
-                        <outlet property="checkPhoneLogin" destination="6BS-YO-iXl" id="Dti-oj-R88"/>
-                        <outlet property="checkPhoneLoginImage" destination="hox-0I-NTu" id="5Q0-FA-B8F"/>
                         <outlet property="didNotHaveAnAccountLabel" destination="E2p-Ld-Iug" id="HjJ-Kx-5ig"/>
+                        <outlet property="userAccountLogin" destination="OOq-R4-fzy" id="9Fw-MO-s4m"/>
                         <outlet property="userPasswordLogin" destination="HEc-JB-7mc" id="PPQ-20-HFA"/>
-                        <outlet property="userPhoneLogin" destination="OOq-R4-fzy" id="9Fw-MO-s4m"/>
                         <segue destination="mjY-qR-Hix" kind="show" identifier="goRegister" id="Xfb-zl-658"/>
                         <segue destination="1hY-0b-3zj" kind="push" identifier="loginOK" id="VPl-dh-ZT5"/>
                     </connections>
@@ -160,7 +160,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="PhoneNumber" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wcp-kw-V94">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Account" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wcp-kw-V94">
                                 <rect key="frame" x="120" y="199" width="153" height="34"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -172,8 +172,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="電話號碼" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLW-FW-vI2">
-                                <rect key="frame" x="161.66666666666666" y="169" width="70" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="帳號" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vLW-FW-vI2">
+                                <rect key="frame" x="179" y="169" width="35" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -284,14 +284,14 @@
                     <connections>
                         <outlet property="accountImageView" destination="xIq-Cm-iNz" id="8TB-gk-5c1"/>
                         <outlet property="checkBtn" destination="kN5-DG-qdZ" id="2jk-fx-bfO"/>
+                        <outlet property="checkForAccount" destination="75O-4L-MiH" id="XHR-Nn-kE5"/>
                         <outlet property="checkForPassword" destination="mNx-sK-gfr" id="PTy-BX-4md"/>
-                        <outlet property="checkForPhone" destination="75O-4L-MiH" id="XHR-Nn-kE5"/>
                         <outlet property="checkForUserName" destination="ymv-Os-pVz" id="nPc-NV-r73"/>
                         <outlet property="livingAreaLabel" destination="EPi-7L-Luq" id="q1S-Wa-cod"/>
                         <outlet property="passwordImageView" destination="lRd-KZ-L5u" id="CM7-XF-UCC"/>
+                        <outlet property="userAccount" destination="wcp-kw-V94" id="eEP-CL-vEx"/>
                         <outlet property="userName" destination="XUh-Lw-rjE" id="Vog-7C-2y8"/>
                         <outlet property="userPassWord" destination="TFo-MS-7sw" id="6Bs-7X-ARp"/>
-                        <outlet property="userPhoneNB" destination="wcp-kw-V94" id="eEP-CL-vEx"/>
                         <segue destination="1hY-0b-3zj" kind="push" identifier="RegisterOK" id="rU9-jb-8tF"/>
                     </connections>
                 </viewController>
@@ -571,7 +571,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="VPl-dh-ZT5"/>
+        <segue reference="rU9-jb-8tF"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo1" width="1024" height="1024"/>

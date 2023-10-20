@@ -291,7 +291,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 將最終的UIMenu設置為livingAreaMenuBtn的menu
         livingAreaMenuBtn.menu = finalMenu
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         guard let name = UserDataManager.shared.userData["Name"] as? String,
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
