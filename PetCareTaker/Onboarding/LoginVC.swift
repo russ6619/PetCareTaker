@@ -46,11 +46,11 @@ class LoginVC: UIViewController {
     
     @IBAction func loginCheck(_ sender: Any) {
         
-        guard let phone = userAccountLogin.text,
+        guard let account = userAccountLogin.text,
               let password = userPasswordLogin.text else {
             return
         }
-        let accountCheckResult = AuthManager.shared.checkAccountCorrection(phone)
+        let accountCheckResult = AuthManager.shared.checkAccountCorrection(account)
         let passwordCheckResult = AuthManager.shared.checkPassword(password)
         
         let allCheckText = AuthManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
@@ -87,7 +87,7 @@ class LoginVC: UIViewController {
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             
-            let params = "Phone=\(phone)&Password=\(passwordHash)"
+            let params = "Account=\(account)&Password=\(passwordHash)"
             request.httpBody = params.data(using: .utf8)
             
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -100,7 +100,7 @@ class LoginVC: UIViewController {
                     DispatchQueue.main.async {
                         if result == "true" {
                             // 密碼驗證成功，執行登入後的相關操作
-                            AuthManager.shared.saveUserAccountToKeychain(account: phone)
+                            AuthManager.shared.saveUserAccountToKeychain(account: account)
                             AuthManager.shared.saveUserPasswordToKeychain(password: password)
                             // 切換到下一個畫面
                             UserDefaults.standard.set(true, forKey: "isUserLoggedIn") // 使用者已經登入

@@ -89,7 +89,7 @@ class TaskPublisherInfoVC: UIViewController {
             
             if let userInfoImage = self.userInfo.photo,
                let userPhotoURL = URL(string: "\(imageUrl)\(String(describing: userInfoImage))") {
-                print("任務userImageUrl = \(userPhotoURL)")
+//                print("任務userImageUrl = \(userPhotoURL)")
                 UserDataManager.shared.downloadImage(from: userPhotoURL) { (result) in
                     switch result {
                     case .success((let image, _)):

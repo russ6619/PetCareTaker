@@ -157,6 +157,7 @@ class RegisterVC: UIViewController {
     }
     
     
+    // MARK: Register
     @IBAction func checkRegister(_ sender: Any) {
         
         guard let account = userAccount.text,
@@ -216,7 +217,7 @@ class RegisterVC: UIViewController {
             let encryptedPassword = AuthManager.shared.sha256(password)
             
             
-                let userInfo = UserRegisterInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
+                let userInfo = UserRegisterInfo(account: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 
                 do {
@@ -259,7 +260,7 @@ class RegisterVC: UIViewController {
                                         var request = URLRequest(url: url)
                                         request.httpMethod = "POST"
                                         
-                                        let params = "Phone=\(account)&Password=\(passwordHash)"
+                                        let params = "Account=\(account)&Password=\(passwordHash)"
                                         request.httpBody = params.data(using: .utf8)
                                         
                                         let task = URLSession.shared.dataTask(with: request) { data, response, error in

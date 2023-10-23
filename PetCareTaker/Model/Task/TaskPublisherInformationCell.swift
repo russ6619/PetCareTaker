@@ -28,7 +28,7 @@ class TaskPublisherInformationCell: UITableViewCell {
         return label
     }()
     
-    private var userPhoneLabel: UILabel = {
+    private var userContactLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = UIColor.black
@@ -49,14 +49,14 @@ class TaskPublisherInformationCell: UITableViewCell {
         contentView.addSubview(userImageView)
         contentView.addSubview(userNameLabel)
         contentView.addSubview(userLivingAreaLabel)
-        contentView.addSubview(userPhoneLabel)
+        contentView.addSubview(userContactLabel)
         contentView.addSubview(userIntroductionLabel)
         
         
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userLivingAreaLabel.translatesAutoresizingMaskIntoConstraints = false
-        userPhoneLabel.translatesAutoresizingMaskIntoConstraints = false
+        userContactLabel.translatesAutoresizingMaskIntoConstraints = false
         userIntroductionLabel.translatesAutoresizingMaskIntoConstraints = false
         
         userNameLabel.numberOfLines = 0
@@ -81,13 +81,13 @@ class TaskPublisherInformationCell: UITableViewCell {
             userLivingAreaLabel.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 5),
 //            userLivingAreaLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             
-            // 設置 userPhoneLabel 的約束
-            userPhoneLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            userPhoneLabel.topAnchor.constraint(equalTo: userLivingAreaLabel.bottomAnchor, constant: 10),
+            // 設置 userContactLabel 的約束
+            userContactLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            userContactLabel.topAnchor.constraint(equalTo: userLivingAreaLabel.bottomAnchor, constant: 10),
             
             // 設置 userIntroductionLabel 的約束
             userIntroductionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            userIntroductionLabel.topAnchor.constraint(equalTo: userPhoneLabel.bottomAnchor, constant: 10),
+            userIntroductionLabel.topAnchor.constraint(equalTo: userContactLabel.bottomAnchor, constant: 10),
             userIntroductionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
         ])
@@ -102,7 +102,7 @@ class TaskPublisherInformationCell: UITableViewCell {
     func configure(with user: UserData, image: UIImage) {
         userNameLabel.text = user.name
         userLivingAreaLabel.text = user.residenceArea
-        userPhoneLabel.text = user.phone
+        userContactLabel.text = user.contact
         userIntroductionLabel.text = user.introduction
         userImageView.image = image
         

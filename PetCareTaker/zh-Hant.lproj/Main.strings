@@ -35,8 +35,8 @@
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "LBi-2h-Utt"; */
 "LBi-2h-Utt.normalTitle" = "Button";
 
-/* Class = "UITextField"; placeholder = "PhoneNumber"; ObjectID = "OOq-R4-fzy"; */
-"OOq-R4-fzy.placeholder" = "PhoneNumber";
+/* Class = "UITextField"; placeholder = "Account"; ObjectID = "OOq-R4-fzy"; */
+"OOq-R4-fzy.placeholder" = "Account";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "TFo-MS-7sw"; */
 "TFo-MS-7sw.placeholder" = "Password";
@@ -63,10 +63,10 @@
 "kN5-DG-qdZ.normalTitle" = "確定";
 
 /* Class = "UILabel"; text = "電話號碼"; ObjectID = "vLW-FW-vI2"; */
-"vLW-FW-vI2.text" = "電話號碼";
+"vLW-FW-vI2.text" = "帳號";
 
-/* Class = "UITextField"; placeholder = "PhoneNumber"; ObjectID = "wcp-kw-V94"; */
-"wcp-kw-V94.placeholder" = "PhoneNumber";
+/* Class = "UITextField"; placeholder = "Account"; ObjectID = "wcp-kw-V94"; */
+"wcp-kw-V94.placeholder" = "Account";
 
 /* Class = "UITabBarItem"; title = "任務管理"; ObjectID = "x6A-Sp-MmF"; */
 "x6A-Sp-MmF.title" = "任務管理";

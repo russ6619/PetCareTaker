@@ -38,7 +38,7 @@ class ServerApiHelper {
 
     private init() {
         // 測試
-//        apiUrlString = "http://localhost:8888/PetCareTakerServerTest/"
+//        apiUrlString = "http://172.233.90.79/PetCareTakerServer/"
         
         // 連線
         apiUrlString = "http://172.233.90.79/PetCareTakerServer3/"

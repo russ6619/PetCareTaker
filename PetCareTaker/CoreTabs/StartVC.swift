@@ -60,7 +60,7 @@ class StartVC: UIViewController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        let params = "Phone=\(account)&Password=\(passwordHash)"
+        let params = "Account=\(account)&Password=\(passwordHash)"
         request.httpBody = params.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -133,7 +133,7 @@ class StartVC: UIViewController {
                             print("下載的檔案名稱: \(fileName)")
                         case .failure(let error):
                             // 下載圖片失敗，處理錯誤
-                            let noImage = UIImage(systemName: "camera.circle.fill")!
+                            let noImage = UIImage(named: "personalImage")!
                             noImage.withTintColor(.orange)
                             UserDataManager.shared.userImage = noImage
                             print("個人照片下載失敗: \(error.localizedDescription)")
