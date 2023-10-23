@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1hY-0b-3zj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -203,7 +203,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kN5-DG-qdZ">
-                                <rect key="frame" x="167.33333333333334" y="748" width="58.666666666666657" height="34"/>
+                                <rect key="frame" x="167.33333333333334" y="682" width="58.666666666666657" height="34"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="確定"/>
                                 <buttonConfiguration key="configuration" style="plain" title="確定"/>
@@ -243,11 +243,27 @@
                                 <color key="textColor" systemColor="systemGreenColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已閱讀與同意〈隱私權聲明〉" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mul-zb-YZ2">
+                                <rect key="frame" x="102" y="741" width="226" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKz-6B-cmz">
+                                <rect key="frame" x="50" y="734.66666666666663" width="49" height="34.333333333333371"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="square" catalog="system"/>
+                                <connections>
+                                    <action selector="privacyBoxPress:" destination="mjY-qR-Hix" eventType="touchUpInside" id="sUO-Y9-shO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5An-i9-mIX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vLW-FW-vI2" firstAttribute="centerX" secondItem="O4n-9h-m90" secondAttribute="centerX" id="4my-hC-ule"/>
+                            <constraint firstItem="5An-i9-mIX" firstAttribute="trailing" secondItem="mul-zb-YZ2" secondAttribute="trailing" constant="65" id="5vd-lb-eCR"/>
+                            <constraint firstItem="mul-zb-YZ2" firstAttribute="leading" secondItem="OKz-6B-cmz" secondAttribute="trailing" constant="3" id="80G-DJ-mVZ"/>
                             <constraint firstItem="ymv-Os-pVz" firstAttribute="leading" secondItem="5An-i9-mIX" secondAttribute="leading" constant="125" id="9HU-hY-UTX"/>
                             <constraint firstItem="EPi-7L-Luq" firstAttribute="top" secondItem="XUh-Lw-rjE" secondAttribute="bottom" constant="20" id="AL8-zV-zDf"/>
                             <constraint firstItem="43y-Ka-gS8" firstAttribute="centerX" secondItem="O4n-9h-m90" secondAttribute="centerX" id="BK8-qn-EZw"/>
@@ -260,13 +276,14 @@
                             <constraint firstItem="lRd-KZ-L5u" firstAttribute="leading" secondItem="TFo-MS-7sw" secondAttribute="trailing" constant="1" id="JOz-dv-2x3"/>
                             <constraint firstItem="wcp-kw-V94" firstAttribute="leading" secondItem="5An-i9-mIX" secondAttribute="leading" constant="120" id="KmF-tG-8Bg"/>
                             <constraint firstItem="fie-Nc-e46" firstAttribute="top" secondItem="5An-i9-mIX" secondAttribute="top" constant="100" id="Pes-zx-HmH"/>
-                            <constraint firstItem="5An-i9-mIX" firstAttribute="bottom" secondItem="kN5-DG-qdZ" secondAttribute="bottom" constant="60" id="S5s-ot-YjR"/>
                             <constraint firstItem="wcp-kw-V94" firstAttribute="top" secondItem="vLW-FW-vI2" secondAttribute="bottom" constant="9" id="T19-DG-b56"/>
                             <constraint firstItem="xIq-Cm-iNz" firstAttribute="leading" secondItem="wcp-kw-V94" secondAttribute="trailing" constant="1" id="TUv-io-IU7"/>
                             <constraint firstItem="75O-4L-MiH" firstAttribute="top" secondItem="wcp-kw-V94" secondAttribute="bottom" constant="3" id="Vq2-2c-E5E"/>
+                            <constraint firstItem="mul-zb-YZ2" firstAttribute="top" secondItem="kN5-DG-qdZ" secondAttribute="bottom" constant="25" id="WhM-wl-fs0"/>
                             <constraint firstItem="XUh-Lw-rjE" firstAttribute="top" secondItem="zfE-OT-h3U" secondAttribute="bottom" constant="9" id="Yne-q9-yZW"/>
                             <constraint firstItem="fie-Nc-e46" firstAttribute="centerX" secondItem="O4n-9h-m90" secondAttribute="centerX" id="ZlF-lQ-yg6"/>
                             <constraint firstItem="TFo-MS-7sw" firstAttribute="leading" secondItem="5An-i9-mIX" secondAttribute="leading" constant="120" id="bWR-eZ-8IO"/>
+                            <constraint firstItem="5An-i9-mIX" firstAttribute="bottom" secondItem="OKz-6B-cmz" secondAttribute="bottom" constant="73" id="cB5-IF-n0m"/>
                             <constraint firstItem="5An-i9-mIX" firstAttribute="trailing" secondItem="TFo-MS-7sw" secondAttribute="trailing" constant="120" id="dKm-nk-Tr4"/>
                             <constraint firstItem="kN5-DG-qdZ" firstAttribute="centerX" secondItem="O4n-9h-m90" secondAttribute="centerX" id="dVH-fT-Z5X"/>
                             <constraint firstItem="xIq-Cm-iNz" firstAttribute="top" secondItem="fie-Nc-e46" secondAttribute="bottom" constant="63" id="jVo-0G-xBc"/>
@@ -278,15 +295,18 @@
                             <constraint firstItem="43y-Ka-gS8" firstAttribute="top" secondItem="wcp-kw-V94" secondAttribute="bottom" constant="30" id="rjf-FO-2lk"/>
                             <constraint firstItem="5An-i9-mIX" firstAttribute="trailing" secondItem="wcp-kw-V94" secondAttribute="trailing" constant="120" id="tBY-cS-q8o"/>
                             <constraint firstItem="zfE-OT-h3U" firstAttribute="centerX" secondItem="O4n-9h-m90" secondAttribute="centerX" id="xxO-7i-d7X"/>
+                            <constraint firstItem="5An-i9-mIX" firstAttribute="bottom" secondItem="mul-zb-YZ2" secondAttribute="bottom" constant="80" id="z1B-Bz-YEP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="bzX-TY-GlJ"/>
                     <connections>
+                        <outlet property="PrivacyLabel" destination="mul-zb-YZ2" id="Nx0-sE-lNa"/>
                         <outlet property="accountImageView" destination="xIq-Cm-iNz" id="8TB-gk-5c1"/>
                         <outlet property="checkBtn" destination="kN5-DG-qdZ" id="2jk-fx-bfO"/>
                         <outlet property="checkForAccount" destination="75O-4L-MiH" id="XHR-Nn-kE5"/>
                         <outlet property="checkForPassword" destination="mNx-sK-gfr" id="PTy-BX-4md"/>
                         <outlet property="checkForUserName" destination="ymv-Os-pVz" id="nPc-NV-r73"/>
+                        <outlet property="checkPrivacyBox" destination="OKz-6B-cmz" id="WUi-qp-dKz"/>
                         <outlet property="livingAreaLabel" destination="EPi-7L-Luq" id="q1S-Wa-cod"/>
                         <outlet property="passwordImageView" destination="lRd-KZ-L5u" id="CM7-XF-UCC"/>
                         <outlet property="userAccount" destination="wcp-kw-V94" id="eEP-CL-vEx"/>
@@ -297,7 +317,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F9D-Cs-cAL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="222" y="-1249"/>
+            <point key="canvasLocation" x="220.61068702290075" y="-1249.2957746478874"/>
         </scene>
         <!--PersonalVC-->
         <scene sceneID="FOi-Xc-2Xn">
@@ -579,6 +599,7 @@
         <image name="calendar.badge.plus" catalog="system" width="128" height="108"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="square" catalog="system" width="128" height="114"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

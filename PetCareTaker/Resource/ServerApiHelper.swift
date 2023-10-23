@@ -8,8 +8,9 @@
 import Foundation
 
 class ServerApiHelper {
-    static let shared = ServerApiHelper() 
-
+    static let shared = ServerApiHelper()
+    
+    let privacyUrl: String
     let apiUrlString: String
     
     let imageUrlString: String
@@ -37,6 +38,8 @@ class ServerApiHelper {
     
 
     private init() {
+        
+        privacyUrl = "https://www.privacypolicies.com/live/d422da17-addb-445b-8912-9e3ab9b01653"
         // 測試
 //        apiUrlString = "http://172.233.90.79/PetCareTakerServer/"
         

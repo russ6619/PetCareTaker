@@ -7,6 +7,7 @@
 
 import UIKit
 import CryptoKit
+import SafariServices
 
 
 class RegisterVC: UIViewController {
@@ -27,10 +28,14 @@ class RegisterVC: UIViewController {
     
     @IBOutlet weak var checkBtn: UIButton!
     
+    @IBOutlet weak var checkPrivacyBox: UIButton!
+    @IBOutlet weak var PrivacyLabel: UILabel!
+    
     var cities: [City] = []  // 解析後的資料陣列
     var cityMenuItems: [UIMenuElement] = []
     var residenceArea: String = ""
-    
+    var privacyBoxChecked: Bool = false
+    let privacyUrl = ServerApiHelper.shared.privacyUrl
     
     private let livingAreaMenuBtn: UIButton = {
         let button = UIButton()
@@ -129,6 +134,7 @@ class RegisterVC: UIViewController {
         livingAreaMenuBtn.menu = finalMenu
         livingAreaMenuBtn.setTitle("請選擇居住地", for: .normal)
         
+        setupPrivacyLabel()
     }
     
 /*
@@ -155,10 +161,43 @@ class RegisterVC: UIViewController {
             height: 50)
         
     }
+    @IBAction func privacyBoxPress(_ sender: Any) {
+        privacyBoxChecked.toggle()
+        let imageName = privacyBoxChecked ? "checkmark.square" : "square"
+        checkPrivacyBox.setImage(UIImage(systemName: imageName), for: .normal)
+    }
     
+    // MARK: Privarcy
+    func setupPrivacyLabel() {
+        let text = "已閱讀與同意《隱私權聲明》"
+        let attributedString = NSMutableAttributedString(string: text)
+        let range = (text as NSString).range(of: "《隱私權聲明》")
+        
+        attributedString.addAttribute(.link, value: privacyUrl, range: range)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
+        
+        PrivacyLabel.attributedText = attributedString
+        PrivacyLabel.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicyLink))
+        PrivacyLabel.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func openPrivacyPolicyLink() {
+        guard let url = URL(string: privacyUrl) else {
+            return
+        }
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true, completion: nil)
+    }
     
     // MARK: Register
     @IBAction func checkRegister(_ sender: Any) {
+        
+        if !privacyBoxChecked {
+            showAlert(title: "請確認隱私權聲明", message: "您必須同意隱私權聲明才能註冊。")
+            return
+        }
         
         guard let account = userAccount.text,
               let password = userPassWord.text,
@@ -326,6 +365,7 @@ class RegisterVC: UIViewController {
                 }
 //            }
         }
+        
         
         
         
