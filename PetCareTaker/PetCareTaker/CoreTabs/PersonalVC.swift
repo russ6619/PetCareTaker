@@ -26,21 +26,9 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         return scrollView
     }()
     
-//    private let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "個人資訊"
-//        label.textColor = .label
-//        label.font = UIFont.systemFont(ofSize: 40)
-//        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
-//        label.layer.shadowOpacity = 0.2 // 陰影不透明度
-//        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
-//        label.layer.shadowRadius = 5 // 陰影半徑
-//        return label
-//    }()
-    
     private let personalImage: UIImageView = {
         let image = UIImageView()
-        image.image = UIImage(systemName: "camera.circle.fill")
+        image.image = UIImage(named:"personalImage")
         image.isUserInteractionEnabled = true
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.masksToBounds = true
@@ -135,6 +123,37 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    private let contactLabel: UILabel = {
+        let label = UILabel()
+        label.text = "聯絡資訊"
+        label.font = UIFont.systemFont(ofSize: 22)
+        label.textColor = .label
+        label.textAlignment = .left
+        label.layer.shadowColor = UIColor.black.cgColor // 陰影顏色
+        label.layer.shadowOpacity = 0.2 // 陰影不透明度
+        label.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
+        label.layer.shadowRadius = 5 // 陰影半徑
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let contactFiled: UITextField = {
+        let field = UITextField()
+        field.placeholder = "填寫的信箱/電話/LineID會顯示在任務裡"
+        field.returnKeyType = .continue
+        field.leftViewMode = .always
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.layer.masksToBounds = true
+        field.layer.cornerRadius = Constraints.cornerRadious
+        field.backgroundColor = .secondarySystemBackground
+        field.layer.borderWidth = 1.0
+        field.layer.borderColor = UIColor.secondaryLabel.cgColor
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+    
     private let introductionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
@@ -151,7 +170,6 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     private let introductionTextView: UITextView = {
         let text = UITextView()
         text.textColor = .label
-        text.text = "請輸入自我介紹"
         text.font = UIFont.systemFont(ofSize: 16)
         text.layer.masksToBounds = true
         text.layer.cornerRadius = Constraints.cornerRadious
@@ -175,8 +193,9 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        
-        
+        personScrollView.contentSize = CGSize(width: view.frame.width, height: introductionTextView.frame.maxY + 100)
+       
+    
         
     }
     
@@ -196,15 +215,18 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         introductionTextView.delegate = self
         self.introductionTextViewHeightConstraint = introductionTextView.heightAnchor.constraint(equalToConstant: 100)
 
-        addSubviewToScrollView()
-
+        addSubviewToContenView()
+        
+        
         NSLayoutConstraint.activate([
         //設定personScrollView
             personScrollView.topAnchor.constraint(equalTo: view.topAnchor),
             personScrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             personScrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             personScrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            personScrollView.heightAnchor.constraint(equalToConstant: introductionTextView.bottom + 100),
+//            personScrollView.heightAnchor.constraint(equalToConstant: introductionTextView.bottom + 300),
+            
+
             
         // 設定 personalImage 位置，在 title 下面置中
             personalImage.heightAnchor.constraint(equalToConstant: 200),
@@ -246,9 +268,21 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             livingAreaMenuBtn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             livingAreaMenuBtn.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 5),
             livingAreaMenuBtn.heightAnchor.constraint(equalToConstant: 40),
-        
+            
+        // 設定 contactLabel 位置，在 genderLabel 下方，與 genderLabel 左右對齊
+            contactLabel.topAnchor.constraint(equalTo: livingArea.bottomAnchor, constant: 20),
+            contactLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
+            contactLabel.widthAnchor.constraint(equalToConstant: 100),
+            contactLabel.heightAnchor.constraint(equalToConstant: 40),
+            
+        // 設定 contactFiled 位置，在 genderSelectButton 右邊，與 genderSelectButton 等高
+            contactFiled.topAnchor.constraint(equalTo: contactLabel.bottomAnchor, constant: 20),
+            contactFiled.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            contactFiled.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            contactFiled.heightAnchor.constraint(equalToConstant: 40),
+            
         // 設定 introductionLabel 位置，在 livingArea 下方，靠左
-            introductionLabel.topAnchor.constraint(equalTo: livingArea.bottomAnchor, constant: 20),
+            introductionLabel.topAnchor.constraint(equalTo: contactFiled.bottomAnchor, constant: 20),
             introductionLabel.leadingAnchor.constraint(equalTo: userNameLabel.leadingAnchor),
 //            livingArea.widthAnchor.constraint(equalToConstant: 60),
 //            livingArea.heightAnchor.constraint(equalToConstant: 40),
@@ -257,7 +291,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
             introductionTextView.topAnchor.constraint(equalTo: introductionLabel.bottomAnchor, constant: 10),
             introductionTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             introductionTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            introductionTextViewHeightConstraint // 這是之前創建的高度約束
+//            introductionTextView.bottomAnchor.constraint(equalTo: personScrollView.bottomAnchor, constant: -20),
+            introductionTextViewHeightConstraint, // 這是之前創建的高度約束
         ])
         
         
@@ -291,18 +326,19 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         // 將最終的UIMenu設置為livingAreaMenuBtn的menu
         livingAreaMenuBtn.menu = finalMenu
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         guard let name = UserDataManager.shared.userData["Name"] as? String,
               let introduction = UserDataManager.shared.userData["Introduction"] as? String,
               let residenceArea = UserDataManager.shared.userData["ResidenceArea"] as? String,
-              let gender = UserDataManager.shared.userData["Gender"] as? String else { return }
+              let gender = UserDataManager.shared.userData["Gender"] as? String,
+              let contact = UserDataManager.shared.userData["Contact"] as? String else { return }
 //        print(name, introduction, residenceArea, gender)
         userNameFiled.text = name
         introductionTextView.text = introduction
         livingAreaMenuBtn.setTitle(residenceArea, for: .normal)
         personalImage.image = UserDataManager.shared.userImage
-        
+        contactFiled.text = contact
         
         
         if gender == "Male,男" {
@@ -339,7 +375,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
     }
     
     
-    private func addSubviewToScrollView() {
+    private func addSubviewToContenView() {
         view.addSubview(personScrollView)
 //        personScrollView.addSubview(titleLabel)
         personScrollView.addSubview(personalImage)
@@ -351,6 +387,8 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
 //        personScrollView.addSubview(creatPetBtn)
         personScrollView.addSubview(livingArea)
         personScrollView.addSubview(livingAreaMenuBtn)
+        personScrollView.addSubview(contactLabel)
+        personScrollView.addSubview(contactFiled)
         personScrollView.addSubview(introductionLabel)
         personScrollView.addSubview(introductionTextView)
     }
@@ -366,7 +404,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         navigationController?.pushViewController(petVC, animated: true)
     }
     
-    // Save 按鈕的動作
+    // MARK: SaveBtn
     @objc func saveButtonTapped() {
         // 在這裡處理 Save 按鈕被點擊的邏輯
         guard let username = userNameFiled.text, !username.isEmpty else {
@@ -380,6 +418,7 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         UserDataManager.shared.userData["Name"] = username
         UserDataManager.shared.userData["Introduction"] = introductionTextView.text
         UserDataManager.shared.userData["ResidenceArea"] = livingAreaMenuBtn.titleLabel?.text
+        UserDataManager.shared.userData["Contact"] = contactFiled.text
         
         var gender = "private"
         switch genderSelectButton.selectedSegmentIndex {
@@ -392,26 +431,55 @@ class PersonalVC: UIViewController, UITextFieldDelegate {
         }
         UserDataManager.shared.userData["Gender"] = gender
         
-        
-        UserDataManager.shared.updateUserProfile{ error in
-            // 處理更新完成後的邏輯
-            if let error = error {
-                // 處理錯誤情況
-                print("更新用戶資料失敗：\(error)")
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "錯誤", message: "個人資料更新失敗", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
-                }
-            } else {
-                // 更新成功
-                DispatchQueue.main.async {
-                    print("個人資料更新成功")
-                    let alert = UIAlertController(title: "成功", message: "個人資料更新成功", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "確定", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+        // 將選擇的圖像轉換為 Data
+        // 處理圖像選擇後的操作，並將圖像轉換為 Data
+        if let selectedImage = personalImage.image,
+           let imageData = selectedImage.jpegData(compressionQuality: 0.7) {
+            
+            DispatchQueue.main.async {
+                // 更新畫面程式
+                self.uploadImageToServer(imageData: imageData) { result in
+                    switch result {
+                    case .success(let imagePath):
+                        // 成功上傳圖像，imagePath 包含伺服器端文件的路徑
+                        print("伺服器返回的圖像路徑：\(imagePath)")
+                        
+                        // 在這裡處理成功後的邏輯，例如更新用戶頭像
+                        // 可以在主線程中更新 UI
+                        DispatchQueue.main.async {
+                            self.personalImage.image = selectedImage // 更新圖像
+                            UserDataManager.shared.userData["Photo"] = imagePath
+                            UserDataManager.shared.updateUserProfile{ error in
+                                // 處理更新完成後的邏輯
+                                if let error = error {
+                                    // 處理錯誤情況
+                                    print("更新用戶資料失敗：\(error)")
+                                    DispatchQueue.main.async {
+                                        let alert = UIAlertController(title: "錯誤", message: "個人資料更新失敗", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    // 更新成功
+                                    DispatchQueue.main.async {
+                                        print("個人資料更新成功")
+                                        let alert = UIAlertController(title: "成功", message: "個人資料更新成功", preferredStyle: .alert)
+                                        alert.addAction(UIAlertAction(title: "確定", style: .default))
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
+                                }
+                            }
+                        }
+                        
+                    case .failure(let error):
+                        // 上傳失敗，處理錯誤
+                        print("上傳圖像失敗：\(error.localizedDescription)")
+                    }
                 }
             }
+            
+            
+            
         }
     }
     
@@ -435,28 +503,7 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
         if let selectedImage = info[.originalImage] as? UIImage {
             // 將選擇的圖像設置到personalImage
             personalImage.image = selectedImage
-            // 將選擇的圖像轉換為 Data
-            // 處理圖像選擇後的操作，並將圖像轉換為 Data
-            if let imageData = selectedImage.jpegData(compressionQuality: 0.7) {
-                uploadImageToServer(imageData: imageData) { result in
-                    switch result {
-                    case .success(let imagePath):
-                        // 成功上傳圖像，imagePath 包含伺服器端文件的路徑
-                        print("伺服器返回的圖像路徑：\(imagePath)")
-                        
-                        // 在這裡處理成功後的邏輯，例如更新用戶頭像
-                        // 可以在主線程中更新 UI
-                        DispatchQueue.main.async {
-                            self.personalImage.image = selectedImage // 更新圖像
-                        }
-                        
-                    case .failure(let error):
-                        // 上傳失敗，處理錯誤
-                        print("上傳圖像失敗：\(error.localizedDescription)")
-                    }
-                }
-            }
-
+            
         }
         
         // 關閉圖像選擇器
@@ -472,11 +519,12 @@ extension PersonalVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     // 上傳圖像資料到後端伺服器
     func uploadImageToServer(imageData: Data, completionHandler: @escaping (Result<String, Error>) -> Void) {
         
-        guard let userID = UserDataManager.shared.userData["UserID"] as? String else {
+        guard let userID = UserDataManager.shared.userData["UserID"] as? Int else {
             return
         }
         
-        let uniqueFileName = "personImageWith\(userID)"
+        let uniqueFileName = "personImageWith\(userID).jpg"
+        print("uniqueFileName = \(uniqueFileName)")
         
         guard let uploadImageUrl = URL(string: "\(ServerApiHelper.shared.updatePhotoUrl)/\(uniqueFileName)") else {
             return
@@ -535,7 +583,7 @@ extension PersonalVC: UITextViewDelegate {
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         
         // 設定最高度
-        let mixHeight: CGFloat = 200.0
+        let mixHeight: CGFloat = 100.0
         
         if newSize.height >= mixHeight {
             introductionTextViewHeightConstraint.constant = newSize.height

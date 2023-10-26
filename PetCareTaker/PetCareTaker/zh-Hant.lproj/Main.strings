@@ -1,0 +1,78 @@
+
+/* Class = "UILabel"; text = "密碼"; ObjectID = "43y-Ka-gS8"; */
+"43y-Ka-gS8.text" = "密碼";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "4uY-xH-TbM"; */
+"4uY-xH-TbM.text" = "Detail";
+
+/* Class = "UITabBarItem"; title = "訊息"; ObjectID = "52T-Tw-FIR"; */
+"52T-Tw-FIR.title" = "訊息";
+
+/* Class = "UIButton"; configuration.title = "登入"; ObjectID = "C1Q-ic-GzM"; */
+"C1Q-ic-GzM.configuration.title" = "登入";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "C1Q-ic-GzM"; */
+"C1Q-ic-GzM.normalTitle" = "Button";
+
+/* Class = "UITabBarItem"; title = "我的"; ObjectID = "DOB-Y0-3Au"; */
+"DOB-Y0-3Au.title" = "我的";
+
+/* Class = "UILabel"; text = "沒有帳號嗎？"; ObjectID = "E2p-Ld-Iug"; */
+"E2p-Ld-Iug.text" = "沒有帳號嗎？";
+
+/* Class = "UILabel"; text = "居住地區"; ObjectID = "EPi-7L-Luq"; */
+"EPi-7L-Luq.text" = "居住地區";
+
+/* Class = "UINavigationController"; title = "任務清單"; ObjectID = "FFi-md-vdJ"; */
+"FFi-md-vdJ.title" = "任務清單";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "HEc-JB-7mc"; */
+"HEc-JB-7mc.placeholder" = "Password";
+
+/* Class = "UIButton"; configuration.title = "註冊"; ObjectID = "LBi-2h-Utt"; */
+"LBi-2h-Utt.configuration.title" = "註冊";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "LBi-2h-Utt"; */
+"LBi-2h-Utt.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Account"; ObjectID = "OOq-R4-fzy"; */
+"OOq-R4-fzy.placeholder" = "Account";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "TFo-MS-7sw"; */
+"TFo-MS-7sw.placeholder" = "Password";
+
+/* Class = "UITextField"; placeholder = "UserName"; ObjectID = "XUh-Lw-rjE"; */
+"XUh-Lw-rjE.placeholder" = "UserName";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "crI-MG-1QD"; */
+"crI-MG-1QD.text" = "Title";
+
+/* Class = "UILabel"; text = "註冊"; ObjectID = "fie-Nc-e46"; */
+"fie-Nc-e46.text" = "註冊";
+
+/* Class = "UILabel"; text = "寵物照護PetCareTaker"; ObjectID = "hM8-uc-bPs"; */
+"hM8-uc-bPs.text" = "寵物照護PetCareTaker";
+
+/* Class = "UITabBarItem"; title = "設定"; ObjectID = "iVs-UN-eTz"; */
+"iVs-UN-eTz.title" = "設定";
+
+/* Class = "UIButton"; configuration.title = "確定"; ObjectID = "kN5-DG-qdZ"; */
+"kN5-DG-qdZ.configuration.title" = "確定";
+
+/* Class = "UIButton"; normalTitle = "確定"; ObjectID = "kN5-DG-qdZ"; */
+"kN5-DG-qdZ.normalTitle" = "確定";
+
+/* Class = "UILabel"; text = "電話號碼"; ObjectID = "vLW-FW-vI2"; */
+"vLW-FW-vI2.text" = "帳號";
+
+/* Class = "UITextField"; placeholder = "Account"; ObjectID = "wcp-kw-V94"; */
+"wcp-kw-V94.placeholder" = "Account";
+
+/* Class = "UITabBarItem"; title = "任務管理"; ObjectID = "x6A-Sp-MmF"; */
+"x6A-Sp-MmF.title" = "任務管理";
+
+/* Class = "UITabBarItem"; title = "任務佈告欄"; ObjectID = "z4O-pk-KU7"; */
+"z4O-pk-KU7.title" = "任務佈告欄";
+
+/* Class = "UILabel"; text = "使用者名稱"; ObjectID = "zfE-OT-h3U"; */
+"zfE-OT-h3U.text" = "使用者名稱";

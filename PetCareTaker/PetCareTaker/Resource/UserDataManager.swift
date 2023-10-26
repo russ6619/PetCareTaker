@@ -33,7 +33,7 @@ class UserDataManager {
             // 更新畫面程式
             // 使用 queryUserUrl 從 PHP 後端獲取用戶數據
             guard let userAccount = AuthManager.shared.getUserAccountFromKeychain(),
-                  let url = URL(string: ServerApiHelper.shared.queryUserUrl + "?Phone=" + userAccount) else {
+                  let url = URL(string: ServerApiHelper.shared.queryUserUrl + "?Account=" + userAccount) else {
                 completion(NSError(domain: "UserDataManager", code: 400, userInfo: ["message": "無法獲取用戶帳號或建立 URL"]))
                 return
             }
@@ -433,16 +433,17 @@ class UserDataManager {
     func parseUserData(from json: [String: Any]) -> UserData? {
         guard let userData = json["userData"] as? [String: Any],
 //              let userID = userData["UserID"] as? String,
-              let phone = userData["Phone"] as? String,
+              let account = userData["Account"] as? String,
               let name = userData["Name"] as? String,
 //              let gender = userData["Gender"] as? String,
               let photo = userData["Photo"] as? String,
               let residenceArea = userData["ResidenceArea"] as? String,
-              let introduction = userData["Introduction"] as? String else {
-                  return nil
-              }
+              let introduction = userData["Introduction"] as? String,
+              let contact = userData["Contact"] as? String else {
+            return nil
+        }
 
-        let userInfo = UserData(phone: phone, name: name,photo: photo, residenceArea: residenceArea, introduction: introduction)
+        let userInfo = UserData(account: account, name: name,photo: photo, residenceArea: residenceArea, introduction: introduction, contact: contact)
         return userInfo
     }
 

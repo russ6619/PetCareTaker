@@ -15,17 +15,18 @@ class TaskDetailVC: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30)
         label.textColor = .label
+        label.numberOfLines = 0
         return label
     }()
 
     private var taskInfoLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 24)
         label.numberOfLines = 0
         label.textColor = .label
         label.layer.masksToBounds = true
         label.layer.cornerRadius = Constraints.cornerRadious
-        label.layer.borderWidth = 1
+        label.layer.borderWidth = 2
         label.layer.borderColor = UIColor.orange.cgColor
         label.backgroundColor = .white
         label.textAlignment = .center
@@ -174,6 +175,9 @@ class TaskDetailVC: UIViewController {
         taskStartToEndDateLabel.text = "\(startDate.month)～\(endDate.month)"
         taskDeadlineLabel.text = "\(deadlineDate.month)前可接受任務"
         taskRewardLabel.text = "NT$ \(formatNumberString(selectedTask.TaskReward))"
+        
+        
+        
     }
 
     

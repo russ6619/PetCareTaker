@@ -7,16 +7,17 @@
 
 import UIKit
 import CryptoKit
+import SafariServices
 
 
 class RegisterVC: UIViewController {
     
-    @IBOutlet weak var userPhoneNB: UITextField!
+    @IBOutlet weak var userAccount: UITextField!
     @IBOutlet weak var userPassWord: PasswordTextField!
     @IBOutlet weak var userName: UITextField!
     
     
-    @IBOutlet weak var checkForPhone: UILabel!
+    @IBOutlet weak var checkForAccount: UILabel!
     @IBOutlet weak var checkForPassword: UILabel!
     @IBOutlet weak var checkForUserName: UILabel!
     
@@ -27,10 +28,14 @@ class RegisterVC: UIViewController {
     
     @IBOutlet weak var checkBtn: UIButton!
     
+    @IBOutlet weak var checkPrivacyBox: UIButton!
+    @IBOutlet weak var PrivacyLabel: UILabel!
+    
     var cities: [City] = []  // 解析後的資料陣列
     var cityMenuItems: [UIMenuElement] = []
     var residenceArea: String = ""
-    
+    var privacyBoxChecked: Bool = false
+    let privacyUrl = ServerApiHelper.shared.privacyUrl
     
     private let livingAreaMenuBtn: UIButton = {
         let button = UIButton()
@@ -66,17 +71,16 @@ class RegisterVC: UIViewController {
         checkBtn.layer.shadowOpacity = 0.5 // 陰影不透明度
         checkBtn.layer.shadowOffset = CGSize(width: 2, height: 2) // 陰影偏移量
         checkBtn.layer.shadowRadius = 5 // 陰影半徑
-        checkBtn.backgroundColor = UIColor(red: 255, green: 176, blue: 44, alpha: 100)
-        checkBtn.tintColor = UIColor(red: 0, green: 86, blue: 179, alpha: 70)
+        checkBtn.backgroundColor = UIColor.orange
+        checkBtn.tintColor = UIColor.white
         
-        userPhoneNB.keyboardType = .numberPad
-        userPhoneNB.layer.masksToBounds = true
-        userPhoneNB.layer.cornerRadius = 16
-        userPhoneNB.returnKeyType = .continue
-        userPhoneNB.leftViewMode = .always
-        userPhoneNB.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        userPhoneNB.autocapitalizationType = .none
-        userPhoneNB.autocorrectionType = .no
+        userAccount.layer.masksToBounds = true
+        userAccount.layer.cornerRadius = 16
+        userAccount.returnKeyType = .continue
+        userAccount.leftViewMode = .always
+        userAccount.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        userAccount.autocapitalizationType = .none
+        userAccount.autocorrectionType = .no
         
         userName.layer.masksToBounds = true
         userName.layer.cornerRadius = 16
@@ -130,6 +134,7 @@ class RegisterVC: UIViewController {
         livingAreaMenuBtn.menu = finalMenu
         livingAreaMenuBtn.setTitle("請選擇居住地", for: .normal)
         
+        setupPrivacyLabel()
     }
     
 /*
@@ -156,11 +161,45 @@ class RegisterVC: UIViewController {
             height: 50)
         
     }
+    @IBAction func privacyBoxPress(_ sender: Any) {
+        privacyBoxChecked.toggle()
+        let imageName = privacyBoxChecked ? "checkmark.square" : "square"
+        checkPrivacyBox.setImage(UIImage(systemName: imageName), for: .normal)
+    }
     
+    // MARK: Privarcy
+    func setupPrivacyLabel() {
+        let text = "已閱讀與同意《隱私權聲明》"
+        let attributedString = NSMutableAttributedString(string: text)
+        let range = (text as NSString).range(of: "《隱私權聲明》")
+        
+        attributedString.addAttribute(.link, value: privacyUrl, range: range)
+        attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: range)
+        
+        PrivacyLabel.attributedText = attributedString
+        PrivacyLabel.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openPrivacyPolicyLink))
+        PrivacyLabel.addGestureRecognizer(tapGestureRecognizer)
+    }
     
+    @objc func openPrivacyPolicyLink() {
+        guard let url = URL(string: privacyUrl) else {
+            return
+        }
+        let safariViewController = SFSafariViewController(url: url)
+        present(safariViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: Register
     @IBAction func checkRegister(_ sender: Any) {
         
-        guard let account = userPhoneNB.text,
+        if !privacyBoxChecked {
+            showAlert(title: "請確認隱私權聲明", message: "您必須同意隱私權聲明才能註冊。")
+            return
+        }
+        
+        guard let account = userAccount.text,
               let password = userPassWord.text,
               let name = userName.text else {
             return
@@ -171,17 +210,17 @@ class RegisterVC: UIViewController {
         
         let allCheckText = AuthManager.shared.checkAndResult(account: accountCheckResult, password: passwordCheckResult)
         
-        checkForPhone.text = allCheckText.accountResult
+        checkForAccount.text = allCheckText.accountResult
         checkForPassword.text = allCheckText.passwordResult
         
         if allCheckText.accountResult == "格式有效" {
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkForPhone, accountImage: self.accountImageView)
+                AuthManager.shared.accountLoginSuccessUpdateUI(accountLabel: self.checkForAccount, accountImage: self.accountImageView)
             }
         } else {
             print("\(allCheckText.accountResult)")
             DispatchQueue.main.async {
-                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userPhoneNB, accountLabel: self.checkForPhone, accountImage: self.accountImageView)
+                AuthManager.shared.accountLoginErrorUpdateUI(accountTextField: self.userAccount, accountLabel: self.checkForAccount, accountImage: self.accountImageView)
             }
         }
         
@@ -217,7 +256,7 @@ class RegisterVC: UIViewController {
             let encryptedPassword = AuthManager.shared.sha256(password)
             
             
-                let userInfo = UserRegisterInfo(phone: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
+                let userInfo = UserRegisterInfo(account: account, password: encryptedPassword, name: name, residenceArea: residenceArea)
                 
                 
                 do {
@@ -260,7 +299,7 @@ class RegisterVC: UIViewController {
                                         var request = URLRequest(url: url)
                                         request.httpMethod = "POST"
                                         
-                                        let params = "Phone=\(account)&Password=\(passwordHash)"
+                                        let params = "Account=\(account)&Password=\(passwordHash)"
                                         request.httpBody = params.data(using: .utf8)
                                         
                                         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -326,6 +365,7 @@ class RegisterVC: UIViewController {
                 }
 //            }
         }
+        
         
         
         

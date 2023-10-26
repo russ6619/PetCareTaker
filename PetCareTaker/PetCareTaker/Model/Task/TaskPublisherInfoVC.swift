@@ -15,7 +15,7 @@ class TaskPublisherInfoVC: UIViewController {
     
     var userImage = UIImage()
         
-    let personalImage = UIImage(systemName: "person.circle.fill")
+    let personalImage = UIImage(named:"personalImage")
     
     // 創建 UITableView
     private var userPetsTable: UITableView = {
@@ -89,7 +89,7 @@ class TaskPublisherInfoVC: UIViewController {
             
             if let userInfoImage = self.userInfo.photo,
                let userPhotoURL = URL(string: "\(imageUrl)\(String(describing: userInfoImage))") {
-                print("任務userImageUrl = \(userPhotoURL)")
+//                print("任務userImageUrl = \(userPhotoURL)")
                 UserDataManager.shared.downloadImage(from: userPhotoURL) { (result) in
                     switch result {
                     case .success((let image, _)):

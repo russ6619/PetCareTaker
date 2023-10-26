@@ -7,6 +7,7 @@
 
 import UIKit
 import MessageUI
+import SafariServices
 
 
 
@@ -14,6 +15,7 @@ import MessageUI
 final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
     
     let userID: String = String(UserDataManager.shared.userData["UserID"] as! Int)
+    let privacyUrl = ServerApiHelper.shared.privacyUrl
     
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero,
@@ -52,6 +54,12 @@ final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
             }
         ]
         data.append(section)
+        
+        let privacyPolicy = SettingCellModel(title: "隱私權申明", style: .default) { [weak self] in
+            self?.openPrivacyPolicy()
+        }
+        data[0].append(privacyPolicy)
+
     }
 
     
@@ -198,6 +206,15 @@ final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
             present(alertController, animated: true, completion: nil)
         }
     }
+    
+    private func openPrivacyPolicy() {
+        if let url = URL(string: privacyUrl) {
+            let safariVC = SFSafariViewController(url: url)
+            safariVC.modalPresentationStyle = .overFullScreen
+            present(safariVC, animated: true, completion: nil)
+        }
+    }
+
 
     
 }

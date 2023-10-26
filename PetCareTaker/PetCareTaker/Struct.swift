@@ -123,30 +123,15 @@ struct PetAndUserData: Encodable {
     var precautions: String
 }
 
-//struct UserInfo: Codable {
-//    var phone: String
-//    var password: String
-//    var name: String
-//    var residenceArea: String
-//    var introduction: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case phone = "Phone"
-//        case password = "Password"
-//        case name = "Name"
-//        case residenceArea = "ResidenceArea"
-//        case introduction = "Introduction"
-//    }
-//}
 
 struct UserRegisterInfo: Codable {
-    var phone: String
+    var account: String
     var password: String
     var name: String
     var residenceArea: String
     
     enum CodingKeys: String, CodingKey {
-        case phone = "Phone"
+        case account = "Account"
         case password = "Password"
         case name = "Name"
         case residenceArea = "ResidenceArea"
@@ -159,18 +144,20 @@ struct UserDataResponse: Codable {
 }
 
 struct UserData: Codable {
-    let phone: String
+    let account: String
     let name: String
     let photo: String?
     let residenceArea: String
     let introduction: String
+    let contact: String
     
     enum CodingKeys: String, CodingKey {
         case photo = "Photo"
-        case phone = "Phone"
+        case account = "Account"
         case name = "Name"
         case residenceArea = "ResidenceArea"
         case introduction = "Introduction"
+        case contact = "Contact"
     }
 }
 
@@ -217,6 +204,4 @@ struct SettingCellModel {
         self.style = style
         self.handler = handler
     }
-
-    // ... 其他屬性和方法
 }

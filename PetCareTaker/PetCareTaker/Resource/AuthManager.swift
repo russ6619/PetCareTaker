@@ -25,15 +25,22 @@ class AuthManager {
     // Keychain
     private let keychain = Keychain(service: "com.Russ.PetCareTaker")
     
-    // 檢查 Phone/帳號 的格式
+    // 檢查 帳號 的格式
     func checkAccountCorrection(_ account: String) -> AccountCheck {
-        let digits = "0123456789"
-        
-        if account.isEmpty { return .empty }
-        else if account.count != 10 { return .lackAccountTextLength }
-        else if !account.allSatisfy({ digits.contains($0) }) { return .lackDigits }
-        else { return .valid }
+        let alphanumeric = CharacterSet.alphanumerics
+        let textLength = account.count
+
+        if account.isEmpty {
+            return .empty
+        } else if textLength < 6 {
+            return .lackAccountTextLength
+        } else if account.rangeOfCharacter(from: alphanumeric) == nil {
+            return .lackDigits
+        } else {
+            return .valid
+        }
     }
+
     
     // 檢查密碼的格式
     func checkPassword(_ password: String) -> PasswordCheck {
@@ -46,7 +53,7 @@ class AuthManager {
         else if textLength == 0 { return .empty }
         else if !password.contains(where: { digits.contains($0) }) { return .lacksDigits }
         else if !password.contains(where: { punctuation.contains($0) }) { return.lacksPunctuation }
-        else if textLength < 10 || textLength > 30 { return .lackTextLength }
+        else if textLength < 8 || textLength > 30 { return .lackTextLength }
         else  { return .valid }
     }
     
@@ -66,14 +73,14 @@ class AuthManager {
         
         if account != .valid {
             switch account {
-            case .lackDigits:
-                accountResult = "電話號碼只能是數字"
             case .empty:
-                accountResult = "電話號碼欄位不能空白"
+                accountResult = "帳號不能空白"
             case .lackAccountTextLength:
-                accountResult = "電話號碼位數不正確"
-            case .lackCorrection:
-                accountResult = "電話號碼格式不正確，需輸入數字，例如：0912345678"
+                accountResult = "帳號需大於6碼"
+            case .lackDigits:
+                accountResult = "帳號需要有英文與數字"
+//            case .lackCorrection:
+//                accountResult = "帳號格式不正確，需輸入數字，例如：0912345678"
             default:
                 break
             }
@@ -88,7 +95,7 @@ class AuthManager {
             case .lacksPunctuation:
                 passwordResult = "密碼少了符號"
             case .lackTextLength:
-                passwordResult = "密碼長度需要在10至30個數字之間"
+                passwordResult = "密碼長度需要在8至30個數字之間"
             case .empty:
                 passwordResult = "密碼欄位不能空白"
             default:
