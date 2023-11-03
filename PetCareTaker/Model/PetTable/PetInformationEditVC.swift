@@ -110,7 +110,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     
     
     
-    // MARK: SAVE BTN
+    // MARK: - SAVE BTN
     @objc func saveButtonTapped() {
         // 獲取寵物名稱
         if let nameCell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? PetNameTableViewCell {
@@ -342,7 +342,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
         
     }
     
-    // MARK: renamePetPhoto
+    // MARK: - renamePetPhoto
     func renamePetPhoto(userID: String, petID: String, completion: @escaping (Bool, String?) -> Void) {
         // 設定 PHP 腳本的 URL，替換成你的實際 PHP 腳本 URL
         guard let phpScriptURL = URL(string: ServerApiHelper.shared.renamePetPhoto) else {
@@ -401,8 +401,7 @@ class PetInformationEditVC: UIViewController, PetPersonalitySelectionDelegate {
     }
     
     
-    
-    // MARK: uploadPetImage
+    // MARK: - uploadPetImage
     func uploadPetImage() {
         DispatchQueue.main.async {
             

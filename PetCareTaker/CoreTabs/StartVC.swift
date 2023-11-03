@@ -80,7 +80,6 @@ class StartVC: UIViewController {
             }
             if let data = data,
                let result = String(data: data, encoding: .utf8) {
-                //                print("result: \(result)")
                 // 根據 result 的值來判斷帳號和密碼是否正確
                 if result == "true" {
                     completion(true) // 帳號和密碼正確，回傳 true

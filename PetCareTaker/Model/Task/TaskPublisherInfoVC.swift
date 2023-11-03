@@ -15,7 +15,7 @@ class TaskPublisherInfoVC: UIViewController {
     
     var userImage = UIImage()
         
-    let personalImage = UIImage(systemName: "person.circle.fill")
+    let personalImage = UIImage(named:"personalImage")
     
     // 創建 UITableView
     private var userPetsTable: UITableView = {
