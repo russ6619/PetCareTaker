@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAmUcK5bqtQ8GDcLpfDcQEtsgiQBXly4so</string>
+	<key>GCM_SENDER_ID</key>
+	<string>495585713513</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.Russ855011.PetCareTaker</string>
+	<key>PROJECT_ID</key>
+	<string>petcaretaker-3837f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>petcaretaker-3837f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:495585713513:ios:e771b1cf373ff4f07d31f8</string>
+</dict>
+</plist>

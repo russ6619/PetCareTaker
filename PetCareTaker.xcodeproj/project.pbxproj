@@ -48,23 +48,17 @@
 		D2C11CB22ACC149D006EB3E4 /* TaskPublisherInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB12ACC149D006EB3E4 /* TaskPublisherInfoVC.swift */; };
 		D2C11CB42ACC45C4006EB3E4 /* TaskPetInformationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB32ACC45C4006EB3E4 /* TaskPetInformationVC.swift */; };
 		D2C11CB62ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C11CB52ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift */; };
+		D2F6C90F2B9C310200C6093A /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D2F6C90E2B9C310200C6093A /* FirebaseAnalyticsSwift */; };
+		D2F6C9112B9C310200C6093A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = D2F6C9102B9C310200C6093A /* FirebaseCrashlytics */; };
+		D2F6C9142B9C331700C6093A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2F6C9132B9C331700C6093A /* GoogleService-Info.plist */; };
 		D2F7721F2AB4389B00063245 /* petPersonalityTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F7721E2AB4389B00063245 /* petPersonalityTableVC.swift */; };
 		D2F772242AB5698700063245 /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2F772232AB5698700063245 /* Struct.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D235EC532ADD31770049DF53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D235EC552ADD31770049DF53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D235EC572ADD31770049DF53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D235EC5A2ADD31770049DF53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D235EC5C2ADD31790049DF53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D235EC5F2ADD31790049DF53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		D235EC612ADD31790049DF53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D235EC652ADD3F1A0049DF53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D235EC672ADE1EA90049DF53 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		D235EC682ADE1EA90049DF53 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
-		D235EC692ADE1EA90049DF53 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
-		D235EC6A2ADE1EA90049DF53 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		D25C43522AC12BE5008A2D9B /* PublishTaskVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishTaskVC.swift; sourceTree = "<group>"; };
 		D25C43592AC1BA11008A2D9B /* PublishedTaskTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishedTaskTableVC.swift; sourceTree = "<group>"; };
 		D25C435B2AC2802C008A2D9B /* TaskForSelfCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskForSelfCell.swift; sourceTree = "<group>"; };
@@ -104,6 +98,7 @@
 		D2C11CB12ACC149D006EB3E4 /* TaskPublisherInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPublisherInfoVC.swift; sourceTree = "<group>"; };
 		D2C11CB32ACC45C4006EB3E4 /* TaskPetInformationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPetInformationVC.swift; sourceTree = "<group>"; };
 		D2C11CB52ACD07B2006EB3E4 /* TaskPublisherInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPublisherInformationCell.swift; sourceTree = "<group>"; };
+		D2F6C9132B9C331700C6093A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D2F7721E2AB4389B00063245 /* petPersonalityTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = petPersonalityTableVC.swift; sourceTree = "<group>"; };
 		D2F772232AB5698700063245 /* Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,7 +108,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2F6C90F2B9C310200C6093A /* FirebaseAnalyticsSwift in Frameworks */,
 				D2923B162AC6A9A400D2FB18 /* Kingfisher in Frameworks */,
+				D2F6C9112B9C310200C6093A /* FirebaseCrashlytics in Frameworks */,
 				D2A65F412AA5708000E45AE8 /* KeychainAccess in Frameworks */,
 				D25C43582AC17353008A2D9B /* IQKeyboardManagerSwift in Frameworks */,
 			);
@@ -122,20 +119,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D235EC522ADD31770049DF53 /* PetCareTakers */ = {
-			isa = PBXGroup;
-			children = (
-				D235EC532ADD31770049DF53 /* AppDelegate.swift */,
-				D235EC552ADD31770049DF53 /* SceneDelegate.swift */,
-				D235EC572ADD31770049DF53 /* ViewController.swift */,
-				D235EC592ADD31770049DF53 /* Main.storyboard */,
-				D235EC5C2ADD31790049DF53 /* Assets.xcassets */,
-				D235EC5E2ADD31790049DF53 /* LaunchScreen.storyboard */,
-				D235EC612ADD31790049DF53 /* Info.plist */,
-			);
-			path = PetCareTakers;
-			sourceTree = "<group>";
-		};
 		D2752C592AB08CB500147E20 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				D27CFFE82A8B6181003222C8 /* PetCareTaker */,
-				D235EC522ADD31770049DF53 /* PetCareTakers */,
 				D27CFFE72A8B6181003222C8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -199,6 +181,7 @@
 				D28F2F462AA07D56007E16E4 /* CoreTabs */,
 				D27CFFF42A8B6183003222C8 /* LaunchScreen.storyboard */,
 				D27CFFF72A8B6183003222C8 /* Info.plist */,
+				D2F6C9132B9C331700C6093A /* GoogleService-Info.plist */,
 				D235EC652ADD3F1A0049DF53 /* Assets.xcassets */,
 				D2F772232AB5698700063245 /* Struct.swift */,
 			);
@@ -291,6 +274,7 @@
 				D27CFFE22A8B6181003222C8 /* Sources */,
 				D27CFFE32A8B6181003222C8 /* Frameworks */,
 				D27CFFE42A8B6181003222C8 /* Resources */,
+				D2F6C9122B9C311C00C6093A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -301,6 +285,8 @@
 				D2A65F402AA5708000E45AE8 /* KeychainAccess */,
 				D25C43572AC17353008A2D9B /* IQKeyboardManagerSwift */,
 				D2923B152AC6A9A400D2FB18 /* Kingfisher */,
+				D2F6C90E2B9C310200C6093A /* FirebaseAnalyticsSwift */,
+				D2F6C9102B9C310200C6093A /* FirebaseCrashlytics */,
 			);
 			productName = PetCareTaker;
 			productReference = D27CFFE62A8B6181003222C8 /* PetCareTaker.app */;
@@ -334,6 +320,7 @@
 				D2A65F3F2AA5708000E45AE8 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				D25C43562AC17353008A2D9B /* XCRemoteSwiftPackageReference "IQKeyboardManager" */,
 				D2923B142AC6A9A400D2FB18 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				D2F6C90D2B9C310200C6093A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = D27CFFE72A8B6181003222C8 /* Products */;
 			projectDirPath = "";
@@ -351,11 +338,34 @@
 			files = (
 				D27CFFF62A8B6183003222C8 /* LaunchScreen.storyboard in Resources */,
 				D235EC662ADD3F1A0049DF53 /* Assets.xcassets in Resources */,
+				D2F6C9142B9C331700C6093A /* GoogleService-Info.plist in Resources */,
 				D27CFFF12A8B6181003222C8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D2F6C9122B9C311C00C6093A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D27CFFE22A8B6181003222C8 /* Sources */ = {
@@ -405,24 +415,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D235EC592ADD31770049DF53 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D235EC5A2ADD31770049DF53 /* Base */,
-				D235EC692ADE1EA90049DF53 /* zh-Hant */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D235EC5E2ADD31790049DF53 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D235EC5F2ADD31790049DF53 /* Base */,
-				D235EC6A2ADE1EA90049DF53 /* zh-Hant */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		D27CFFEF2A8B6181003222C8 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -478,7 +470,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -678,6 +670,14 @@
 				kind = branch;
 			};
 		};
+		D2F6C90D2B9C310200C6093A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -695,6 +695,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D2A65F3F2AA5708000E45AE8 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		D2F6C90E2B9C310200C6093A /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2F6C90D2B9C310200C6093A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		D2F6C9102B9C310200C6093A /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2F6C90D2B9C310200C6093A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

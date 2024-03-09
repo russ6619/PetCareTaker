@@ -61,7 +61,13 @@ class PublishedTaskTableVC: UITableViewController {
                 self.userPublishedTasks = UserDataManager.shared.selfTaskData
             }
         }
-        tableView.reloadData()
+        
+        DispatchQueue.main.async {
+            // 更新畫面程式
+            self.tableView.reloadData()
+        }
+        
+        
     }
     
     

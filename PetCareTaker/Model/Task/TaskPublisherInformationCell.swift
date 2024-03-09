@@ -89,7 +89,8 @@ class TaskPublisherInformationCell: UITableViewCell {
             userIntroductionLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             userIntroductionLabel.topAnchor.constraint(equalTo: userContactLabel.bottomAnchor, constant: 10),
             userIntroductionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-            
+            userIntroductionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            userIntroductionLabel.trailingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: -10)
         ])
         
         

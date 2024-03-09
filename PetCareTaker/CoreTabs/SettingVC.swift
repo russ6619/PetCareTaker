@@ -10,7 +10,6 @@ import MessageUI
 import SafariServices
 
 
-
 /// View Controller to show user settings
 final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
     
@@ -34,12 +33,15 @@ final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.frame = view.bounds
     }
+    
+    
     
     private func configureModels() {
         let section = [
@@ -51,7 +53,10 @@ final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
             },
             SettingCellModel(title: "意見回饋", style: .default) { [weak self] in
                 self?.didTapFeedback()
-            }
+            },
+//            SettingCellModel(title: "閃退測試", style: .destructive, handler: {[weak self] in
+//                self?.didTapCrashTest()
+//            })
         ]
         data.append(section)
         
@@ -61,6 +66,11 @@ final class SettingVC: UIViewController, MFMailComposeViewControllerDelegate {
         data[0].append(privacyPolicy)
 
     }
+    
+    
+//    private func didTapCrashTest() {
+//        fatalError("This is a crash test")
+//    }
 
     
     private func didTapLogOut() {
