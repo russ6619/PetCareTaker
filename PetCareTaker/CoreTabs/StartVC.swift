@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class StartVC: UIViewController {
     
@@ -26,9 +27,8 @@ class StartVC: UIViewController {
                             // 比對失敗，跳轉到登入畫面
                             AuthManager.shared.redirectToLogin()
                         } else {
-                            
                             // 更新畫面程式
-                            self.loginSetupData()
+                            self.biometricsLogin()
                         }
                     }
                     
@@ -50,6 +50,61 @@ class StartVC: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+    }
+    
+    // 生物辨識
+    func biometricsLogin()  {
+        
+        let context = LAContext()
+        var error: NSError?
+        
+        /* LAPolicy tpye : Int
+         
+         只支援 FaceID 跟 指紋辨識 驗證
+         deviceOwnerAuthenticationWithBiometrics = 1
+         支援 FaceID, 指紋辨識, 裝置密碼 驗證
+         deviceOwnerAuthentication = 2
+         
+         */
+        
+        // 判斷是否可以用 FaceID, 指紋辨識, 裝置密碼登入 -> Bool
+        if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
+            // 當 FaceID 或 指紋辨識 第一次驗證失敗, 彈跳系統制式alert, alert上的取消button文字描述
+            context.localizedCancelTitle = "取消登入"
+            // localizedFallbackTitle 是在多次驗證失敗後, 會出現在系統制式alert上的button文字描述
+            context.localizedFallbackTitle = "使用輸入帳密方式登入"
+            // 當 FaceID 或 指紋辨識 驗證失敗多次, 彈跳系統制式alert, alert上的說明描述
+            // 註: 輸入裝置密碼的視窗也會出現以下文字描述
+            let reason = "選用輸入帳密方式登入或是取消登入"
+            
+            // 使用 FaceID, 指紋辨識, 裝置密碼登入驗證
+            context.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: reason) { (result, err) in
+                if result {
+                    self.loginSetupData()
+                } else {
+                    // 驗證失敗
+                    guard let nsError = err as NSError? else { return }
+                    let errorCode = Int32(nsError.code)
+                    switch errorCode {
+                    case kLAErrorAuthenticationFailed: print("驗證資訊出錯")
+                    case kLAErrorUserCancel: print("使用者取消驗證")
+                    case kLAErrorUserFallback: print("使用者選擇其他驗證方式")
+                    case kLAErrorSystemCancel: print("被系統取消")
+                    case kLAErrorPasscodeNotSet: print("iPhone沒設定密碼")
+                    case kLAErrorTouchIDNotAvailable: print("使用者裝置不支援Touch ID")
+                    case kLAErrorTouchIDNotEnrolled: print("使用者沒有設定Touch ID")
+                    case kLAErrorTouchIDLockout: print("功能被鎖定(五次)，下一次需要輸入手機密碼")
+                    case kLAErrorAppCancel: print("在驗證中被其他app終止")
+                    default: print("驗證失敗")
+                    }
+                    AuthManager.shared.redirectToLogin()
+                }
+            }
+        } else {
+            print(error?.localizedDescription ?? "用戶拒絕使用")
+            AuthManager.shared.redirectToLogin()
+        }
+        
     }
     
     // 檢查帳號和密碼是否正確
@@ -120,7 +175,7 @@ class StartVC: UIViewController {
                 guard let imageUrl = URL(string: "\(ServerApiHelper.shared.imageUrlString)\(uniqueFileName)") else {
                     return
                 }
-//                print("URL: \(imageUrl)")
+                //                print("URL: \(imageUrl)")
                 DispatchQueue.main.async {
                     // 更新畫面程式
                     UserDataManager.shared.downloadImage(from: imageUrl) { (result) in
@@ -128,7 +183,7 @@ class StartVC: UIViewController {
                         case .success((let image, let fileName)):
                             // 在這裡使用下載的圖片和檔案名稱
                             UserDataManager.shared.userImage = image
-                                // 刷新表格視圖
+                            // 刷新表格視圖
                             print("下載的檔案名稱: \(fileName)")
                         case .failure(let error):
                             // 下載圖片失敗，處理錯誤
@@ -181,17 +236,5 @@ class StartVC: UIViewController {
             }
         }
     }
-    
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
